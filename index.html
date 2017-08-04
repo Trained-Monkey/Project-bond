@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project Bond</title>
+</head>
+<body>
+
+<script type = "text/javascript">
+    class IonicCompound
+    {
+        state = "SOLID";
+        conductor = false;
+//jhg
+        changeState(newState)
+        {
+            this.state = newState;
+            this.conductor = (this.state === "LIQUID" || this.state==="AQUEOUS");
+        }
+
+
+
+    }
+</script>
+
+</body>
+</html>
