@@ -6,5 +6,22 @@
 </head>
 <body>
 
+<script type = "text/javascript">
+    class IonicCompound
+    {
+        state = "SOLID";
+        conductor = false;
+
+        changeState(newState)
+        {
+            this.state = newState;
+            this.conductor = (this.state === "LIQUID" || this.state==="AQUEOUS");
+        }
+
+
+
+    }
+</script>
+
 </body>
 </html>
