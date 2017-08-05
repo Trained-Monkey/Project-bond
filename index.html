@@ -9,18 +9,24 @@
 <script type = "text/javascript">
     class IonicCompound
     {
-        state = "SOLID";
-        conductor = false;
-//jhg
+        constructor(atoms,mp, bp)
+        {
+            this.atoms = atoms;
+            this.mp = mp;
+            this.bp = bp;
+            this.state = "SOLID";
+            this.conductor = false;
+        }
+
         changeState(newState)
         {
             this.state = newState;
             this.conductor = (this.state === "LIQUID" || this.state==="AQUEOUS");
         }
-
-
-
     }
+
+    var NaCl = new IonicCompound(["Na", "Cl"], 801, 1413);
+    console.log(NaCl)
 </script>
 
 </body>
