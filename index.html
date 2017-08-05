@@ -6,23 +6,49 @@
 </head>
 <body>
 
-<script type = "text/javascript">
+<script type="text/javascript">
+
     class IonicCompound
     {
-        constructor(atoms,mp, bp)
+        constructor(atoms, mp, bp)
+        {
+            //Define all varibales for class here with this.[variableName]
+            this.atoms = atoms;
+            this.mp = mp;
+            this.bp = bp;
+            this.state = "SOLID";
+            this.conductor = false;
+            this.waterSoluble = true;
+        }
+
+        changeState(newState)
+        {
+            this.state = newState;
+            this.conductor = (this.state === "LIQUID" || this.state === "AQUEOUS");
+        }
+    }
+
+    class CovalentCompound
+    {
+        constructor(atoms, mp, bp, waterSoluble)
         {
             this.atoms = atoms;
             this.mp = mp;
             this.bp = bp;
             this.state = "SOLID";
             this.conductor = false;
+            this.waterSoluble = waterSoluble;
         }
 
         changeState(newState)
         {
-            this.state = newState;
-            this.conductor = (this.state === "LIQUID" || this.state==="AQUEOUS");
+            if (newState !== "AQUEOUS" && !this.waterSoluble)
+            {
+                this.state = newState;
+            }
         }
+
+
     }
 
     var NaCl = new IonicCompound(["Na", "Cl"], 801, 1413);
@@ -31,3 +57,4 @@
 
 </body>
 </html>
+
