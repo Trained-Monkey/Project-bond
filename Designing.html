@@ -2,29 +2,84 @@
 <html>
 <head>
     <style>
+
+        /* A 60 pixel reduction is needed when calculating the width and height to include the border */
         .border {
             border-width:30px;
             border-style:solid;
             border-color:#000000;
+            width: 1380px;
+            height: 720px;
         }
 
         .mainScreen{
             float: left;
             width: 720px;
             height: 720px;
+            background: red;
         }
 
-        .sideScreen{
-            float:right;
-            height:720px;
+        .sideBar{
+            float: right;
+            height: 720px;
+            width: 660px;
+            background: blue;
         }
+
+        .programNameBar{
+            float: top;
+            height: 90px;
+            width: 660px;
+            background: green;
+        }
+
+        .periodicTable{
+            height: 450px;
+            background: yellow;
+        }
+
+        .bottomBar{
+            height: 180px;
+            width: 660px;
+        }
+
+        .optionsBar{
+            float: left;
+            width: 330px;
+            height: 180px;
+            background: purple;
+        }
+
+        .infoBar{
+            float: right;
+            height: 180px;
+            width: 330px;
+            background: orange;
+        }
+
 
     </style>
 </head>
 <body style="margin: 0;">
 <div class = "border">
     <div class = "mainScreen">
-        <p>test</p>
+        <!-- <img src> here when image is designed -->
+
+    </div>
+    <div class = "sideBar">
+        <!-- <img src> here when image is designed-->
+        <div class = "programNameBar">
+        </div>
+        <div class="periodicTable">
+        </div>
+        <div class="bottomBar">
+            <div class="optionsBar">
+
+            </div>
+            <div class="infoBar">
+
+            </div>
+        </div>
     </div>
 </div>
 </body>
