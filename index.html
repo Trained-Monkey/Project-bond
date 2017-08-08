@@ -51,6 +51,11 @@
 
     }
 
+    var possibleCompounds = //TODO: Add waterSoluble
+        {
+            [["H","F"]]: new CovalentCompound(["H","F"], 20, -84,false),
+            [["H","Cl"]] : new CovalentCompound(["H","Cl"], -85, -115,false)
+        };
     var NaCl = new IonicCompound(["Na", "Cl"], 801, 1413);
     console.log(NaCl)
 </script>
