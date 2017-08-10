@@ -5,8 +5,8 @@
 
         /* A 60 pixel reduction is needed when calculating the width and height to include the border */
         :root{
-            --compulsoryWidth: 1380px;
-            --compulsoryHeight: 720px;
+            --compulsoryWidth: 1320px;
+            --compulsoryHeight: 660px;
             --screenWidth: 100%;
             --screenHeight: 100%;
         }
@@ -17,30 +17,28 @@
             border-top: calc(calc(100vh - var(--compulsoryHeight))/2);
             border-style: solid;
             border-color: orange;
-            width: 1380px;
-            height: 720px;
+            width: 1320px;
+            height: 660px;
 
         }
 
         .mainScreen{
             float: left;
-            width: 720px;
-            height: 720px;
+            width: 660px;
+            height: 660px;
             background: #05ff00;
         }
 
         .sideBar{
             float: left;
-            height: 720px;
+            height: 660px;
             width: 660px;
-            background: #0046ff;
         }
 
         .programNameBar{
             float: top;
             height: 90px;
             width: 660px;
-            background: #ff00fb;
         }
 
         .periodicTable{
@@ -54,17 +52,28 @@
         }
 
         .optionsBar{
+
             float: left;
-            width: 330px;
-            height: 180px;
-            background: purple;
+            border-width: 2px;
+            border-right:1px;
+            border-top: 0;
+            border-color: black;
+            border-style: solid;
+            width: 327px;
+            height: 118px;
+            background: white;
         }
 
         .infoBar{
             float: right;
-            height: 180px;
-            width: 330px;
-            background: #ff1000;
+            border-width: 2px;
+            border-left: 1px;
+            border-style: solid;
+            border-color: black;
+            border-top: 0;
+            height: 118px;
+            width: 327px;
+            background: white;
         }
 
 
@@ -79,8 +88,10 @@
     <div class = "sideBar">
         <!-- <img src> here when image is designed-->
         <div class = "programNameBar">
+            <img src="Program Bar.jpg">
         </div>
         <div class="periodicTable">
+            <img src="Periodic%20Table%20Draft.png">
         </div>
         <div class="bottomBar">
             <div class="optionsBar">
