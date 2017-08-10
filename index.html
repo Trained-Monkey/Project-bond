@@ -111,11 +111,14 @@
 </div>
 </body>
 <script type="text/javascript">
+    class Compound
+    {}
 
-    class IonicCompound
+    class IonicCompound extends Compound
     {
         constructor(atoms, mp, bp)
         {
+            super();
             //Define all varibales for class here with this.[variableName]
             this.atoms = atoms;
             this.mp = mp;
@@ -132,10 +135,11 @@
         }
     }
 
-    class CovalentCompound
+    class CovalentCompound extends Compound
     {
         constructor(atoms, mp, bp, waterSoluble)
         {
+            super();
             this.atoms = atoms;
             this.mp = mp;
             this.bp = bp;
@@ -151,15 +155,81 @@
                 this.state = newState;
             }
         }
+    }
 
+    class Reaction
+    {
+        constructor(reactants,products,currentCompound,property,requiredCondition)
+        {
+            let currentCompounds = currentCompound;
+            let willReact = false;
+            switch(typeof property)
+            {
+                case "boolean":
+                    willReact = property === requiredCondition;
+                    break;
+                case "number":
+                    willReact = eval(property.toString() + requiredCondition);
+                    break;
+                default:
+                    console.log(typeof property);
+                    break;
+            }
+
+            if (willReact)
+            {
+                for (let i = 0; i<reactants.length;i++)
+                {
+                    if (currentCompounds.find(function() {return reactants[i]}) !== undefined)
+                    {
+
+                        currentCompounds.splice(i);
+                    }
+                }
+
+                for (let i =0; i<products.length;i++)
+                {
+                    if(currentCompounds.find(function(element) {return element === products[i]}) === undefined)
+                    {
+                        currentCompounds.push(products[i]);
+                    }
+                }
+            this.currentCompounds = currentCompounds;
+            console.log(this.currentCompounds)
+
+
+            }
+        }
 
     }
 
     var possibleCompounds = //TODO: Add waterSoluble
         {
-            [["H","F"]]: new CovalentCompound(["H","F"], 20, -84,false),
-            [["H","Cl"]] : new CovalentCompound(["H","Cl"], -85, -115,false)
+            ["NaH"]: new IonicCompound(["Na","H"], 300, Infinity),
+            ["NaCl"]: new IonicCompound(["Na","Cl"],801,1465),
+            ["HCl"]: new CovalentCompound(["H","Cl"],-114,-85,true),
+            ["MgO"]:new IonicCompound(["Mg","O"],2825,3600),
+            ["H2"] : new CovalentCompound(["H","H"],-259,-252,false),
+            ["O2"] : new CovalentCompound(["O","O"],-219,-183,false),
+            ["Cl2"] : new CovalentCompound(["Cl","Cl"],-102,-34,false)
         };
+
+    var currentCompounds = [];
+    var temperature = 25;
+    var current = 0;
+    var UV = false;
+    var waterEnvironment = false;
+    var possibleReactions =
+        [
+            new Reaction(["H2","O2"],["H2O"],currentCompounds,temperature,">300"),
+            new Reaction(["H2O"],["H2","O2"],currentCompounds,current,">20"),
+            new Reaction(["Cl2","H2"],["HCl"],currentCompounds, UV,true),
+            new Reaction(["MgO","H2O"],["MgOH2"],currentCompounds,waterEnvironment, true),
+            new Reaction(["MgOH2"],["Mg","H2O"], currentCompounds,temperature, ">100"),
+            new Reaction(["Mg","O"],["MgO"],currentCompounds,temperature,">50"),
+            new Reaction(["NaCl"],["NaOH","Cl2","H2"], currentCompounds,current,">20"),
+        ];
+
     var NaCl = new IonicCompound(["Na", "Cl"], 801, 1413);
     console.log(NaCl)
 </script>
