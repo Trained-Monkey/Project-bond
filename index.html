@@ -3,9 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <title>Project Bond</title>
+    <style>
+
+        /* A 60 pixel reduction is needed when calculating the width and height to include the border */
+        :root{
+            --compulsoryWidth: 1320px;
+            --compulsoryHeight: 660px;
+            --screenWidth: 100%;
+            --screenHeight: 100%;
+        }
+
+        .border {
+            border-width: calc(calc(100vw - var(--compulsoryWidth))/2) ;
+            border-bottom: calc(calc(100vh - var(--compulsoryHeight))/2);
+            border-top: calc(calc(100vh - var(--compulsoryHeight))/2);
+            border-style: solid;
+            border-color: white;
+            width: 1320px;
+            height: 660px;
+
+        }
+
+        .mainScreen{
+            float: left;
+            border-width:2px;
+            border-color: black;
+            border-style: solid;
+            border-right: 0;
+            width: 658px;
+            height: 656px;
+            background: #ffffff;
+        }
+
+        .sideBar{
+            float: left;
+            height: 660px;
+            width: 660px;
+        }
+
+        .programNameBar{
+            float: top;
+            height: 90px;
+            width: 660px;
+        }
+
+        .periodicTable{
+            height: 450px;
+            background: #ffffff;
+        }
+
+        .bottomBar{
+            height: 180px;
+            width: 660px;
+        }
+
+        .optionsBar{
+
+            float: left;
+            border-width: 2px;
+            border-right:1px;
+            border-top: 0;
+            border-color: black;
+            border-style: solid;
+            width: 327px;
+            height: 118px;
+            background: white;
+        }
+
+        .infoBar{
+            float: right;
+            border-width: 2px;
+            border-left: 1px;
+            border-style: solid;
+            border-color: black;
+            border-top: 0;
+            height: 118px;
+            width: 327px;
+            background: white;
+        }
+
+    </style>
 </head>
 <body>
+<body style="margin: 0;">
+<div class = "border">
+    <div class = "mainScreen">
+        <!-- <img src> here when image is designed -->
 
+    </div>
+    <div class = "sideBar">
+        <!-- <img src> here when image is designed-->
+        <div class = "programNameBar">
+            <img src="Program Bar.jpg">
+        </div>
+        <div class="periodicTable">
+            <img src="Periodic Table.jpg">
+        </div>
+        <div class="bottomBar">
+            <div class="optionsBar">
+
+            </div>
+            <div class="infoBar">
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
 <script type="text/javascript">
 
     class IonicCompound
@@ -59,7 +163,6 @@
     var NaCl = new IonicCompound(["Na", "Cl"], 801, 1413);
     console.log(NaCl)
 </script>
-
 </body>
 </html>
 
