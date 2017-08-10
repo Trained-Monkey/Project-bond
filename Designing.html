@@ -4,38 +4,46 @@
     <style>
 
         /* A 60 pixel reduction is needed when calculating the width and height to include the border */
+        :root{
+            --compulsoryWidth: 1380px;
+            --compulsoryHeight: 720px;
+            --screenWidth: 100%;
+            --screenHeight: 100%;
+        }
+
         .border {
-            border-width:30px;
-            border-style:solid;
-            border-color:#000000;
+            border-width: calc(calc(100vw - var(--compulsoryWidth))/2) ;
+            border-style: solid;
+            border-color: orange;
             width: 1380px;
             height: 720px;
+
         }
 
         .mainScreen{
             float: left;
             width: 720px;
             height: 720px;
-            background: red;
+            background: #05ff00;
         }
 
         .sideBar{
-            float: right;
+            float: left;
             height: 720px;
             width: 660px;
-            background: blue;
+            background: #0046ff;
         }
 
         .programNameBar{
             float: top;
             height: 90px;
             width: 660px;
-            background: green;
+            background: #ff00fb;
         }
 
         .periodicTable{
             height: 450px;
-            background: yellow;
+            background: #ffffff;
         }
 
         .bottomBar{
@@ -54,7 +62,7 @@
             float: right;
             height: 180px;
             width: 330px;
-            background: orange;
+            background: #ff1000;
         }
 
 
