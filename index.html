@@ -6,7 +6,7 @@
     <style>
 
         /* A 60 pixel reduction is needed when calculating the width and height to include the border */
-        :root{
+        :root {
             --compulsoryWidth: 1320px;
             --compulsoryHeight: 660px;
             --screenWidth: 100%;
@@ -14,9 +14,9 @@
         }
 
         .border {
-            border-width: calc(calc(100vw - var(--compulsoryWidth))/2) ;
-            border-bottom: calc(calc(100vh - var(--compulsoryHeight))/2);
-            border-top: calc(calc(100vh - var(--compulsoryHeight))/2);
+            border-width: calc(calc(100vw - var(--compulsoryWidth)) / 2);
+            border-bottom: calc(calc(100vh - var(--compulsoryHeight)) / 2);
+            border-top: calc(calc(100vh - var(--compulsoryHeight)) / 2);
             border-style: solid;
             border-color: white;
             width: 1320px;
@@ -24,9 +24,9 @@
 
         }
 
-        .mainScreen{
+        .mainScreen {
             float: left;
-            border-width:2px;
+            border-width: 2px;
             border-color: black;
             border-style: solid;
             border-right: 0;
@@ -35,33 +35,34 @@
             background: #ffffff;
         }
 
-        .sideBar{
+        .sideBar {
             float: left;
             height: 660px;
             width: 660px;
         }
 
-        .programNameBar{
+        .programNameBar {
             float: top;
             height: 90px;
             width: 660px;
         }
 
-        .periodicTable{
+        .periodicTable {
+            display: inline-block;
             height: 450px;
-            background: #ffffff;
+            position: relative;
         }
 
-        .bottomBar{
+        .bottomBar {
             height: 180px;
             width: 660px;
         }
 
-        .optionsBar{
+        .optionsBar {
 
             float: left;
             border-width: 2px;
-            border-right:1px;
+            border-right: 1px;
             border-top: 0;
             border-color: black;
             border-style: solid;
@@ -70,7 +71,7 @@
             background: white;
         }
 
-        .infoBar{
+        .infoBar {
             float: right;
             border-width: 2px;
             border-left: 1px;
@@ -82,23 +83,39 @@
             background: white;
         }
 
+        .table {
+            position: absolute;
+            z-index: 1;
+        }
+
+        .Overlay {
+            position: relative;
+            z-index: 2;
+
+        }
+
     </style>
 </head>
-<body>
 <body style="margin: 0;">
-<div class = "border">
-    <div class = "mainScreen">
+<div class="border">
+    <div class="mainScreen">
         <!-- <img src> here when image is designed -->
 
     </div>
-    <div class = "sideBar">
+    <div class="sideBar">
         <!-- <img src> here when image is designed-->
-        <div class = "programNameBar">
+        <div class="programNameBar">
             <img src="Resources/Program Bar.jpg">
         </div>
+
+
         <div class="periodicTable">
-            <img src="Resources/Periodic Table.jpg">
+
+            <img class="table" src="Resources/Periodic Table.jpg">
+            <canvas id="PT" class="Overlay" width="660" height="446"></canvas>
+
         </div>
+
         <div class="bottomBar">
             <div class="optionsBar">
 
@@ -111,6 +128,50 @@
 </div>
 </body>
 <script type="text/javascript">
+    let borderWidth = document.documentElement.clientWidth - 1320;
+    let elementStatus = [
+        {element: "Hydrogen", x: 61, y: 31, status: false},
+        {element: "Lithium", x: 61, y: 61, status: false},
+        {element: "Sodium", x: 61, y:91, status: false}
+    ];
+    let c = document.getElementById("PT");
+    let ctx = c.getContext("2d");
+
+    function draw() {
+        let borderWidth = document.documentElement.clientWidth - 1320;
+        for (i = 0; i < elementStatus.length; i++) {
+            ctx.beginPath();
+            if (elementStatus[i].status === true) {
+                ctx.clearRect(elementStatus[i].x, elementStatus[i].y, 28, 28);
+                ctx.rect(elementStatus[i].x, elementStatus[i].y, 28, 28);
+                ctx.fillStyle = "rgba(0,0,0,0.5)";
+                ctx.fill();
+            } else {
+                ctx.clearRect(elementStatus[i].x, elementStatus[i].y, 28, 28);
+            }
+        }
+    }
+
+    setInterval(draw,10);
+    c.addEventListener('click', onClickHandler, true);
+    function onClickHandler(e) {
+        let tableRect = c.getBoundingClientRect();
+        let X = e.clientX - tableRect.left;
+        let Y = e.clientY - tableRect.top;
+        for (i = 0; i < elementStatus.length; i++) {
+            if (X > elementStatus[i].x && X < (elementStatus[i].x + 28) && Y > elementStatus[i].y && Y < (elementStatus[i].y + 28)) {
+                if (elementStatus[i].status === true){
+                    elementStatus[i].status = false;
+                }   else {
+                    elementStatus[i].status = true;
+                }
+
+            }
+
+        }
+    }
+
+
     class Compound
     {}
 
