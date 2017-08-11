@@ -48,6 +48,7 @@
         }
 
         .periodicTable{
+            position: relative;
             height: 450px;
             background: #ffffff;
         }
@@ -82,6 +83,12 @@
             background: white;
         }
 
+        #PT Overlay{
+            position: relative;
+            z-index: 20;
+            background-color: orange;
+        }
+
     </style>
 </head>
 <body style="margin: 0;">
@@ -93,11 +100,15 @@
     <div class = "sideBar">
         <!-- <img src> here when image is designed-->
         <div class = "programNameBar">
-            <img src="Program Bar.jpg">
+            <img src="Resources/Program Bar.jpg">
         </div>
+
+
         <div class="periodicTable">
-            <img src="Periodic Table.jpg">
+            <img src="Resources/Periodic Table.jpg">
+            <canvas id="PT Overlay"></canvas>
         </div>
+
         <div class="bottomBar">
             <div class="optionsBar">
 
