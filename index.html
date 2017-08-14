@@ -86,12 +86,35 @@
         .table {
             position: absolute;
             z-index: 1;
+
+
         }
+
+
 
         .Overlay {
             position: relative;
             z-index: 2;
 
+        }
+        img{
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+
+        canvas{
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
         }
 
     </style>
@@ -158,6 +181,7 @@
 
     setInterval(draw,10);
     c.addEventListener('click', onClickHandler, true);
+    c.addEventListener('dblclick', onDoubleClickHandler, true);
     function onClickHandler(e) {
         let tableRect = c.getBoundingClientRect();
         let X = e.clientX - tableRect.left;
@@ -173,6 +197,10 @@
             }
 
         }
+    }
+
+    function onDoubleClickHandler(e){
+        onClickHandler(e)
     }
 
 
