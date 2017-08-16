@@ -86,17 +86,14 @@
         .table {
             position: absolute;
             z-index: 1;
-
-
         }
-
-
 
         .Overlay {
             position: relative;
             z-index: 2;
 
         }
+
         img{
             -webkit-touch-callout: none;
             -webkit-user-select: none;
@@ -181,7 +178,6 @@
 
     setInterval(draw,10);
     c.addEventListener('click', onClickHandler, true);
-    c.addEventListener('dblclick', onDoubleClickHandler, true);
     function onClickHandler(e) {
         let tableRect = c.getBoundingClientRect();
         let X = e.clientX - tableRect.left;
@@ -199,9 +195,6 @@
         }
     }
 
-    function onDoubleClickHandler(e){
-        onClickHandler(e)
-    }
 
 
 
@@ -269,7 +262,7 @@
     }
 
     class Reaction
-    {
+        {
         constructor(reactants, products, requiredCondition)
         {
             this.reactants = reactants;
