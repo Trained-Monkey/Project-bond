@@ -306,11 +306,11 @@
         ];
     let borderWidth = document.documentElement.clientWidth - 1320;
     let elementStatus = [
-        {element: "Hydrogen", x: 61, y: 31, status: false},
+        {element: "Hydrogen", x: 61, y: 31, status: false, symbol: "H"},
         {element: "Lithium", x: 61, y: 61, status: false},
         {element: "Sodium", x: 61, y:91, status: false},
         {element: "Magnesium", x: 91, y: 91, status: false},
-        {element: "Chloride", x: 541, y: 91, status: false},
+        {element: "Chloride", x: 541, y: 91, status: false, symbol: "Cl"},
         {element: "Oxygen", x: 511, y: 61, status: false}
 
     ];
@@ -336,10 +336,17 @@
             }
 
         }
-        if (X > 2 && X < 330){
+        if (X > 2 && X < 332 && Y > 390 && Y < 480){
+            compound = "";
+            for (let i = 0; i < elementStatus.length; i++) {
+                if (elementStatus[i].status === true) {
+                    compound = compound.concat(elementStatus[i].symbol);
+                }
+            }
             currentCompounds.push(
-                ''
-            )
+                compound
+            );
+            alert(compound);
 
         }
     }
@@ -401,4 +408,3 @@
 </script>
 </body>
 </html>
-
