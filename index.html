@@ -148,56 +148,6 @@
 </div>
 </body>
 <script type="text/javascript">
-    let borderWidth = document.documentElement.clientWidth - 1320;
-    let elementStatus = [
-        {element: "Hydrogen", x: 61, y: 31, status: false},
-        {element: "Lithium", x: 61, y: 61, status: false},
-        {element: "Sodium", x: 61, y:91, status: false},
-        {element: "Magnesium", x: 91, y: 91, status: false},
-        {element: "Chloride", x: 541, y: 91, status: false},
-        {element: "Oxygen", x: 511, y: 61, status: false}
-
-    ];
-    let c = document.getElementById("PT");
-    let ctx = c.getContext("2d");
-
-    function draw() {
-        let borderWidth = document.documentElement.clientWidth - 1320;
-        for (i = 0; i < elementStatus.length; i++) {
-            ctx.beginPath();
-            if (elementStatus[i].status === true) {
-                ctx.clearRect(elementStatus[i].x, elementStatus[i].y, 28, 28);
-                ctx.rect(elementStatus[i].x, elementStatus[i].y, 28, 28);
-                ctx.fillStyle = "rgba(0,0,0,0.5)";
-                ctx.fill();
-            } else {
-                ctx.clearRect(elementStatus[i].x, elementStatus[i].y, 28, 28);
-            }
-        }
-    }
-
-    setInterval(draw,10);
-    c.addEventListener('click', onClickHandler, true);
-    function onClickHandler(e) {
-        let tableRect = c.getBoundingClientRect();
-        let X = e.clientX - tableRect.left;
-        let Y = e.clientY - tableRect.top;
-        for (i = 0; i < elementStatus.length; i++) {
-            if (X > elementStatus[i].x && X < (elementStatus[i].x + 28) && Y > elementStatus[i].y && Y < (elementStatus[i].y + 28)) {
-                if (elementStatus[i].status === true){
-                    elementStatus[i].status = false;
-                }   else {
-                    elementStatus[i].status = true;
-                }
-
-            }
-
-        }
-    }
-
-
-
-
 
     class IonicCompound
     {
@@ -214,11 +164,11 @@
 
         checkState(temperature, waterEnvironment)
         {
-            if (temperature >= this.bp)
+            if (temperature >= this.mp)
             {
                 this.state = "GAS"
             }
-            else if (temperature >= this.mp)
+            else if (temperature >= this.bp)
             {
                 this.state = "LIQUID"
             }
@@ -262,7 +212,7 @@
     }
 
     class Reaction
-        {
+    {
         constructor(reactants, products, requiredCondition)
         {
             this.reactants = reactants;
@@ -272,7 +222,7 @@
 
         checkForActivation(currentCompounds, property)
         {
-            let willReact = false;
+            let willReact = true;
             let reactants = this.reactants;
             for (let i = 0; i < this.reactants.length; i++)
             {
@@ -327,7 +277,6 @@
             }
         }
     }
-
     var possibleCompounds = //TODO: Add waterSoluble
         {
             ["NaH"]: new IonicCompound(["Na", "H"], 300, Infinity),
@@ -355,15 +304,87 @@
             [new Reaction(["Mg", "O2"], ["MgO"], ">50"),"temperature"],
             [new Reaction(["NaCl"], ["NaOH", "Cl2", "H2"],  ">20"),"current"],
         ];
+    let borderWidth = document.documentElement.clientWidth - 1320;
+    let elementStatus = [
+        {element: "Hydrogen", x: 61, y: 31, status: false},
+        {element: "Lithium", x: 61, y: 61, status: false},
+        {element: "Sodium", x: 61, y:91, status: false},
+        {element: "Magnesium", x: 91, y: 91, status: false},
+        {element: "Chloride", x: 541, y: 91, status: false},
+        {element: "Oxygen", x: 511, y: 61, status: false}
+
+    ];
+    let c = document.getElementById("PT");
+    let ctx = c.getContext("2d");
 
 
-    function simulationManager()
-    {
-        for (let i =0; i <possibleReactions.length;i++)
+
+
+    c.addEventListener('click', onClickHandler, true);
+    function onClickHandler(e) {
+        let tableRect = c.getBoundingClientRect();
+        let X = e.clientX - tableRect.left;
+        let Y = e.clientY - tableRect.top;
+        if (X)
+        for (i = 0; i < elementStatus.length; i++) {
+            if (X > elementStatus[i].x && X < (elementStatus[i].x + 28) && Y > elementStatus[i].y && Y < (elementStatus[i].y + 28)) {
+                if (elementStatus[i].status === true){
+                    elementStatus[i].status = false;
+                }   else {
+                    elementStatus[i].status = true;
+                }
+            }
+
+        }
+        if (X > 2 && X < 330){
+            currentCompounds.push(
+                ''
+            )
+
+        }
+    }
+
+//
+//    function simulationManager()
+//    {
+//        for (let i =1; i <possibleReactions.length;i++)
+//        {
+//            currentCompounds = possibleReactions[i][0].checkForActivation(currentCompounds,eval(possibleReactions[i][1]));
+//        }
+//
+//        for (let i = 0; i < currentCompounds.length; i++)
+//        {
+//            try
+//            {
+//                possibleCompounds[currentCompounds[i]].checkState(temperature, waterEnvironment);
+//            }
+//            catch (Exception)
+//            {
+//
+//            }
+//        }
+//
+//
+//        requestAnimationFrame(simulationManager);
+//    }
+//    simulationManager();
+    function draw() {
+        let borderWidth = document.documentElement.clientWidth - 1320;
+        for (i = 0; i < elementStatus.length; i++) {
+            ctx.beginPath();
+            if (elementStatus[i].status === true) {
+                ctx.clearRect(elementStatus[i].x, elementStatus[i].y, 28, 28);
+                ctx.rect(elementStatus[i].x, elementStatus[i].y, 28, 28);
+                ctx.fillStyle = "rgba(0,0,0,0.5)";
+                ctx.fill();
+            } else {
+                ctx.clearRect(elementStatus[i].x, elementStatus[i].y, 28, 28);
+            }
+        }
+        for (let i =1; i <possibleReactions.length;i++)
         {
             currentCompounds = possibleReactions[i][0].checkForActivation(currentCompounds,eval(possibleReactions[i][1]));
         }
-
         for (let i = 0; i < currentCompounds.length; i++)
         {
             try
@@ -372,15 +393,11 @@
             }
             catch (Exception)
             {
-
             }
         }
-
-
-        requestAnimationFrame(simulationManager);
+        requestAnimationFrame(draw);
     }
-
-    simulationManager();
+    draw();
 </script>
 </body>
 </html>
