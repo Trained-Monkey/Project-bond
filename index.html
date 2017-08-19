@@ -119,7 +119,7 @@
 <body style="margin: 0;">
 <div class="border">
     <div class="mainScreen">
-        <!-- <img src> here when image is designed -->
+        <img src="Resources/Main Screen Background.jpg">
 
     </div>
     <div class="sideBar">
@@ -307,11 +307,11 @@
     let borderWidth = document.documentElement.clientWidth - 1320;
     let elementStatus = [
         {element: "Hydrogen", x: 61, y: 31, status: false, symbol: "H"},
-        {element: "Lithium", x: 61, y: 61, status: false},
-        {element: "Sodium", x: 61, y:91, status: false},
-        {element: "Magnesium", x: 91, y: 91, status: false},
-        {element: "Chloride", x: 541, y: 91, status: false, symbol: "Cl"},
-        {element: "Oxygen", x: 511, y: 61, status: false}
+        {element: "Lithium", x: 61, y: 61, status: false, symbol: "Li", valency: 1, valencySign: "+",},
+        {element: "Sodium", x: 61, y:91, status: false, symbol: "Na", valency: 1, valencySign: "+" },
+        {element: "Magnesium", x: 91, y: 91, status: false, symbol: "Mg", valency: 1, valencySign: "+", },
+        {element: "Chloride", x: 541, y: 91, status: false, symbol: "Cl", valency: 1, valencySign: "-"},
+        {element: "Oxygen", x: 511, y: 61, status: false, symbol: "O", valency: 2, valencySign: "-",}
 
     ];
     let c = document.getElementById("PT");
@@ -336,17 +336,21 @@
             }
 
         }
-        if (X > 2 && X < 332 && Y > 390 && Y < 480){
-            compound = "";
+        if (!(X > 2 && X < 332 && Y > 390 && Y < 480)) {
+        } else {
+            compound = [];
             for (let i = 0; i < elementStatus.length; i++) {
                 if (elementStatus[i].status === true) {
-                    compound = compound.concat(elementStatus[i].symbol);
+                    compound += [elementStatus[i].symbol, elementStatus[i].valency];
                 }
             }
+            substance = compound[0][0] + compound[1][1] + compound[1][0] + compound[1][0];
+
+
             currentCompounds.push(
                 compound
             );
-            alert(compound);
+            alert(substance);
 
         }
     }
