@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        canvas {
+            background: #eee;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="myCanvas" width="480" height="320"></canvas>
+
+<script>
+    //javscript code
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+
+    var nucleusX = canvas.height/2;
+    var nucleusY = canvas.width/2;
+
+    function drawNucleus()
+    {
+        ctx.beginPath();
+        ctx.arc(nucleusX, nucleusY, 10, 0, Math.PI * 2);
+        ctx.fillStyle = "#0095DD";
+        ctx.fill();
+        ctx.closePath();
+    }
+
+    function drawElectron()
+    {
+
+    }
+
+    function draw()
+    {
+        drawNucleus();
+        drawElectron();
+    }
+    draw();
+</script>
+</body>
+</html>

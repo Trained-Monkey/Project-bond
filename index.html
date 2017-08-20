@@ -322,8 +322,8 @@
         {element: "Sodium", x: 61, y: 91, status: false, symbol: "Na", enabled: true},
         {element: "Magnesium", x: 91, y: 91, status: false, symbol: "Mg", enabled: true},
         {element: "Chloride", x: 541, y: 91, status: false, symbol: "Cl", enabled: true},
-        {element: "Oxygen", x: 511, y: 61, status: false, symbol: "O", enabled: true}
-
+        {element: "Oxygen", x: 511, y: 61, status: false, symbol: "O", enabled: true},
+        {element: "Fluorine", x:541, y:61, status: false, symbol: "F", enabled: true}
     ];
 
     let c = document.getElementById("PT");
@@ -341,6 +341,7 @@
         let tableRect = c.getBoundingClientRect();
         let X = e.clientX - tableRect.left;
         let Y = e.clientY - tableRect.top;
+        console.log(X,Y);
         let compound = [];
         for (i = 0; i < elementStatus.length; i++)
         {
