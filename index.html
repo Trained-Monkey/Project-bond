@@ -114,17 +114,17 @@
             user-select: none;
         }
 
-        #beaker{
-            position:absolute;
+        #beaker {
+            position: absolute;
             z-index: 2;
         }
 
-        #mainBg{
+        #mainBg {
             position: absolute;
-            z-index:1;
+            z-index: 1;
         }
 
-        #beakerLiquid{
+        #beakerLiquid {
             position: absolute;
             z-index: 0;
         }
@@ -135,8 +135,8 @@
 <div class="border">
     <div class="mainScreen">
         <img src="Resources/Beaker.png" id="beaker">
-        <img src="Resources/Main Screen Background.jpg" id = "mainBg">
-        <img src="Resources/Beaker Liquid.png" id = "beakerLiquid">
+        <img src="Resources/Main Screen Background.jpg" id="mainBg">
+        <img src="Resources/Beaker Liquid.png" id="beakerLiquid">
 
 
     </div>
@@ -166,7 +166,6 @@
 </div>
 </body>
 <script type="text/javascript">
-    // stuff needed for some fricking stupid reason
     Set.prototype.isSuperset = function (subset)
     {
         for (let elem of subset)
@@ -178,41 +177,10 @@
         }
         return true;
     };
-    class IonicCompound
+
+    class Compound
     {
-        constructor(atoms, mp, bp)
-        {
-            //Define all varibales for class here with this.[variableName]
-            this.atoms = atoms;
-            this.mp = mp;
-            this.bp = bp;
-            this.state = "SOLID";
-            this.conductor = false;
-            this.waterSoluble = true;
-        }
-
-        checkState(temperature, waterEnvironment)
-        {
-            if (temperature >= this.mp)
-            {
-                this.state = "GAS"
-            }
-            else if (temperature >= this.bp)
-            {
-                this.state = "LIQUID"
-            }
-
-            if (waterEnvironment && this.waterSoluble)
-            {
-                this.state = "AQUEOUS";
-            }
-            this.conductor = (this.state === "LIQUID" || this.state === "AQUEOUS");
-        }
-    }
-
-    class CovalentCompound
-    {
-        constructor(atoms, mp, bp, waterSoluble)
+        constructor(atoms, mp, bp, waterSoluble, solidImage,liquidImage, gasImage)
         {
             this.atoms = atoms;
             this.mp = mp;
@@ -220,6 +188,13 @@
             this.state = "SOLID";
             this.conductor = false;
             this.waterSoluble = waterSoluble;
+            this.x = 0;
+            this.y=0;
+            this.solidImage = solidImage;
+            this.liquidImage =liquidImage;
+            this.gasImage=gasImage;
+            this.image = undefined;
+            checkImage();
         }
 
         checkState(temperature, waterEnvironment)
@@ -237,6 +212,47 @@
             {
                 this.state = "AQUEOUS";
             }
+        }
+
+        checkImage()
+        {
+            switch(this.state)
+            {
+                case "SOLID":
+                    this.image = this.solidImage;
+                    break;
+                case "LIQUID" || "AQUEOUS":
+                    this.image = this.liquidImage;
+                    break;
+                case "GAS":
+                    this.image = this.gasImage;
+                    break;
+            }
+
+        }
+    }
+
+    class IonicCompound extends Compound
+    {
+        constructor(atoms, mp, bp, waterSoluble)
+        {
+            super(atoms, mp, bp, waterSoluble);
+            //Define all varibales for class here with this.[variableName]
+
+        }
+
+        checkState(temperature, waterEnvironment)
+        {
+            super.checkState(temperature, waterEnvironment);
+            this.conductor = (this.state === "LIQUID" || this.state === "AQUEOUS");
+        }
+    }
+
+    class CovalentCompound extends Compound
+    {
+        constructor(atoms, mp, bp, waterSoluble)
+        {
+            super(atoms, mp, bp, waterSoluble);
         }
     }
 
@@ -316,8 +332,8 @@
             ["H2"]: new CovalentCompound(["H"], -259, -252, false),
             ["O2"]: new CovalentCompound(["O"], -219, -183, false),
             ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false),
-            ["Mg"]: new CovalentCompound(["Mg"],620,1091,false),
-            ["Na"]: new CovalentCompound(["Na"],98,883,false),
+            ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false),
+            ["Na"]: new CovalentCompound(["Na"], 98, 883, false),
 
         };
 
@@ -344,7 +360,7 @@
         {element: "Magnesium", x: 91, y: 91, status: false, symbol: "Mg", enabled: true},
         {element: "Chloride", x: 541, y: 91, status: false, symbol: "Cl", enabled: true},
         {element: "Oxygen", x: 511, y: 61, status: false, symbol: "O", enabled: true},
-        {element: "Fluorine", x:541, y:61, status: false, symbol: "F", enabled: true}
+        {element: "Fluorine", x: 541, y: 61, status: false, symbol: "F", enabled: true}
     ];
 
     let c = document.getElementById("PT");
@@ -366,7 +382,7 @@
         let tableRect = c.getBoundingClientRect();
         let X = e.clientX - tableRect.left;
         let Y = e.clientY - tableRect.top;
-        console.log(X,Y);
+        console.log(X, Y);
         let compound = [];
         for (i = 0; i < elementStatus.length; i++)
         {
@@ -392,8 +408,6 @@
         {
             if (!possibleBondPartner.has(x.symbol) && !x.status)
             {
-                // TODO: Michael please do this
-                // I hve already added the disabling just do the greying out
 
                 x.enabled = false;
 
@@ -483,7 +497,8 @@
         for (i = 0; i < elementStatus.length; i++)
         {
             ctx.beginPath();
-            if (elementStatus[i].enabled === false) {
+            if (elementStatus[i].enabled === false)
+            {
                 ctx.clearRect(elementStatus[i].x, elementStatus[i].y, 28, 28);
                 ctx.rect(elementStatus[i].x, elementStatus[i].y, 28, 28);
                 ctx.fillStyle = "rgba(125,125,125,1)";
@@ -514,13 +529,17 @@
             {
             }
         }
-//        for(i = 0; i<currentCompounds.length; i++){
-//            if (currentCompounds[i].state === "gas"){
-//                beakerLiquid.style.zIndex = 4;
-//            } else if (currentCompounds[i].state === "solid") {
-//                beaker.style.zIndex = 3;
-//            }
-//        }
+        for (let i = 0; i < currentCompounds.length; i++)
+        {
+            if (currentCompounds[i].state === "GAS")
+            {
+                beakerLiquid.style.zIndex = 4;
+            } else if (currentCompounds[i].state === "SOLID")
+            {
+                beaker.style.zIndex = 3;
+            }
+//
+        }
 
         requestAnimationFrame(draw);
     }
