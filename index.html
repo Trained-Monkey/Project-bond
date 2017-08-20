@@ -94,7 +94,7 @@
 
         }
 
-        img{
+        img {
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             -khtml-user-select: none;
@@ -104,7 +104,7 @@
             user-select: none;
         }
 
-        canvas{
+        canvas {
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             -khtml-user-select: none;
@@ -148,7 +148,18 @@
 </div>
 </body>
 <script type="text/javascript">
-
+    // stuff needed for some fricking stupid reason
+    Set.prototype.isSuperset = function (subset)
+    {
+        for (let elem of subset)
+        {
+            if (!this.has(elem))
+            {
+                return false;
+            }
+        }
+        return true;
+    };
     class IonicCompound
     {
         constructor(atoms, mp, bp)
@@ -283,10 +294,10 @@
             ["NaCl"]: new IonicCompound(["Na", "Cl"], 801, 1465),
             ["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true),
             ["MgO"]: new IonicCompound(["Mg", "O"], 2825, 3600),
-            ["H2"]: new CovalentCompound(["H", "H"], -259, -252, false),
-            ["O2"]: new CovalentCompound(["O", "O"], -219, -183, false),
-            ["Cl2"]: new CovalentCompound(["Cl", "Cl"], -102, -34, false),
-            ["H2O"]: new CovalentCompound(["H","H","O"], 0,100,true)
+            ["H2"]: new CovalentCompound(["H"], -259, -252, false),
+            ["O2"]: new CovalentCompound(["O"], -219, -183, false),
+            ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false),
+            ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true)
         };
 
     var currentCompounds = [];
@@ -296,105 +307,168 @@
     var waterEnvironment = false;
     var possibleReactions =
         [
-            [new Reaction(["H2", "O2"], ["H2O"], ">300"),"temperature"],
-            [new Reaction(["H2O"], ["H2", "O2"],  ">20"),"current"],
-            [new Reaction(["MgO", "H2O"], ["MgOH2"],  true),"waterEnvironment"],
-            [new Reaction(["Cl2", "H2"], ["HCl"],  true),"UV"],
-            [new Reaction(["MgOH2"], ["Mg", "H2O"],  ">100"),"temperature"],
-            [new Reaction(["Mg", "O2"], ["MgO"], ">50"),"temperature"],
-            [new Reaction(["NaCl"], ["NaOH", "Cl2", "H2"],  ">20"),"current"],
+            [new Reaction(["H2", "O2"], ["H2O"], ">300"), "temperature"],
+            [new Reaction(["H2O"], ["H2", "O2"], ">20"), "current"],
+            [new Reaction(["MgO", "H2O"], ["MgOH2"], true), "waterEnvironment"],
+            [new Reaction(["Cl2", "H2"], ["HCl"], true), "UV"],
+            [new Reaction(["MgOH2"], ["Mg", "H2O"], ">100"), "temperature"],
+            [new Reaction(["Mg", "O2"], ["MgO"], ">50"), "temperature"],
+            [new Reaction(["NaCl"], ["NaOH", "Cl2", "H2"], ">20"), "current"],
         ];
     let borderWidth = document.documentElement.clientWidth - 1320;
     let elementStatus = [
-        {element: "Hydrogen", x: 61, y: 31, status: false, symbol: "H"},
-        {element: "Lithium", x: 61, y: 61, status: false, symbol: "Li", valency: 1, valencySign: "+",},
-        {element: "Sodium", x: 61, y:91, status: false, symbol: "Na", valency: 1, valencySign: "+" },
-        {element: "Magnesium", x: 91, y: 91, status: false, symbol: "Mg", valency: 1, valencySign: "+", },
-        {element: "Chloride", x: 541, y: 91, status: false, symbol: "Cl", valency: 1, valencySign: "-"},
-        {element: "Oxygen", x: 511, y: 61, status: false, symbol: "O", valency: 2, valencySign: "-",}
+        {element: "Hydrogen", x: 61, y: 31, status: false, symbol: "H", enabled: true},
+        {element: "Lithium", x: 61, y: 61, status: false, symbol: "Li", enabled: true},
+        {element: "Sodium", x: 61, y: 91, status: false, symbol: "Na", enabled: true},
+        {element: "Magnesium", x: 91, y: 91, status: false, symbol: "Mg", enabled: true},
+        {element: "Chloride", x: 541, y: 91, status: false, symbol: "Cl", enabled: true},
+        {element: "Oxygen", x: 511, y: 61, status: false, symbol: "O", enabled: true}
 
     ];
+
     let c = document.getElementById("PT");
     let ctx = c.getContext("2d");
 
-
-
+    var compoundCombinations = [];
+    for (let compound in possibleCompounds)
+    {
+        compoundCombinations.push(new Set(possibleCompounds[compound].atoms))
+    }
 
     c.addEventListener('click', onClickHandler, true);
-    function onClickHandler(e) {
+    function onClickHandler(e)
+    {
         let tableRect = c.getBoundingClientRect();
         let X = e.clientX - tableRect.left;
         let Y = e.clientY - tableRect.top;
-        if (X)
-        for (i = 0; i < elementStatus.length; i++) {
-            if (X > elementStatus[i].x && X < (elementStatus[i].x + 28) && Y > elementStatus[i].y && Y < (elementStatus[i].y + 28)) {
-                if (elementStatus[i].status === true){
-                    elementStatus[i].status = false;
-                }   else {
-                    elementStatus[i].status = true;
-                }
+        let compound = [];
+        for (i = 0; i < elementStatus.length; i++)
+        {
+            if (X > elementStatus[i].x && X < (elementStatus[i].x + 28) && Y > elementStatus[i].y && Y < (elementStatus[i].y + 28) && elementStatus[i].enabled)
+            {
+                elementStatus[i].status = !elementStatus[i].status;
             }
-
+            if (elementStatus[i].status)
+            {
+                compound.push(elementStatus[i].symbol)
+            }
         }
-        if (!(X > 2 && X < 332 && Y > 390 && Y < 480)) {
-        } else {
-            compound = [];
-            for (let i = 0; i < elementStatus.length; i++) {
-                if (elementStatus[i].status === true) {
-                    compound += [elementStatus[i].symbol, elementStatus[i].valency];
+        let possibleBondPartner = new Set();
+        for (let i in compoundCombinations)
+        {
+            if (compoundCombinations[i].isSuperset(compound))
+            {
+                [...compoundCombinations[i]].filter(x => !new Set(compound).has(x)).forEach(x => possibleBondPartner.add(x));
+            }
+        }
+
+        elementStatus.forEach(function (x)
+        {
+            if (!possibleBondPartner.has(x.symbol) && !x.status)
+            {
+                // TODO: Michael please do this
+                // I hve already added the disabling just do the greying out
+
+                x.enabled = false;
+            }
+            else
+            {
+                x.enabled = true;
+            }
+        });
+
+
+        let fakeCompound = false;
+        for (let i in possibleCompounds)
+        {
+            let sortedCompound = possibleCompounds[i].atoms;
+            sortedCompound.sort();
+            compound.sort();
+            for (let j = 0; j < sortedCompound.length; j++)
+            {
+                if (sortedCompound.length !== compound.length || sortedCompound[j] !== compound[j])
+                {
+                    fakeCompound = true;
+                    break;
+                }
+                else
+                {
+                    fakeCompound = false;
                 }
             }
-            substance = compound[0][0] + compound[1][1] + compound[1][0] + compound[1][0];
+        }
 
-
-            currentCompounds.push(
-                compound
-            );
-            alert(substance);
+        if (X > 2 && X < 332 && Y > 390 && Y < 480)
+        {
+            for (let i in possibleCompounds)
+            {
+                let atomsRequired = new Set(possibleCompounds[i].atoms);
+                compound = new Set(compound);
+                if (atomsRequired.size !== compound.size)
+                {
+                    continue;
+                }
+                let difference = new Set([...atomsRequired].filter(x => !compound.has(x)));
+                if (difference.size === 0)
+                {
+                    compound = i;
+                    break;
+                }
+            }
+            currentCompounds.push(compound);
+            elementStatus.forEach(function (x)
+            {
+                x.status = false;
+                x.enabled = true;
+            });
 
         }
     }
 
-//
-//    function simulationManager()
-//    {
-//        for (let i =1; i <possibleReactions.length;i++)
-//        {
-//            currentCompounds = possibleReactions[i][0].checkForActivation(currentCompounds,eval(possibleReactions[i][1]));
-//        }
-//
-//        for (let i = 0; i < currentCompounds.length; i++)
-//        {
-//            try
-//            {
-//                possibleCompounds[currentCompounds[i]].checkState(temperature, waterEnvironment);
-//            }
-//            catch (Exception)
-//            {
-//
-//            }
-//        }
-//
-//
-//        requestAnimationFrame(simulationManager);
-//    }
-//    simulationManager();
-    function draw() {
+    //
+    //    function simulationManager()
+    //    {
+    //        for (let i =1; i <possibleReactions.length;i++)
+    //        {
+    //            currentCompounds = possibleReactions[i][0].checkForActivation(currentCompounds,eval(possibleReactions[i][1]));
+    //        }
+    //
+    //        for (let i = 0; i < currentCompounds.length; i++)
+    //        {
+    //            try
+    //            {
+    //                possibleCompounds[currentCompounds[i]].checkState(temperature, waterEnvironment);
+    //            }
+    //            catch (Exception)
+    //            {
+    //
+    //            }
+    //        }
+    //
+    //
+    //        requestAnimationFrame(simulationManager);
+    //    }
+    //    simulationManager();
+    function draw()
+    {
         let borderWidth = document.documentElement.clientWidth - 1320;
-        for (i = 0; i < elementStatus.length; i++) {
+        for (i = 0; i < elementStatus.length; i++)
+        {
             ctx.beginPath();
-            if (elementStatus[i].status === true) {
+            if (elementStatus[i].status === true)
+            {
                 ctx.clearRect(elementStatus[i].x, elementStatus[i].y, 28, 28);
                 ctx.rect(elementStatus[i].x, elementStatus[i].y, 28, 28);
                 ctx.fillStyle = "rgba(0,0,0,0.5)";
                 ctx.fill();
-            } else {
+            } else
+            {
                 ctx.clearRect(elementStatus[i].x, elementStatus[i].y, 28, 28);
             }
         }
-        for (let i =1; i <possibleReactions.length;i++)
+        for (let i = 1; i < possibleReactions.length; i++)
         {
-            currentCompounds = possibleReactions[i][0].checkForActivation(currentCompounds,eval(possibleReactions[i][1]));
+            currentCompounds = possibleReactions[i][0].checkForActivation(currentCompounds, eval(possibleReactions[i][1]));
         }
         for (let i = 0; i < currentCompounds.length; i++)
         {
