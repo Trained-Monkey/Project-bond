@@ -85,12 +85,12 @@
 
         .table {
             position: absolute;
-            z-index: 1;
+            z-index: 999;
         }
 
         .Overlay {
             position: relative;
-            z-index: 2;
+            z-index: 1000;
 
         }
 
@@ -112,6 +112,7 @@
             -ms-user-select: none;
             -o-user-select: none;
             user-select: none;
+            z-index: 1001;
         }
 
         #beaker {
@@ -127,6 +128,11 @@
         #beakerLiquid {
             position: absolute;
             z-index: 0;
+        }
+
+        #tempTextBox {
+            margin: 5px;
+
         }
 
     </style>
@@ -156,7 +162,7 @@
 
         <div class="bottomBar">
             <div class="optionsBar">
-
+                 Temperature(Celcius): <input type="text" id = "tempTextBox" value = "0">
             </div>
             <div class="infoBar">
 
