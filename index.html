@@ -124,6 +124,11 @@
             z-index:1;
         }
 
+        #beakerLiquid{
+            position: absolute;
+            z-index: 0;
+        }
+
     </style>
 </head>
 <body style="margin: 0;">
@@ -131,6 +136,7 @@
     <div class="mainScreen">
         <img src="Resources/Beaker.png" id="beaker">
         <img src="Resources/Main Screen Background.jpg" id = "mainBg">
+        <img src="Resources/Beaker Liquid.png" id = "beakerLiquid">
 
 
     </div>
@@ -341,7 +347,9 @@
     let c = document.getElementById("PT");
     let ctx = c.getContext("2d");
     var beaker = document.getElementById("beaker");
-    beaker.style.zIndex = 0;
+    var beakerLiquid = document.getElementById("beakerLiquid");
+    beaker.style.zIndex = 3;
+    beakerLiquid.style.zIndex = 2;
 
     var compoundCombinations = [];
     for (let compound in possibleCompounds)
@@ -503,6 +511,14 @@
             {
             }
         }
+//        for(i = 0; i<currentCompounds.length; i++){
+//            if (currentCompounds[i].state === "gas"){
+//                beakerLiquid.style.zIndex = 4;
+//            } else if (currentCompounds[i].state === "solid") {
+//                beaker.style.zIndex = 3;
+//            }
+//        }
+
         requestAnimationFrame(draw);
     }
     draw();
