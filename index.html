@@ -370,10 +370,12 @@
                 // I hve already added the disabling just do the greying out
 
                 x.enabled = false;
+
             }
             else
             {
                 x.enabled = true;
+
             }
         });
 
@@ -451,11 +453,16 @@
     //    simulationManager();
     function draw()
     {
-        let borderWidth = document.documentElement.clientWidth - 1320;
         for (i = 0; i < elementStatus.length; i++)
         {
             ctx.beginPath();
-            if (elementStatus[i].status === true)
+            if (elementStatus[i].enabled === false) {
+                ctx.clearRect(elementStatus[i].x, elementStatus[i].y, 28, 28);
+                ctx.rect(elementStatus[i].x, elementStatus[i].y, 28, 28);
+                ctx.fillStyle = "rgba(125,125,125,1)";
+                ctx.fill();
+            }
+            else if (elementStatus[i].status === true)
             {
                 ctx.clearRect(elementStatus[i].x, elementStatus[i].y, 28, 28);
                 ctx.rect(elementStatus[i].x, elementStatus[i].y, 28, 28);
