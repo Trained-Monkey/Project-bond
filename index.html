@@ -114,12 +114,24 @@
             user-select: none;
         }
 
+        #beaker{
+            position:absolute;
+            z-index: 2;
+        }
+
+        #mainBg{
+            position: absolute;
+            z-index:1;
+        }
+
     </style>
 </head>
 <body style="margin: 0;">
 <div class="border">
     <div class="mainScreen">
-        <img src="Resources/Main Screen Background.jpg">
+        <img src="Resources/Beaker.png" id="beaker">
+        <img src="Resources/Main Screen Background.jpg" id = "mainBg">
+
 
     </div>
     <div class="sideBar">
@@ -328,6 +340,8 @@
 
     let c = document.getElementById("PT");
     let ctx = c.getContext("2d");
+    var beaker = document.getElementById("beaker");
+    beaker.style.zIndex = 0;
 
     var compoundCombinations = [];
     for (let compound in possibleCompounds)
@@ -427,6 +441,7 @@
 
         }
     }
+
 
     //     kek
     //    function simulationManager()
