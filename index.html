@@ -164,7 +164,7 @@
         </div>
     </div>
 </div>
-</body>
+
 <script type="text/javascript">
     Set.prototype.isSuperset = function (subset)
     {
@@ -180,7 +180,7 @@
 
     class Compound
     {
-        constructor(atoms, mp, bp, waterSoluble, solidImage,liquidImage, gasImage)
+        constructor(atoms, mp, bp, waterSoluble, solidImageSrc, liquidImageSrc, gasImageSrc)
         {
             this.atoms = atoms;
             this.mp = mp;
@@ -189,10 +189,13 @@
             this.conductor = false;
             this.waterSoluble = waterSoluble;
             this.x = 0;
-            this.y=0;
-            this.solidImage = solidImage;
-            this.liquidImage =liquidImage;
-            this.gasImage=gasImage;
+            this.y = 0;
+            this.solidImage = new Image();
+            this.solidImage.src = solidImageSrc;
+            this.liquidImage = new Image();
+            this.liquidImage.src = liquidImageSrc;
+            this.gasImage = new Image();
+            this.gasImage.src = gasImageSrc;
             this.image = undefined;
             this.checkImage();
         }
@@ -216,7 +219,7 @@
 
         checkImage()
         {
-            switch(this.state)
+            switch (this.state)
             {
                 case "SOLID":
                     this.image = this.solidImage;
@@ -228,15 +231,17 @@
                     this.image = this.gasImage;
                     break;
             }
-
+            ctx.beginPath();
+            ctx.drawImage(this.image, this.x, this.y);
+            ctx.closePath();
         }
     }
 
     class IonicCompound extends Compound
     {
-        constructor(atoms, mp, bp, waterSoluble)
+        constructor(atoms, mp, bp, waterSoluble, solidImageSrc, liquidImageSrc, gasImageSrc)
         {
-            super(atoms, mp, bp, waterSoluble);
+            super(atoms, mp, bp, waterSoluble, solidImageSrc, liquidImageSrc, gasImageSrc);
             //Define all varibales for class here with this.[variableName]
 
         }
@@ -250,9 +255,9 @@
 
     class CovalentCompound extends Compound
     {
-        constructor(atoms, mp, bp, waterSoluble)
+        constructor(atoms, mp, bp, waterSoluble, solidImageSrc, liquidImageSrc, gasImageSrc)
         {
-            super(atoms, mp, bp, waterSoluble);
+            super(atoms, mp, bp, waterSoluble, solidImageSrc, liquidImageSrc, gasImageSrc);
         }
     }
 
@@ -364,7 +369,7 @@
     ];
 
     let c = document.getElementById("PT");
-    let ctx = c.getContext("2d");
+    let ctx = c.getContext("2d"); //TODO: Check if the ctx is vlid for both
     var beaker = document.getElementById("beaker");
     var beakerLiquid = document.getElementById("beakerLiquid");
     beaker.style.zIndex = 3;
@@ -404,21 +409,7 @@
             }
         }
 
-        elementStatus.forEach(function (x)
-        {
-            if (!possibleBondPartner.has(x.symbol) && !x.status)
-            {
-
-                x.enabled = false;
-
-            }
-            else
-            {
-                x.enabled = true;
-
-            }
-        });
-
+        elementStatus.forEach(x => x.enabled = possibleBondPartner.has(x.symbol) & !x.status);
 
         let fakeCompound = false;
         for (let i in possibleCompounds)
@@ -457,7 +448,10 @@
                     break;
                 }
             }
-            currentCompounds.push(compound);
+            if (compound.size !== 0)
+            {
+                currentCompounds.push(compound);
+            }
             elementStatus.forEach(function (x)
             {
                 x.status = false;
@@ -524,6 +518,7 @@
             try
             {
                 possibleCompounds[currentCompounds[i]].checkState(temperature, waterEnvironment);
+                possibleCompounds[currentCompounds[i]].checkImage();
             }
             catch (Exception)
             {
