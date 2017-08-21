@@ -66,8 +66,10 @@
             border-top: 0;
             border-color: black;
             border-style: solid;
+            padding-top: 5px;
+            padding-left: 0px;
             width: 327px;
-            height: 118px;
+            height: 113px;
             background: white;
         }
 
@@ -130,11 +132,6 @@
             z-index: 0;
         }
 
-        #tempTextBox {
-            margin: 5px;
-
-        }
-
     </style>
 </head>
 <body style="margin: 0;">
@@ -162,7 +159,10 @@
 
         <div class="bottomBar">
             <div class="optionsBar">
-                 Temperature(Celcius): <input type="text" id = "tempTextBox" value = "0">
+                <form>
+                    Temperature(Celcius): <input type="text" id = "tempTextBox" value = "0">
+                    <input type="button" id = "tempUpdate" value="Update" onclick="tempUpdate">
+                </form>
             </div>
             <div class="infoBar">
 
@@ -360,13 +360,13 @@
         ];
     let borderWidth = document.documentElement.clientWidth - 1320;
     let elementStatus = [
-        {element: "Hydrogen", x: 61, y: 31, status: false, symbol: "H", enabled: true},
-        {element: "Lithium", x: 61, y: 61, status: false, symbol: "Li", enabled: true},
-        {element: "Sodium", x: 61, y: 91, status: false, symbol: "Na", enabled: true},
-        {element: "Magnesium", x: 91, y: 91, status: false, symbol: "Mg", enabled: true},
-        {element: "Chloride", x: 541, y: 91, status: false, symbol: "Cl", enabled: true},
-        {element: "Oxygen", x: 511, y: 61, status: false, symbol: "O", enabled: true},
-        {element: "Fluorine", x: 541, y: 61, status: false, symbol: "F", enabled: true}
+        {element: "Hydrogen", x: 61, y: 31, status: false, symbol: "H", enabled: true, outlineColour: "rgba(220,0,0,0.8)"},
+        {element: "Lithium", x: 61, y: 61, status: false, symbol: "Li", enabled: true, outlineColour: "rgba(255,138,23,1)"},
+        {element: "Sodium", x: 61, y: 91, status: false, symbol: "Na", enabled: true, outlineColour: "rgba(255,100,0,1)"},
+        {element: "Magnesium", x: 91, y: 91, status: false, symbol: "Mg", enabled: true, outlineColour: "rgba(255,180,0,1)"},
+        {element: "Chloride", x: 541, y: 91, status: false, symbol: "Cl", enabled: true, outlineColour: "rgba(75,75,206,1)"},
+        {element: "Oxygen", x: 511, y: 61, status: false, symbol: "O", enabled: true, outlineColour: "rgba(75,75,206,1)"},
+        {element: "Fluorine", x: 541, y: 61, status: false, symbol: "F", enabled: true, outlineColour: "rgba(75,75,206,1)"}
     ];
 
     let c = document.getElementById("PT");
@@ -383,6 +383,18 @@
     }
 
     c.addEventListener('click', onClickHandler, true);
+    document.getElementById("tempTextBox").addEventListener("keydown", function(e){
+        var key   = e.keyCode ? e.keyCode : e.which;
+
+        if (!( [8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
+                (key == 65 && ( e.ctrlKey || e.metaKey  ) ) ||
+                (key >= 35 && key <= 40) ||
+                (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
+                (key >= 96 && key <= 105)
+            )) e.preventDefault();
+
+
+    });
     function onClickHandler(e)
     {
         let tableRect = c.getBoundingClientRect();
@@ -473,6 +485,10 @@
         }
     }
 
+    function tempUpdate(){
+        temperature = document.getElementById();
+    }
+
 
     //     kek
     //    function simulationManager()
@@ -507,18 +523,19 @@
             {
                 ctx.clearRect(elementStatus[i].x, elementStatus[i].y, 28, 28);
                 ctx.rect(elementStatus[i].x, elementStatus[i].y, 28, 28);
-                ctx.fillStyle = "rgba(125,125,125,1)";
+                ctx.fillStyle = "rgba(0,0,0,0.5)";
                 ctx.fill();
             }
             else if (elementStatus[i].status === true)
             {
-                ctx.clearRect(elementStatus[i].x, elementStatus[i].y, 28, 28);
                 ctx.rect(elementStatus[i].x, elementStatus[i].y, 28, 28);
-                ctx.fillStyle = "rgba(0,0,0,0.5)";
+
+                ctx.fillStyle = elementStatus[i].outlineColour;
                 ctx.fill();
+                ctx.clearRect(elementStatus[i].x+2, elementStatus[i].y+2, 24, 24);
             } else
             {
-                ctx.clearRect(elementStatus[i].x, elementStatus[i].y, 28, 28);
+                ctx.clearRect(elementStatus[i].x-1, elementStatus[i].y-1, 30, 30);
             }
         }
         for (let i = 1; i < possibleReactions.length; i++)
