@@ -166,6 +166,10 @@
         <img src="Resources/Beaker.png" id="beaker">
         <img src="Resources/Main Screen Background.jpg" id="mainBg">
         <img src="Resources/Beaker Liquid.png" id="beakerLiquid">
+        <!--Below line is canvas for main #Note 01 -->
+        <canvas id="main" class="Overlay" width="658" height="656">
+        </canvas>
+
 
 
 
@@ -208,6 +212,7 @@
 <script type="text/javascript">
 
     document.getElementById("macroView").checked = true;
+    view = "macroView";
     Set.prototype.isSuperset = function (subset)
     {
         for (let elem of subset)
@@ -407,6 +412,9 @@
 
     let c = document.getElementById("PT");
     let ctx = c.getContext("2d");
+
+
+
     var beaker = document.getElementById("beaker");
     var beakerLiquid = document.getElementById("beakerLiquid");
     beaker.style.zIndex = 3;
@@ -635,6 +643,8 @@
             }
 //
         }
+
+
 
         requestAnimationFrame(draw);
     }
