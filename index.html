@@ -573,6 +573,8 @@
             view = "macroView";
         }
 
+        document.getElementById("tempTextBox").placeholder = temperature.toString();
+        document.getElementById("currentTextBox").placeholder = current;
 
 
     }
@@ -604,8 +606,7 @@
     //    simulationManager();
     function draw()
     {
-        document.getElementById("tempTextBox").placeholder = temperature.toString();
-        document.getElementById("currentTextBox").placeholder = current;
+
         for (i = 0; i < elementStatus.length; i++)
         {
             ctx.beginPath();
