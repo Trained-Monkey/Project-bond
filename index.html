@@ -284,7 +284,7 @@
         constructor(atoms, mp, bp, waterSoluble)
         {
             super(atoms, mp, bp, waterSoluble);
-            //Define all varibales for class here with this.[variableName]
+            //Define all variables for class here with this.[variableName]
 
         }
 
@@ -596,6 +596,8 @@
     //    simulationManager();
     function draw()
     {
+        document.getElementById("tempTextBox").placeholder = temperature.toString();
+        document.getElementById("currentTextBox").placeholder = current;
         for (i = 0; i < elementStatus.length; i++)
         {
             ctx.beginPath();
