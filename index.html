@@ -87,13 +87,17 @@
 
         .table {
             position: absolute;
-            z-index: 999;
+            z-index: 11;
         }
 
         .Overlay {
             position: relative;
-            z-index: 1000;
+            z-index: 12;
+        }
 
+        .mainOverlay{
+            position: relative;
+            z-index: 9;
         }
 
         img {
@@ -114,7 +118,7 @@
             -ms-user-select: none;
             -o-user-select: none;
             user-select: none;
-            z-index: 1001;
+            z-index: 11;
         }
 
         #beaker {
@@ -124,12 +128,12 @@
 
         #mainBg {
             position: absolute;
-            z-index: 1;
+            z-index: 0;
         }
 
         #beakerLiquid {
             position: absolute;
-            z-index: 0;
+            z-index: 1;
         }
 
         #update{
@@ -167,7 +171,7 @@
         <img src="Resources/Main Screen Background.jpg" id="mainBg">
         <img src="Resources/Beaker Liquid.png" id="beakerLiquid">
         <!--Below line is canvas for main #Note 01 -->
-        <canvas id="main" class="Overlay" width="658" height="656">
+        <canvas id="main" class="mainOverlay" width="658" height="656">
         </canvas>
 
 
@@ -212,7 +216,7 @@
 <script type="text/javascript">
 
     document.getElementById("macroView").checked = true;
-    view = "macroView";
+    let view = "macroView";
     Set.prototype.isSuperset = function (subset)
     {
         for (let elem of subset)
@@ -412,6 +416,8 @@
 
     let c = document.getElementById("PT");
     let ctx = c.getContext("2d");
+    let mainC = document.getElementById("main");
+    let mainCtx = mainC.getContext("2d");
 
 
 
@@ -560,12 +566,14 @@
         if (macroView){
             view = "macroView";
         }   else if (moleculeView){
-            view = "moleculView";
+            view = "moleculeView";
         }   else if (microView){
             view = "microView"
         }   else {
             view = "macroView";
         }
+
+
 
     }
 
@@ -645,6 +653,23 @@
                 beaker.style.zIndex = 3;
             }
 //
+        }
+
+        if(view === "macroView"){
+            mainCtx.beginPath();
+            mainCtx.clearRect(0,0,656,658);
+        } else if(view === "moleculeView") {
+            mainCtx.beginPath();
+            mainCtx.rect(0,0,658,656);
+            mainCtx.fillStyle = ("rgba(0,0,0,1)");
+            mainCtx.fill();
+
+        } else if(view === "microView") {
+            mainCtx.beginPath();
+            mainCtx.rect(0,0,658,656);
+            mainCtx.fillStyle = ("rgba(0,0,0,1)");
+            mainCtx.fill();
+
         }
 
 
