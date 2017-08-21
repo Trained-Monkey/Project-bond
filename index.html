@@ -149,7 +149,7 @@
             margin-left: 20px;
         }
 
-        #atomicView{
+        #microView{
             margin-left: 50px;
         }
 
@@ -193,9 +193,9 @@
                     <br>
                     Molecular View <input type="radio" name = "views" id = "moleculeView" title = "Molecular">
                     <br>
-                    Atomic View <input type="radio" name = "views" id = "atomicView" title = "Atomic">
-
-                    <input type="button" id = "tempUpdate" value="React!" onclick="tempUpdate()">
+                    Atomic View <input type="radio" name = "views" id = "microView" title = "Micro">
+                    <br>
+                    <input type="button" id = "tempUpdateButton" value="React!" onclick="tempUpdate()">
                 </form>
             </div>
             <div class="infoBar">
@@ -206,6 +206,8 @@
 </div>
 </body>
 <script type="text/javascript">
+
+    document.getElementById("macroView").checked = true;
     Set.prototype.isSuperset = function (subset)
     {
         for (let elem of subset)
@@ -536,9 +538,26 @@
     }
 
     function tempUpdate(){
+
+
         temperature = document.getElementById("tempTextBox").value;
         current = document.getElementById("currentTextBox").value;
-        alert("done");
+
+        let macroView = document.getElementById("macroView").checked;
+
+        let moleculeView = document.getElementById("moleculeView").checked;
+
+        let microView = document.getElementById("microView").checked;
+
+        if (macroView){
+            view = "macroView";
+        }   else if (moleculeView){
+            view = "moleculView";
+        }   else if (microView){
+            view = "microView"
+        }   else {
+            view = "macroView";
+        }
 
     }
 
