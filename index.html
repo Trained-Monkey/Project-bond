@@ -137,12 +137,12 @@
         }
 
         #tempTextBox{
-            margin-left: 38px;
+            margin-left: 12%;
 
         }
 
         #currentTextBox{
-            margin-left: 129px;
+            margin-left: 39.8%;
         }
 
         #macroView{
@@ -187,15 +187,15 @@
         <div class="bottomBar">
             <div class="optionsBar">
                 <form id = "update">
-                    Temperature(Celcius): <input type="text" id = "tempTextBox" value = "0">
-                    Current: <input type="text" id ="currentTextBox" value = "0">
-                    Macroscopic View<input type="radio" name = "views" id = "macroView">
+                    Temperature(Celsius): <input type="text" id = "tempTextBox" value = "0" title = "Celsius">
+                    Current: <input type="text" id ="currentTextBox" value="0"  title = "Voltage">
+                    Macroscopic View<input type="radio" name = "views" id = "macroView" title = "Macro">
                     <br>
-                    Molecular View <input type="radio" name = "views" id = "moleculeView">
+                    Molecular View <input type="radio" name = "views" id = "moleculeView" title = "Molecular">
                     <br>
-                    Atomic View <input type="radio" name = "views" id = "atomicView">
-                    <br>
-                    <input type="button" id = "tempUpdate" value="Update" onclick="tempUpdate">
+                    Atomic View <input type="radio" name = "views" id = "atomicView" title = "Atomic">
+
+                    <input type="button" id = "tempUpdate" value="React!" onclick="tempUpdate()">
                 </form>
             </div>
             <div class="infoBar">
@@ -538,7 +538,7 @@
     function tempUpdate(){
         temperature = document.getElementById("tempTextBox").value;
         current = document.getElementById("currentTextBox").value;
-
+        alert("done");
 
     }
 
