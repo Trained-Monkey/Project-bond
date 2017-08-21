@@ -25,13 +25,24 @@
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
 
-    var nucleusX = canvas.height/2;
-    var nucleusY = canvas.width/2;
+    var nucleusY = canvas.height / 2;
+    var nucleusX = canvas.width / 2;
+    var numberOfElectrons = 8;
+    var dx = 0;
+
+
+
+    var electrons = [numberOfElectrons];
+    for (let i = 0; i < numberOfElectrons; i++)
+    {
+        electrons[i] = undefined;
+    }
 
     function drawNucleus()
     {
         ctx.beginPath();
-        ctx.arc(nucleusX, nucleusY, 10, 0, Math.PI * 2);
+
+        ctx.arc(nucleusX, nucleusY, 15, 0, Math.PI * 2);
         ctx.fillStyle = "#0095DD";
         ctx.fill();
         ctx.closePath();
@@ -40,14 +51,531 @@
     function drawElectron()
     {
 
+        for (let i = 0; i < electrons.length; i++)
+        {
+            ctx.beginPath();
+            ctx.arc(nucleusX + (50 * Math.cos(dx + (Math.PI/180)*i*(360/numberOfElectrons))), nucleusY + (50 * Math.sin(2*(dx + (Math.PI/180)*i*(360/numberOfElectrons)))), 10, 0, Math.PI * 2);
+            ctx.fillStyle = "#54dd00";
+            ctx.fill();
+            ctx.closePath();
+        }
     }
 
     function draw()
     {
+//        ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawNucleus();
         drawElectron();
+        dx += 0.05;
+        if (dx > 360)
+        {
+            dx = 0;
+        }
+        console.log(dx);
+        requestAnimationFrame(draw);
     }
+
     draw();
 </script>
 </body>
 </html>
+<!--&lt;!&ndash;-->
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title>Project Bond</title>-->
+    <!--<style>-->
+
+        <!--/* A 60 pixel reduction is needed when calculating the width and height to include the border */-->
+        <!--:root {-->
+            <!--&#45;&#45;compulsoryWidth: 1320px;-->
+            <!--&#45;&#45;compulsoryHeight: 660px;-->
+            <!--&#45;&#45;screenWidth: 100%;-->
+            <!--&#45;&#45;screenHeight: 100%;-->
+        <!--}-->
+
+        <!--.border {-->
+            <!--border-width: calc(calc(100vw - var(&#45;&#45;compulsoryWidth)) / 2);-->
+            <!--border-bottom: calc(calc(100vh - var(&#45;&#45;compulsoryHeight)) / 2);-->
+            <!--border-top: calc(calc(100vh - var(&#45;&#45;compulsoryHeight)) / 2);-->
+            <!--border-style: solid;-->
+            <!--border-color: white;-->
+            <!--width: 1320px;-->
+            <!--height: 660px;-->
+
+        <!--}-->
+
+        <!--.mainScreen {-->
+            <!--float: left;-->
+            <!--border-width: 2px;-->
+            <!--border-color: black;-->
+            <!--border-style: solid;-->
+            <!--border-right: 0;-->
+            <!--width: 658px;-->
+            <!--height: 656px;-->
+            <!--background: #ffffff;-->
+        <!--}-->
+
+        <!--.sideBar {-->
+            <!--float: left;-->
+            <!--height: 660px;-->
+            <!--width: 660px;-->
+        <!--}-->
+
+        <!--.programNameBar {-->
+            <!--float: top;-->
+            <!--height: 90px;-->
+            <!--width: 660px;-->
+        <!--}-->
+
+        <!--.periodicTable {-->
+            <!--display: inline-block;-->
+            <!--height: 450px;-->
+            <!--position: relative;-->
+        <!--}-->
+
+        <!--.bottomBar {-->
+            <!--height: 180px;-->
+            <!--width: 660px;-->
+        <!--}-->
+
+        <!--.optionsBar {-->
+
+            <!--float: left;-->
+            <!--border-width: 2px;-->
+            <!--border-right: 1px;-->
+            <!--border-top: 0;-->
+            <!--border-color: black;-->
+            <!--border-style: solid;-->
+            <!--width: 327px;-->
+            <!--height: 118px;-->
+            <!--background: white;-->
+        <!--}-->
+
+        <!--.infoBar {-->
+            <!--float: right;-->
+            <!--border-width: 2px;-->
+            <!--border-left: 1px;-->
+            <!--border-style: solid;-->
+            <!--border-color: black;-->
+            <!--border-top: 0;-->
+            <!--height: 118px;-->
+            <!--width: 327px;-->
+            <!--background: white;-->
+        <!--}-->
+
+        <!--.table {-->
+            <!--position: absolute;-->
+            <!--z-index: 1;-->
+        <!--}-->
+
+        <!--.Overlay {-->
+            <!--position: relative;-->
+            <!--z-index: 2;-->
+
+        <!--}-->
+
+        <!--img {-->
+            <!-- -webkit-touch-callout: none;-->
+            <!-- -webkit-user-select: none;-->
+            <!-- -khtml-user-select: none;-->
+            <!-- -moz-user-select: none;-->
+            <!-- -ms-user-select: none;-->
+            <!-- -o-user-select: none;-->
+            <!--user-select: none;-->
+        <!--}-->
+
+        <!--canvas {-->
+            <!-- -webkit-touch-callout: none;-->
+            <!-- -webkit-user-select: none;-->
+            <!-- -khtml-user-select: none;-->
+            <!-- -moz-user-select: none;-->
+            <!-- -ms-user-select: none;-->
+            <!-- -o-user-select: none;-->
+            <!--user-select: none;-->
+        <!--}-->
+
+    <!--</style>-->
+<!--</head>-->
+<!--<body style="margin: 0;">-->
+<!--<div class="border">-->
+    <!--<div class="mainScreen">-->
+        <!--<img src="Resources/Main Screen Background.jpg">-->
+
+    <!--</div>-->
+    <!--<div class="sideBar">-->
+        <!--&lt;!&ndash; <img src> here when image is designed&ndash;&gt;-->
+<!--<div class="programNameBar">-->
+    <!--<img src="Resources/Program Bar.jpg">-->
+<!--</div>-->
+
+
+<!--<div class="periodicTable">-->
+
+    <!--<img class="table" src="Resources/Periodic Table.jpg">-->
+    <!--<canvas id="PT" class="Overlay" width="660" height="446"></canvas>-->
+
+<!--</div>-->
+
+<!--<div class="bottomBar">-->
+    <!--<div class="optionsBar">-->
+
+    <!--</div>-->
+    <!--<div class="infoBar">-->
+
+    <!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</body>-->
+<!--<script type="text/javascript">-->
+    <!--// stuff needed for some fricking stupid reason-->
+    <!--Set.prototype.isSuperset = function (subset)-->
+    <!--{-->
+        <!--for (let elem of subset)-->
+        <!--{-->
+            <!--if (!this.has(elem))-->
+            <!--{-->
+                <!--return false;-->
+            <!--}-->
+        <!--}-->
+        <!--return true;-->
+    <!--};-->
+    <!--class IonicCompound-->
+    <!--{-->
+        <!--constructor(atoms, mp, bp)-->
+        <!--{-->
+            <!--//Define all varibales for class here with this.[variableName]-->
+            <!--this.atoms = atoms;-->
+            <!--this.mp = mp;-->
+            <!--this.bp = bp;-->
+            <!--this.state = "SOLID";-->
+            <!--this.conductor = false;-->
+            <!--this.waterSoluble = true;-->
+        <!--}-->
+
+        <!--checkState(temperature, waterEnvironment)-->
+        <!--{-->
+            <!--if (temperature >= this.mp)-->
+            <!--{-->
+                <!--this.state = "GAS"-->
+            <!--}-->
+            <!--else if (temperature >= this.bp)-->
+            <!--{-->
+                <!--this.state = "LIQUID"-->
+            <!--}-->
+
+            <!--if (waterEnvironment && this.waterSoluble)-->
+            <!--{-->
+                <!--this.state = "AQUEOUS";-->
+            <!--}-->
+            <!--this.conductor = (this.state === "LIQUID" || this.state === "AQUEOUS");-->
+        <!--}-->
+    <!--}-->
+
+    <!--class CovalentCompound-->
+    <!--{-->
+        <!--constructor(atoms, mp, bp, waterSoluble)-->
+        <!--{-->
+            <!--this.atoms = atoms;-->
+            <!--this.mp = mp;-->
+            <!--this.bp = bp;-->
+            <!--this.state = "SOLID";-->
+            <!--this.conductor = false;-->
+            <!--this.waterSoluble = waterSoluble;-->
+        <!--}-->
+
+        <!--checkState(temperature, waterEnvironment)-->
+        <!--{-->
+            <!--if (temperature >= this.bp)-->
+            <!--{-->
+                <!--this.state = "GAS"-->
+            <!--}-->
+            <!--else if (temperature >= this.mp)-->
+            <!--{-->
+                <!--this.state = "LIQUID"-->
+            <!--}-->
+
+            <!--if (waterEnvironment && this.waterSoluble)-->
+            <!--{-->
+                <!--this.state = "AQUEOUS";-->
+            <!--}-->
+        <!--}-->
+    <!--}-->
+
+    <!--class Reaction-->
+    <!--{-->
+        <!--constructor(reactants, products, requiredCondition)-->
+        <!--{-->
+            <!--this.reactants = reactants;-->
+            <!--this.products = products;-->
+            <!--this.requiredCondition = requiredCondition;-->
+        <!--}-->
+
+        <!--checkForActivation(currentCompounds, property)-->
+        <!--{-->
+            <!--let willReact = true;-->
+            <!--let reactants = this.reactants;-->
+            <!--for (let i = 0; i < this.reactants.length; i++)-->
+            <!--{-->
+                <!--if (currentCompounds.find(function (element)-->
+                    <!--{-->
+                        <!--return element === reactants[i];-->
+                    <!--}) === undefined)-->
+                <!--{-->
+                    <!--willReact = false;-->
+
+                    <!--return currentCompounds-->
+                <!--}-->
+
+            <!--}-->
+            <!--switch (typeof property)-->
+            <!--{-->
+                <!--case "boolean":-->
+                    <!--willReact = property === this.requiredCondition;-->
+                    <!--break;-->
+                <!--case "number":-->
+                    <!--willReact = eval(property.toString() + this.requiredCondition);-->
+                    <!--break;-->
+                <!--default:-->
+                    <!--console.log(typeof property);-->
+                    <!--break;-->
+            <!--}-->
+
+            <!--if (willReact)-->
+            <!--{-->
+                <!--for (let i = 0; i < this.reactants.length; i++)-->
+                <!--{-->
+                    <!--currentCompounds.splice(i);-->
+
+                <!--}-->
+
+                <!--for (let i = 0; i < this.products.length; i++)-->
+                <!--{-->
+                    <!--if (currentCompounds.find(function (element)-->
+                        <!--{-->
+                            <!--return element === this.products[i]-->
+                        <!--}) === undefined)-->
+                    <!--{-->
+                        <!--currentCompounds.push(this.products[i]);-->
+                    <!--}-->
+                <!--}-->
+
+                <!--return currentCompounds;-->
+            <!--}-->
+            <!--else-->
+            <!--{-->
+                <!--return currentCompounds;-->
+            <!--}-->
+        <!--}-->
+    <!--}-->
+    <!--var possibleCompounds = //TODO: Add waterSoluble-->
+        <!--{-->
+            <!--["NaH"]: new IonicCompound(["Na", "H"], 300, Infinity),-->
+            <!--["NaCl"]: new IonicCompound(["Na", "Cl"], 801, 1465),-->
+            <!--["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true),-->
+            <!--["MgO"]: new IonicCompound(["Mg", "O"], 2825, 3600),-->
+            <!--["H2"]: new CovalentCompound(["H"], -259, -252, false),-->
+            <!--["O2"]: new CovalentCompound(["O"], -219, -183, false),-->
+            <!--["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false),-->
+            <!--["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true)-->
+        <!--};-->
+
+    <!--var currentCompounds = [];-->
+    <!--var temperature = 25;-->
+    <!--var current = 0;-->
+    <!--var UV = false;-->
+    <!--var waterEnvironment = false;-->
+    <!--var possibleReactions =-->
+        <!--[-->
+            <!--[new Reaction(["H2", "O2"], ["H2O"], ">300"), "temperature"],-->
+            <!--[new Reaction(["H2O"], ["H2", "O2"], ">20"), "current"],-->
+            <!--[new Reaction(["MgO", "H2O"], ["MgOH2"], true), "waterEnvironment"],-->
+            <!--[new Reaction(["Cl2", "H2"], ["HCl"], true), "UV"],-->
+            <!--[new Reaction(["MgOH2"], ["Mg", "H2O"], ">100"), "temperature"],-->
+            <!--[new Reaction(["Mg", "O2"], ["MgO"], ">50"), "temperature"],-->
+            <!--[new Reaction(["NaCl"], ["NaOH", "Cl2", "H2"], ">20"), "current"],-->
+        <!--];-->
+    <!--let borderWidth = document.documentElement.clientWidth - 1320;-->
+    <!--let elementStatus = [-->
+        <!--{element: "Hydrogen", x: 61, y: 31, status: false, symbol: "H", enabled: true},-->
+        <!--{element: "Lithium", x: 61, y: 61, status: false, symbol: "Li", enabled: true},-->
+        <!--{element: "Sodium", x: 61, y: 91, status: false, symbol: "Na", enabled: true},-->
+        <!--{element: "Magnesium", x: 91, y: 91, status: false, symbol: "Mg", enabled: true},-->
+        <!--{element: "Chloride", x: 541, y: 91, status: false, symbol: "Cl", enabled: true},-->
+        <!--{element: "Oxygen", x: 511, y: 61, status: false, symbol: "O", enabled: true},-->
+        <!--{element: "Fluorine", x:541, y:61, status: false, symbol: "F", enabled: true}-->
+    <!--];-->
+
+    <!--let c = document.getElementById("PT");-->
+    <!--let ctx = c.getContext("2d");-->
+
+    <!--var compoundCombinations = [];-->
+    <!--for (let compound in possibleCompounds)-->
+    <!--{-->
+        <!--compoundCombinations.push(new Set(possibleCompounds[compound].atoms))-->
+    <!--}-->
+
+    <!--c.addEventListener('click', onClickHandler, true);-->
+    <!--function onClickHandler(e)-->
+    <!--{-->
+        <!--let tableRect = c.getBoundingClientRect();-->
+        <!--let X = e.clientX - tableRect.left;-->
+        <!--let Y = e.clientY - tableRect.top;-->
+        <!--console.log(X,Y);-->
+        <!--let compound = [];-->
+        <!--for (i = 0; i < elementStatus.length; i++)-->
+        <!--{-->
+            <!--if (X > elementStatus[i].x && X < (elementStatus[i].x + 28) && Y > elementStatus[i].y && Y < (elementStatus[i].y + 28) && elementStatus[i].enabled)-->
+            <!--{-->
+                <!--elementStatus[i].status = !elementStatus[i].status;-->
+            <!--}-->
+            <!--if (elementStatus[i].status)-->
+            <!--{-->
+                <!--compound.push(elementStatus[i].symbol)-->
+            <!--}-->
+        <!--}-->
+        <!--let possibleBondPartner = new Set();-->
+        <!--for (let i in compoundCombinations)-->
+        <!--{-->
+            <!--if (compoundCombinations[i].isSuperset(compound))-->
+            <!--{-->
+                <!--[...compoundCombinations[i]].filter(x => !new Set(compound).has(x)).forEach(x => possibleBondPartner.add(x));-->
+            <!--}-->
+        <!--}-->
+
+        <!--elementStatus.forEach(function (x)-->
+        <!--{-->
+            <!--if (!possibleBondPartner.has(x.symbol) && !x.status)-->
+            <!--{-->
+                <!--// TODO: Michael please do this-->
+                <!--// I hve already added the disabling just do the greying out-->
+
+                <!--x.enabled = false;-->
+
+            <!--}-->
+            <!--else-->
+            <!--{-->
+                <!--x.enabled = true;-->
+
+            <!--}-->
+        <!--});-->
+
+
+        <!--let fakeCompound = false;-->
+        <!--for (let i in possibleCompounds)-->
+        <!--{-->
+            <!--let sortedCompound = possibleCompounds[i].atoms;-->
+            <!--sortedCompound.sort();-->
+            <!--compound.sort();-->
+            <!--for (let j = 0; j < sortedCompound.length; j++)-->
+            <!--{-->
+                <!--if (sortedCompound.length !== compound.length || sortedCompound[j] !== compound[j])-->
+                <!--{-->
+                    <!--fakeCompound = true;-->
+                    <!--break;-->
+                <!--}-->
+                <!--else-->
+                <!--{-->
+                    <!--fakeCompound = false;-->
+                <!--}-->
+            <!--}-->
+        <!--}-->
+
+        <!--if (X > 2 && X < 332 && Y > 390 && Y < 480)-->
+        <!--{-->
+            <!--for (let i in possibleCompounds)-->
+            <!--{-->
+                <!--let atomsRequired = new Set(possibleCompounds[i].atoms);-->
+                <!--compound = new Set(compound);-->
+                <!--if (atomsRequired.size !== compound.size)-->
+                <!--{-->
+                    <!--continue;-->
+                <!--}-->
+                <!--let difference = new Set([...atomsRequired].filter(x => !compound.has(x)));-->
+                <!--if (difference.size === 0)-->
+                <!--{-->
+                    <!--compound = i;-->
+                    <!--break;-->
+                <!--}-->
+            <!--}-->
+            <!--currentCompounds.push(compound);-->
+            <!--elementStatus.forEach(function (x)-->
+            <!--{-->
+                <!--x.status = false;-->
+                <!--x.enabled = true;-->
+            <!--});-->
+
+        <!--}-->
+    <!--}-->
+
+    <!--//     kek-->
+    <!--//    function simulationManager()-->
+    <!--//    {-->
+    <!--//        for (let i =1; i <possibleReactions.length;i++)-->
+    <!--//        {-->
+    <!--//            currentCompounds = possibleReactions[i][0].checkForActivation(currentCompounds,eval(possibleReactions[i][1]));-->
+    <!--//        }-->
+    <!--//-->
+    <!--//        for (let i = 0; i < currentCompounds.length; i++)-->
+    <!--//        {-->
+    <!--//            try-->
+    <!--//            {-->
+    <!--//                possibleCompounds[currentCompounds[i]].checkState(temperature, waterEnvironment);-->
+    <!--//            }-->
+    <!--//            catch (Exception)-->
+    <!--//            {-->
+    <!--//-->
+    <!--//            }-->
+    <!--//        }-->
+    <!--//-->
+    <!--//-->
+    <!--//        requestAnimationFrame(simulationManager);-->
+    <!--//    }-->
+    <!--//    simulationManager();-->
+    <!--function draw()-->
+    <!--{-->
+        <!--for (i = 0; i < elementStatus.length; i++)-->
+        <!--{-->
+            <!--ctx.beginPath();-->
+            <!--if (elementStatus[i].enabled === false) {-->
+                <!--ctx.clearRect(elementStatus[i].x, elementStatus[i].y, 28, 28);-->
+                <!--ctx.rect(elementStatus[i].x, elementStatus[i].y, 28, 28);-->
+                <!--ctx.fillStyle = "rgba(125,125,125,1)";-->
+                <!--ctx.fill();-->
+            <!--}-->
+            <!--else if (elementStatus[i].status === true)-->
+            <!--{-->
+                <!--ctx.clearRect(elementStatus[i].x, elementStatus[i].y, 28, 28);-->
+                <!--ctx.rect(elementStatus[i].x, elementStatus[i].y, 28, 28);-->
+                <!--ctx.fillStyle = "rgba(0,0,0,0.5)";-->
+                <!--ctx.fill();-->
+            <!--} else-->
+            <!--{-->
+                <!--ctx.clearRect(elementStatus[i].x, elementStatus[i].y, 28, 28);-->
+            <!--}-->
+        <!--}-->
+        <!--for (let i = 0; i < possibleReactions.length; i++)-->
+        <!--{-->
+            <!--currentCompounds = possibleReactions[i][0].checkForActivation(currentCompounds, eval(possibleReactions[i][1]));-->
+        <!--}-->
+        <!--for (let i = 0; i < currentCompounds.length; i++)-->
+        <!--{-->
+            <!--try-->
+            <!--{-->
+                <!--possibleCompounds[currentCompounds[i]].checkState(temperature, waterEnvironment);-->
+            <!--}-->
+            <!--catch (Exception)-->
+            <!--{-->
+            <!--}-->
+        <!--}-->
+        <!--requestAnimationFrame(draw);-->
+    <!--}-->
+    <!--draw();-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
