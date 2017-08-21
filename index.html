@@ -66,10 +66,10 @@
             border-top: 0;
             border-color: black;
             border-style: solid;
-            padding-top: 5px;
+            padding-top: 2px;
             padding-left: 0px;
             width: 327px;
-            height: 113px;
+            height: 116px;
             background: white;
         }
 
@@ -133,9 +133,29 @@
         }
 
         #update{
-            padding-left: 2px;
+            padding-left: 6px;
         }
 
+        #tempTextBox{
+            margin-left: 38px;
+
+        }
+
+        #currentTextBox{
+            margin-left: 129px;
+        }
+
+        #macroView{
+            margin-left: 20px;
+        }
+
+        #atomicView{
+            margin-left: 50px;
+        }
+
+        #moleculeView{
+            margin-left: 33px;
+        }
 
 
     </style>
@@ -169,6 +189,11 @@
                 <form id = "update">
                     Temperature(Celcius): <input type="text" id = "tempTextBox" value = "0">
                     Current: <input type="text" id ="currentTextBox" value = "0">
+                    Macroscopic View<input type="radio" name = "views" id = "macroView">
+                    <br>
+                    Molecular View <input type="radio" name = "views" id = "moleculeView">
+                    <br>
+                    Atomic View <input type="radio" name = "views" id = "atomicView">
                     <br>
                     <input type="button" id = "tempUpdate" value="Update" onclick="tempUpdate">
                 </form>
