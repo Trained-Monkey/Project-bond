@@ -67,7 +67,7 @@
             border-color: black;
             border-style: solid;
             padding-top: 2px;
-            padding-left: 0px;
+            padding-left: 0;
             width: 327px;
             height: 116px;
             background: white;
@@ -137,19 +137,19 @@
         }
 
         #tempTextBox{
-            margin-left: 38px;
+            margin-left: 12%;
 
         }
 
         #currentTextBox{
-            margin-left: 129px;
+            margin-left: 39.8%;
         }
 
         #macroView{
             margin-left: 20px;
         }
 
-        #atomicView{
+        #microView{
             margin-left: 50px;
         }
 
@@ -166,6 +166,10 @@
         <img src="Resources/Beaker.png" id="beaker">
         <img src="Resources/Main Screen Background.jpg" id="mainBg">
         <img src="Resources/Beaker Liquid.png" id="beakerLiquid">
+        <!--Below line is canvas for main #Note 01 -->
+        <canvas id="main" class="Overlay" width="658" height="656">
+        </canvas>
+
 
 
 
@@ -187,15 +191,15 @@
         <div class="bottomBar">
             <div class="optionsBar">
                 <form id = "update">
-                    Temperature(Celcius): <input type="text" id = "tempTextBox" value = "0">
-                    Current: <input type="text" id ="currentTextBox" value = "0">
-                    Macroscopic View<input type="radio" name = "views" id = "macroView">
+                    Temperature(Celsius): <input id = "tempTextBox" placeholder = "0" title = "Celsius">
+                    Current: <input  id ="currentTextBox" placeholder="0" title = "Voltage">
+                    Macroscopic View<input type="radio" name = "views" id = "macroView" title = "Macro">
                     <br>
-                    Molecular View <input type="radio" name = "views" id = "moleculeView">
+                    Molecular View <input type="radio" name = "views" id = "moleculeView" title = "Molecular">
                     <br>
-                    Atomic View <input type="radio" name = "views" id = "atomicView">
+                    Atomic View <input type="radio" name = "views" id = "microView" title = "Micro">
                     <br>
-                    <input type="button" id = "tempUpdate" value="Update" onclick="tempUpdate">
+                    <input type="button" id = "tempUpdateButton" value="React!" onclick="tempUpdate()">
                 </form>
             </div>
             <div class="infoBar">
@@ -206,6 +210,9 @@
 </div>
 </body>
 <script type="text/javascript">
+
+    document.getElementById("macroView").checked = true;
+    view = "macroView";
     Set.prototype.isSuperset = function (subset)
     {
         for (let elem of subset)
@@ -405,6 +412,9 @@
 
     let c = document.getElementById("PT");
     let ctx = c.getContext("2d");
+
+
+
     var beaker = document.getElementById("beaker");
     var beakerLiquid = document.getElementById("beakerLiquid");
     beaker.style.zIndex = 3;
@@ -421,7 +431,7 @@
         var key   = e.keyCode ? e.keyCode : e.which;
 
         if (!( [8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
-                (key == 65 && ( e.ctrlKey || e.metaKey  ) ) ||
+                (key === 65 && ( e.ctrlKey || e.metaKey  ) ) ||
                 (key >= 35 && key <= 40) ||
                 (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
                 (key >= 96 && key <= 105)
@@ -536,9 +546,26 @@
     }
 
     function tempUpdate(){
+
+
         temperature = document.getElementById("tempTextBox").value;
         current = document.getElementById("currentTextBox").value;
 
+        let macroView = document.getElementById("macroView").checked;
+
+        let moleculeView = document.getElementById("moleculeView").checked;
+
+        let microView = document.getElementById("microView").checked;
+
+        if (macroView){
+            view = "macroView";
+        }   else if (moleculeView){
+            view = "moleculView";
+        }   else if (microView){
+            view = "microView"
+        }   else {
+            view = "macroView";
+        }
 
     }
 
@@ -616,6 +643,8 @@
             }
 //
         }
+
+
 
         requestAnimationFrame(draw);
     }
