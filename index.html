@@ -377,7 +377,9 @@
         {
             ["NaH"]: new IonicCompound(["Na", "H"], 300, Infinity),
             ["NaCl"]: new IonicCompound(["Na", "Cl"], 801, 1465),
+
             ["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true),
+//
             ["MgO"]: new IonicCompound(["Mg", "O"], 2825, 3600),
             ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true),
             ["H2"]: new CovalentCompound(["H"], -259, -252, false),
@@ -385,6 +387,13 @@
             ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false),
             ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false),
             ["Na"]: new CovalentCompound(["Na"], 98, 883, false),
+
+//          Michaels Compounds
+            ["F2"]: new CovalentCompound(["F"],0,100,),
+            ["HF"]: new CovalentCompound(["H","F"],0,100),
+            ["LiOH"]: new IonicCompound(["Li", "OH"],0,100),
+            ["Li"]: new IonicCompound(["Li"], 0,100,false),
+            ["Li2O"]: new IonicCompound(["Li","O"], 1438, 2600),
 
         };
 
@@ -395,6 +404,7 @@
     var waterEnvironment = false;
     var possibleReactions =
         [
+
             [new Reaction(["H2", "O2"], ["H2O"], ">300"), "temperature"],
             [new Reaction(["H2O"], ["H2", "O2"], ">20"), "current"],
             [new Reaction(["MgO", "H2O"], ["MgOH2"], true), "waterEnvironment"],
@@ -402,6 +412,12 @@
             [new Reaction(["MgOH2"], ["Mg", "H2O"], ">100"), "temperature"],
             [new Reaction(["Mg", "O2"], ["MgO"], ">50"), "temperature"],
             [new Reaction(["NaCl"], ["NaOH", "Cl2", "H2"], ">20"), "current"],
+
+//          Michael's reactions
+            [new Reaction(["H2O","F2"],["HF","O2"], ">0"), "waterEnvironment"],
+            [new Reaction(["Li","O2"],["Li2O"], ">300"), "temperature"],
+            [new Reaction(["Li2O", "HCl"], ["LiCl", "H2O"], ">100"), "temperature"],
+//          [new Reaction(["Li", "H2O"], ["LiOH"], true), "waterEnvironment"],
         ];
     let borderWidth = document.documentElement.clientWidth - 1320;
     let elementStatus = [
