@@ -37,22 +37,15 @@
     var electronPairs = 4;
 
     var X1 = 10;
-    var calc = 25*25 - 6.25*X*X;
+    var calc = 25*25 - 6.25*X1*X1;
     var Y1 = Math.sqrt(calc);
-    var pair1X = canvas.width/2;
-    var pair1Y = canvas.height/2;
-
-    var subtractP2V2 = -5;
-    var subtractP2V1 = 15;
-
     var dx1 = 0.5;
     var dy1 = 1;
-
 
     function drawNucleus()
     {
         ctx.beginPath();
-        ctx.arc(nucleusX, nucleusY, 30, 0, Math.PI * 2);
+        ctx.arc(nucleusX - 30, nucleusY, 30, 0, Math.PI * 2);
         ctx.fillStyle = "#0095DD";
         ctx.fill();
         ctx.closePath();
@@ -62,14 +55,28 @@
     {
         if (electronPairs === 4){
             ctx.beginPath();
-            ctx.arc(pair1X + X1 - 30, pair1Y + Y1, 5, 0, Math.PI * 2);
-            ctx.arc(pair1X - X1 - 30, pair1Y - Y1, 5, 0, Math.PI * 2);
+            ctx.arc(canvas.width/2 - X1, canvas.height/2 - Y1, 5, 0, Math.PI * 2);
+            ctx.arc(canvas.width/2 + X1, canvas.height/2 + Y1, 5, 0, Math.PI * 2);
             ctx.fillStyle = "#ffd600";
             ctx.fill();
             ctx.closePath();
             ctx.beginPath();
-            ctx.arc(pair1X - X + 30, pair1Y + Y, 5, 0, Math.PI * 2);
-            ctx.arc(pair1X + X - 30, pair1Y - Y, 5, 0, Math.PI * 2);
+            ctx.arc(canvas.width/2 + X1 - 60, canvas.height/2 - Y1, 5, 0, Math.PI * 2);
+            ctx.arc(canvas.width/2 - X1 - 60, canvas.height/2 + Y1, 5, 0, Math.PI * 2);
+            ctx.fillStyle = "#ffd600";
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.arc(canvas.width/2 + Y1 - 30, canvas.height/2 + X1 + 30, 5, 0, Math.PI * 2);
+            ctx.arc(canvas.width/2 - Y1 - 30, canvas.height/2 - X1 + 30, 5, 0, Math.PI * 2);
+            ctx.fillStyle = "#ffd600";
+            ctx.fill();
+            ctx.closePath();
+
+            ctx.beginPath();
+            ctx.arc(canvas.width/2 + Y1 - 30, canvas.height/2 + X1 - 30, 5, 0, Math.PI * 2);
+            ctx.arc(canvas.width/2 - Y1 - 30, canvas.height/2 - X1 - 30, 5, 0, Math.PI * 2);
             ctx.fillStyle = "#ffd600";
             ctx.fill();
             ctx.closePath();
@@ -82,8 +89,8 @@
         ctx.clearRect(0,0,canvas.width,canvas.height);
         drawNucleus();
         drawElectronPairs();
-        X -= dx1;
-        calc = 25*25 - 6.25*X*X;
+        X1 -= dx1;
+        calc = 25*25 - 6.25*X1*X1;
 //        if (calc < 0){
 //            calc *= -1;
 //            dy1 = -1;
@@ -91,13 +98,13 @@
 //            dy1 = 1;
 //        }
 
-        Y = Math.sqrt(calc);
-        Y *= dy1;
+        Y1 = Math.sqrt(calc);
+        Y1 *= dy1;
 
-        if (X < -10){
+        if (X1 < -10){
             dx1 = -0.5;
             dy1 = -1;
-        } else if (X > 10) {
+        } else if (X1 > 10) {
             dx1 = 0.5;
             dy1 = 1;
 
