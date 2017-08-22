@@ -58,7 +58,7 @@
         {
             ctx.beginPath();
 //            ctx.drawImage(electronImage,nucleusX + (100 * Math.cos(dx + (Math.PI/180)*i*(360/numberOfElectrons))), nucleusY + (100 * Math.sin((dx + (Math.PI/180)*i*(360/numberOfElectrons)))));
-            ctx.arc(pair1X +(100 * Math.cos(dx + (Math.PI/180)*i*(360/numberOfElectrons))), pair1Y, 10, 0, Math.PI * 2);
+            ctx.arc(pair1X +(100 * Math.cos(dx + (Math.PI/180)*i*(360/numberOfElectrons))), nucleusY, 10, 0, Math.PI * 2);
             ctx.fillStyle = "#54dd00";
             ctx.fill();
             ctx.closePath();
