@@ -25,8 +25,8 @@
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
 
-    var nucleusY = canvas.height / 2;
-    var nucleusX = canvas.width / 2;
+    var pair1X = canvas.width/2;
+    var pair1Y = canvas.height/2;
     var numberOfElectrons = 8;
     var dx = 0;
 
@@ -45,8 +45,7 @@
     function drawNucleus()
     {
         ctx.beginPath();
-
-        ctx.arc(nucleusX, nucleusY, 10, 0, Math.PI * 2);
+        ctx.arc(pair1X, pair1Y, 10, 0, Math.PI * 2);
         ctx.fillStyle = "#0095DD";
         ctx.fill();
         ctx.closePath();
@@ -59,7 +58,7 @@
         {
             ctx.beginPath();
 //            ctx.drawImage(electronImage,nucleusX + (100 * Math.cos(dx + (Math.PI/180)*i*(360/numberOfElectrons))), nucleusY + (100 * Math.sin((dx + (Math.PI/180)*i*(360/numberOfElectrons)))));
-            ctx.arc(nucleusX +(100 * Math.cos(dx + (Math.PI/180)*i*(360/numberOfElectrons))), nucleusY, 10, 0, Math.PI * 2);
+            ctx.arc(pair1X +(100 * Math.cos(dx + (Math.PI/180)*i*(360/numberOfElectrons))), pair1Y, 10, 0, Math.PI * 2);
             ctx.fillStyle = "#54dd00";
             ctx.fill();
             ctx.closePath();
