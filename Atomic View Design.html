@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        canvas {
+            background: #eeeeee;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+
+
+</head>
+<body>
+<div>
+    <canvas id="myCanvas" width="480" height="320"></canvas>
+</div>
+<script>
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+
+    var nucleusImage = new Image();
+    nucleusImage.src ="Resources/Nucleus.png";
+
+    var electronImage = new Image();
+    electronImage.src ="Resources/Electrons.png";
+
+    var nucleusX = canvas.width/2;
+    var nucleusY = canvas.height/2;
+    var electronPairs = 4;
+
+    var X = 15;
+    var calc = 30*30 - 4*X*X;
+    var Y = Math.sqrt(calc);
+    alert(calc);
+    var pair1X = canvas.width/2;
+    var pair1Y = canvas.height/2;
+
+    var subtractP2V2 = -5;
+    var subtractP2V1 = 15;
+
+    var dx1 = 0.5;
+    var dy1 = 1;
+
+    function drawNucleus()
+    {
+        ctx.beginPath();
+        ctx.arc(nucleusX, nucleusY, 30, 0, Math.PI * 2);
+        ctx.fillStyle = "#0095DD";
+        ctx.fill();
+        ctx.closePath();
+    }
+
+    function drawElectronPairs()
+    {
+        if (electronPairs === 4){
+            ctx.beginPath();
+            ctx.arc(pair1X + X - 40, pair1Y + Y, 10, 0, Math.PI * 2);
+//            ctx.arc(pair1X + X - 40, pair1Y - Y, 10, 0, Math.PI * 2);
+            ctx.fillStyle = "#ffd600";
+            ctx.fill();
+            console.log(Y);
+
+//            ctx.beginPath();
+//            ctx.arc(nucleusX, nucleusY, 10, 0, Math.PI * 2);
+//            ctx.arc(nucleusX, nucleusY, 10, 0, Math.PI * 2);
+//            ctx.fillStyle = "#ffd600";
+//            ctx.fill();
+            ctx.closePath();
+        }
+    }
+
+    function draw()
+    {
+
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        drawNucleus();
+        drawElectronPairs();
+        X -= dx1;
+        calc = 30*30 - 4*X*X;
+//        if (calc < 0){
+//            calc *= -1;
+//            dy1 = -1;
+//        } else if (calc > 0) {
+//            dy1 = 1;
+//        }
+
+        Y = Math.sqrt(calc);
+        Y *= dy1;
+
+        if (X < -15){
+            dx1 = -0.5;
+            dy1 = -1;
+        } else if (X > 15) {
+            dx1 = 0.5;
+            dy1 = 1;
+
+        }
+
+        requestAnimationFrame(draw);
+    }
+
+    draw();
+</script>
+</body>
+</html>
