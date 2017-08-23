@@ -95,7 +95,7 @@
             z-index: 12;
         }
 
-        .mainOverlay{
+        .mainOverlay {
             position: relative;
             z-index: 9;
         }
@@ -136,28 +136,28 @@
             z-index: 1;
         }
 
-        #update{
+        #update {
             padding-left: 6px;
         }
 
-        #tempTextBox{
+        #tempTextBox {
             margin-left: 12%;
 
         }
 
-        #currentTextBox{
+        #currentTextBox {
             margin-left: 39.8%;
         }
 
-        #macroView{
+        #macroView {
             margin-left: 20px;
         }
 
-        #microView{
+        #microView {
             margin-left: 50px;
         }
 
-        #moleculeView{
+        #moleculeView {
             margin-left: 33px;
         }
 
@@ -173,8 +173,6 @@
         <!--Below line is canvas for main #Note 01 -->
         <canvas id="main" class="mainOverlay" width="658" height="656">
         </canvas>
-
-
 
 
     </div>
@@ -194,16 +192,16 @@
 
         <div class="bottomBar">
             <div class="optionsBar">
-                <form id = "update">
-                    Temperature(Celsius): <input id = "tempTextBox" placeholder = "0" title = "Celsius">
-                    Current: <input  id ="currentTextBox" placeholder="0" title = "Voltage">
-                    Macroscopic View<input type="radio" name = "views" id = "macroView" title = "Macro">
+                <form id="update">
+                    Temperature(Celsius): <input id="tempTextBox" placeholder="0" title="Celsius">
+                    Current: <input id="currentTextBox" placeholder="0" title="Voltage">
+                    Macroscopic View<input type="radio" name="views" id="macroView" title="Macro">
                     <br>
-                    Molecular View <input type="radio" name = "views" id = "moleculeView" title = "Molecular">
+                    Molecular View <input type="radio" name="views" id="moleculeView" title="Molecular">
                     <br>
-                    Atomic View <input type="radio" name = "views" id = "microView" title = "Micro">
+                    Atomic View <input type="radio" name="views" id="microView" title="Micro">
                     <br>
-                    <input type="button" id = "tempUpdateButton" value="React!" onclick="tempUpdate()">
+                    <input type="button" id="tempUpdateButton" value="React!" onclick="tempUpdate()">
                 </form>
             </div>
             <div class="infoBar">
@@ -217,6 +215,25 @@
 
     document.getElementById("macroView").checked = true;
     let view = "macroView";
+    let c = document.getElementById("PT");
+    let ctx = c.getContext("2d");
+    let mainC = document.getElementById("main");
+    let mainCtx = mainC.getContext("2d");
+    let images =
+        {
+            ["powderImg"]:undefined,
+            ["rockImg"]: undefined,
+            ["stripImg"]: undefined,
+        };
+    //still working on this area will give errors
+    console.log(typeof images.powderImg);
+    images.powderImg= new Image();
+    images.rockImg= new Image();
+    images.stripImg= new Image();
+
+    images.powderImg.src = "Resources/Powder.png";
+    images.rockImg.src = "Resources/Rock.png";
+    images.stripImg.src = "Resources/Strip.png";
     Set.prototype.isSuperset = function (subset)
     {
         for (let elem of subset)
@@ -231,7 +248,7 @@
 
     class Compound
     {
-        constructor(atoms, mp, bp, waterSoluble, solidImage,liquidImage, gasImage)
+        constructor(atoms, mp, bp, waterSoluble, solidImage,  x, y)
         {
             this.atoms = atoms;
             this.mp = mp;
@@ -240,10 +257,10 @@
             this.conductor = false;
             this.waterSoluble = waterSoluble;
             this.x = 0;
-            this.y=0;
+            this.y = 0;
             this.solidImage = solidImage;
-            this.liquidImage =liquidImage;
-            this.gasImage=gasImage;
+//            this.liquidImage = liquidImage;
+//            this.gasImage = gasImage;
             this.image = undefined;
             this.checkImage();
         }
@@ -267,19 +284,21 @@
 
         checkImage()
         {
-            switch(this.state)
+            switch (this.state)
             {
                 case "SOLID":
                     this.image = this.solidImage;
                     break;
-                case "LIQUID" || "AQUEOUS":
-                    this.image = this.liquidImage;
-                    break;
-                case "GAS":
-                    this.image = this.gasImage;
-                    break;
+//                case "LIQUID" || "AQUEOUS":
+//                    this.image = this.liquidImage;
+//                    break;
+//                case "GAS":
+//                    this.image = this.gasImage;
+//                    break;
             }
-
+            ctx.beginPath();
+            ctx.drawImage(this.image,this.x,this.y);
+            ctx.closePath();
         }
     }
 
@@ -373,29 +392,30 @@
             }
         }
     }
+
     var possibleCompounds = //TODO: Add waterSoluble
         {
-            ["NaH"]: new IonicCompound(["Na", "H"], 300, Infinity),
-            ["NaCl"]: new IonicCompound(["Na", "Cl"], 801, 1465),
+            ["NaH"]: new IonicCompound(["Na", "H"], 300, Infinity, images.powderImg),
+            ["NaCl"]: new IonicCompound(["Na", "Cl"], 801, 1465, images.powderImg),
 
-            ["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true),
+            ["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true, images.powderImg),
 //
-            ["MgO"]: new IonicCompound(["Mg", "O"], 2825, 3600),
-            ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true),
-            ["H2"]: new CovalentCompound(["H"], -259, -252, false),
-            ["O2"]: new CovalentCompound(["O"], -219, -183, false),
-            ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false),
-            ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false),
-            ["Na"]: new CovalentCompound(["Na"], 98, 883, false),
+        ["MgO"]: new IonicCompound(["Mg", "O"], 2825, 3600, false, images.powderImg),
+        ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true, images.rockImg),
+        ["H2"]: new CovalentCompound(["H"], -259, -252, false, images.rockImg),
+        ["O2"]: new CovalentCompound(["O"], -219, -183, false, images.rockImg),
+        ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false, images.rockImg),
+        ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false, images.stripImg),
+        ["Na"]: new CovalentCompound(["Na"], 98, 883, false, images.rockImg),
 
 //          Michaels Compounds
-            ["F2"]: new CovalentCompound(["F"],0,100,),
-            ["HF"]: new CovalentCompound(["H","F"],0,100),
-            ["LiOH"]: new IonicCompound(["Li", "OH"],0,100),
-            ["Li"]: new IonicCompound(["Li"], 0,100,false),
-            ["Li2O"]: new IonicCompound(["Li","O"], 1438, 2600),
+        ["F2"]: new CovalentCompound(["F"], 0, 100, true, images.rockImg),
+        ["HF"]: new CovalentCompound(["H", "F"], 0, 100, true, images.powderImg),
+        ["LiOH"]: new IonicCompound(["Li", "OH"], 0, 100, true, images.powderImg),
+        ["Li"]: new IonicCompound(["Li"], 0, 100, false, images.rockImg),
+        ["Li2O"]: new IonicCompound(["Li", "O"], 1438, 2600, false, images.powderImg),
 
-        };
+    };
 
     var currentCompounds = [];
     var temperature = 25;
@@ -414,26 +434,78 @@
             [new Reaction(["NaCl"], ["NaOH", "Cl2", "H2"], ">20"), "current"],
 
 //          Michael's reactions
-            [new Reaction(["H2O","F2"],["HF","O2"], ">0"), "waterEnvironment"],
-            [new Reaction(["Li","O2"],["Li2O"], ">300"), "temperature"],
-            [new Reaction(["Li2O", "HCl"], ["LiCl", "H2O"], ">100"), "temperature"],
+        [new Reaction(["H2O", "F2"], ["HF", "O2"], ">0"), "waterEnvironment"],
+        [new Reaction(["Li", "O2"], ["Li2O"], ">300"), "temperature"],
+        [new Reaction(["Li2O", "HCl"], ["LiCl", "H2O"], ">100"), "temperature"],
 //          [new Reaction(["Li", "H2O"], ["LiOH"], true), "waterEnvironment"],
-        ];
+    ];
     let borderWidth = document.documentElement.clientWidth - 1320;
     let elementStatus = [
-        {element: "Hydrogen", x: 61, y: 31, status: false, symbol: "H", enabled: true, outlineColour: "rgba(220,0,0,0.8)"},
-        {element: "Lithium", x: 61, y: 61, status: false, symbol: "Li", enabled: true, outlineColour: "rgba(255,138,23,1)"},
-        {element: "Sodium", x: 61, y: 91, status: false, symbol: "Na", enabled: true, outlineColour: "rgba(255,100,0,1)"},
-        {element: "Magnesium", x: 91, y: 91, status: false, symbol: "Mg", enabled: true, outlineColour: "rgba(255,180,0,1)"},
-        {element: "Chloride", x: 541, y: 91, status: false, symbol: "Cl", enabled: true, outlineColour: "rgba(75,75,206,1)"},
-        {element: "Oxygen", x: 511, y: 61, status: false, symbol: "O", enabled: true, outlineColour: "rgba(75,75,206,1)"},
-        {element: "Fluorine", x: 541, y: 61, status: false, symbol: "F", enabled: true, outlineColour: "rgba(75,75,206,1)"}
+        {
+            element: "Hydrogen",
+            x: 61,
+            y: 31,
+            status: false,
+            symbol: "H",
+            enabled: true,
+            outlineColour: "rgba(220,0,0,0.8)"
+        },
+        {
+            element: "Lithium",
+            x: 61,
+            y: 61,
+            status: false,
+            symbol: "Li",
+            enabled: true,
+            outlineColour: "rgba(255,138,23,1)"
+        },
+        {
+            element: "Sodium",
+            x: 61,
+            y: 91,
+            status: false,
+            symbol: "Na",
+            enabled: true,
+            outlineColour: "rgba(255,100,0,1)"
+        },
+        {
+            element: "Magnesium",
+            x: 91,
+            y: 91,
+            status: false,
+            symbol: "Mg",
+            enabled: true,
+            outlineColour: "rgba(255,180,0,1)"
+        },
+        {
+            element: "Chloride",
+            x: 541,
+            y: 91,
+            status: false,
+            symbol: "Cl",
+            enabled: true,
+            outlineColour: "rgba(75,75,206,1)"
+        },
+        {
+            element: "Oxygen",
+            x: 511,
+            y: 61,
+            status: false,
+            symbol: "O",
+            enabled: true,
+            outlineColour: "rgba(75,75,206,1)"
+        },
+        {
+            element: "Fluorine",
+            x: 541,
+            y: 61,
+            status: false,
+            symbol: "F",
+            enabled: true,
+            outlineColour: "rgba(75,75,206,1)"
+        }
     ];
 
-    let c = document.getElementById("PT");
-    let ctx = c.getContext("2d");
-    let mainC = document.getElementById("main");
-    let mainCtx = mainC.getContext("2d");
 
 
 
@@ -449,32 +521,38 @@
     }
 
     c.addEventListener('click', onClickHandler, true);
-    document.getElementById("tempTextBox").addEventListener("keydown", function(e){
-        var key   = e.keyCode ? e.keyCode : e.which;
+    document.getElementById("tempTextBox").addEventListener("keydown", function (e)
+    {
+        var key = e.keyCode ? e.keyCode : e.which;
 
         if (!( [8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
                 (key === 65 && ( e.ctrlKey || e.metaKey  ) ) ||
                 (key >= 35 && key <= 40) ||
                 (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
                 (key >= 96 && key <= 105)
-            )) e.preventDefault();
+            ))
+        {
+            e.preventDefault();
+        }
 
 
     });
-    document.getElementById("currentTextBox").addEventListener("keydown", function(e){
-        var key   = e.keyCode ? e.keyCode : e.which;
+    document.getElementById("currentTextBox").addEventListener("keydown", function (e)
+    {
+        var key = e.keyCode ? e.keyCode : e.which;
 
         if (!( [8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
                 (key == 65 && ( e.ctrlKey || e.metaKey  ) ) ||
                 (key >= 35 && key <= 40) ||
                 (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
                 (key >= 96 && key <= 105)
-            )) e.preventDefault();
+            ))
+        {
+            e.preventDefault();
+        }
 
 
     });
-
-
 
 
     function onClickHandler(e)
@@ -567,7 +645,8 @@
         }
     }
 
-    function tempUpdate(){
+    function tempUpdate()
+    {
 
 
         temperature = document.getElementById("tempTextBox").value;
@@ -579,13 +658,17 @@
 
         let microView = document.getElementById("microView").checked;
 
-        if (macroView){
+        if (macroView)
+        {
             view = "macroView";
-        }   else if (moleculeView){
+        } else if (moleculeView)
+        {
             view = "moleculeView";
-        }   else if (microView){
+        } else if (microView)
+        {
             view = "microView"
-        }   else {
+        } else
+        {
             view = "macroView";
         }
 
@@ -623,7 +706,7 @@
     function draw()
     {
 
-        for (i = 0; i < elementStatus.length; i++)
+        for (let i = 0; i < elementStatus.length; i++)
         {
             ctx.beginPath();
             if (elementStatus[i].enabled === false)
@@ -639,10 +722,10 @@
 
                 ctx.fillStyle = elementStatus[i].outlineColour;
                 ctx.fill();
-                ctx.clearRect(elementStatus[i].x+2, elementStatus[i].y+2, 24, 24);
+                ctx.clearRect(elementStatus[i].x + 2, elementStatus[i].y + 2, 24, 24);
             } else
             {
-                ctx.clearRect(elementStatus[i].x-1, elementStatus[i].y-1, 30, 30);
+                ctx.clearRect(elementStatus[i].x - 1, elementStatus[i].y - 1, 30, 30);
             }
         }
         for (let i = 0; i < possibleReactions.length; i++)
@@ -654,9 +737,11 @@
             try
             {
                 possibleCompounds[currentCompounds[i]].checkState(temperature, waterEnvironment);
+                currentCompounds[i].checkImage();
             }
             catch (Exception)
             {
+                console.log(currentCompounds[i]);
             }
         }
         for (let i = 0; i < currentCompounds.length; i++)
@@ -672,27 +757,30 @@
 //
         }
 
-        if(view === "macroView"){
+        if (view === "macroView")
+        {
             mainCtx.beginPath();
-            mainCtx.clearRect(0,0,656,658);
-        } else if(view === "moleculeView") {
+            mainCtx.clearRect(0, 0, 656, 658);
+        } else if (view === "moleculeView")
+        {
             mainCtx.beginPath();
-            mainCtx.rect(0,0,658,656);
+            mainCtx.rect(0, 0, 658, 656);
             mainCtx.fillStyle = ("rgba(0,0,0,1)");
             mainCtx.fill();
 
-        } else if(view === "microView") {
+        } else if (view === "microView")
+        {
             mainCtx.beginPath();
-            mainCtx.rect(0,0,658,656);
+            mainCtx.rect(0, 0, 658, 656);
             mainCtx.fillStyle = ("rgba(0,0,0,1)");
             mainCtx.fill();
 
         }
 
 
-
         requestAnimationFrame(draw);
     }
+
     draw();
 </script>
 </body>
