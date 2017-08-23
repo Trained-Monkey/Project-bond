@@ -1,176 +1,198 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Project Bond</title>
+    <title>Title</title>
     <style>
-
-        /* A 60 pixel reduction is needed when calculating the width and height to include the border */
-        :root {
-            --compulsoryWidth: 1320px;
-            --compulsoryHeight: 660px;
-            --screenWidth: 100%;
-            --screenHeight: 100%;
+        * {
+            padding: 0;
+            margin: 0;
         }
 
-        .border {
-            border-width: calc(calc(100vw - var(--compulsoryWidth)) / 2);
-            border-bottom: calc(calc(100vh - var(--compulsoryHeight)) / 2);
-            border-top: calc(calc(100vh - var(--compulsoryHeight)) / 2);
-            border-style: solid;
-            border-color: white;
-            width: 1320px;
-            height: 660px;
-
+        canvas {
+            background: #eeeeee;
+            display: block;
+            margin: 0 auto;
         }
-
-        .mainScreen {
-            float: left;
-            border-width: 2px;
-            border-color: black;
-            border-style: solid;
-            border-right: 0;
-            width: 658px;
-            height: 656px;
-            background: #ffffff;
-        }
-
-        .sideBar {
-            float: left;
-            height: 660px;
-            width: 660px;
-        }
-
-        .programNameBar {
-            float: top;
-            height: 90px;
-            width: 660px;
-        }
-
-        .periodicTable {
-            display: inline-block;
-            height: 450px;
-            position: relative;
-        }
-
-        .bottomBar {
-            height: 180px;
-            width: 660px;
-        }
-
-        .optionsBar {
-
-            float: left;
-            border-width: 2px;
-            border-right: 1px;
-            border-top: 0;
-            border-color: black;
-            border-style: solid;
-            width: 327px;
-            height: 118px;
-            background: white;
-        }
-
-        .infoBar {
-            float: right;
-            border-width: 2px;
-            border-left: 1px;
-            border-style: solid;
-            border-color: black;
-            border-top: 0;
-            height: 118px;
-            width: 327px;
-            background: white;
-        }
-
-        .table {
-            position: absolute;
-            z-index: 1;
-        }
-
-        .Overlay {
-            position: relative;
-            z-index: 2;
-
-        }
-
     </style>
+
+
 </head>
-<body style="margin: 0;">
-<div class="border">
-    <div class="mainScreen">
-        <!-- <img src> here when image is designed -->
-
-    </div>
-    <div class="sideBar">
-        <!-- <img src> here when image is designed-->
-        <div class="programNameBar">
-            <img src="Resources/Program Bar.jpg">
-        </div>
-
-
-        <div class="periodicTable">
-
-            <img class="table" src="Resources/Periodic Table.jpg">
-            <canvas id="PT" class="Overlay" width="660" height="446"></canvas>
-
-        </div>
-
-        <div class="bottomBar">
-            <div class="optionsBar">
-
-            </div>
-            <div class="infoBar">
-
-            </div>
-        </div>
-    </div>
+<body>
+<div>
+    <canvas id="myCanvas" width="480" height="320"></canvas>
 </div>
-</body>
-
 <script>
-    let borderWidth = document.documentElement.clientWidth - 1320;
-    let elementStatus = [
-        {element: "Hydrogen", x: 61, y: 31, status: false},
-        {element: "Lithium", x: 61, y: 61, status: false},
-        {element: "Sodium", x: 61, y:91, status: false}
-        ];
-    let c = document.getElementById("PT");
-    let ctx = c.getContext("2d");
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+
+    var nucleusImage = document.createElement("img");
+    nucleusImage.src = "Resources/Nucleus.png";
+
+    var electronImage = document.createElement("img");
+    electronImage.src = "Resources/Electrons.png";
+
+    var sharedElectronImage = document.createElement("img");
+    sharedElectronImage.src = "Resources/Shared Electron.png";
+
+    var nucleusX = canvas.width / 2;
+    var nucleusY = canvas.height / 2;
+    var sharedElectrons = 2;
+
+
+    var X1 = -10;
+    var Y1 = 0;
+    var dx1 = 0.5;
+    var dy1 = 1;
+
+    var X2 = 0;
+    var Y2 = Math.sqrt(25 * 25 - 6.25 * X2 * X2);
+    var dx2 = 0.5;
+    var dy2 = 1;
+
+    var X3 = 10;
+    var Y3 = Math.sqrt(25 * 25 - 6.25 * X2 * X2);
+    var dx3 = 0.5;
+    var dy3 = 1;
+
+
+    function drawNucleus(shiftX, shiftY, zIndex) {
+
+//        ctx.arc(nucleusX - 30, nucleusY, 30, 0, Math.PI * 2);
+//        nucleusImage.style.left = nucleusX + "px";
+//        nucleusImage.style.top = nucleusY + "px";
+//        nucleusImage.style.zIndex = 1000;
+        ctx.drawImage(nucleusImage, nucleusX - shiftX * 2, nucleusY - shiftY)
+
+    }
+
+    class electronPair {
+
+        constructor(share, radius, posX, posY, xShift, yShift) {
+            if (share) {
+                ctx.beginPath();
+                ctx.drawImage(sharedElectronImage, canvas.width / 2 - posX - radius - xShift, canvas.height / 2 + posY - radius - yShift);
+                ctx.drawImage(sharedElectronImage, canvas.width / 2 + posX - radius - xShift, canvas.height / 2 - posY - radius - yShift);
+                ctx.fill();
+                ctx.closePath();
+            } else {
+                ctx.beginPath();
+                ctx.drawImage(electronImage, canvas.width / 2 - posX - radius - xShift, canvas.height / 2 + posY - radius - yShift);
+                ctx.drawImage(electronImage, canvas.width / 2 + posX - radius - xShift, canvas.height / 2 - posY - radius - yShift);
+                ctx.fill();
+                ctx.closePath();
+            }
+            this.x = posX;
+            this.y = posY;
+//            this.dx = dx;
+//            this.dy = dy
+
+
+        }
+
+        calculatePosition(x,y,dx,dy){
+            x -= dx;
+            calc = 25 * 25 - 6.25 * x * x;
+            y = Math.sqrt(calc);
+            y *= dy1;
+
+            if (x <= -10) {
+                dx = -0.5;
+                dy = -1;
+            } else if (x >= 10) {
+                dx = 0.5;
+                dy = 1;
+            }
+
+        }
+    }
+
+    function calculatePosition(x,y,dx,dy){
+        x -= dx;
+        calc = 25 * 25 - 6.25 * x * x;
+        y = Math.sqrt(calc);
+        y *= dy1;
+
+        if (x <= -10) {
+            dx = -0.5;
+            dy = -1;
+        } else if (x >= 10) {
+            dx = 0.5;
+            dy = 1;
+        }
+
+        return [x,y,dx,dy];
+
+    }
+
+
+    function drawElectronPairs() {
+        switch (sharedElectrons) {
+            case 2:
+                let pair1 = new electronPair(true, 5, X1, Y1, 0, 0);
+
+                let pair2 = new electronPair(false, 5, X1, Y1, 60, 0);
+
+                let pair3 = new electronPair(false, 5, -Y1, X1, 30, -30);
+
+                let pair4 = new electronPair(false, 5, -Y1, X1, 30, 30);
+                break;
+
+//            case 4:
+//                let pair5 = new electronPair(true, 5, X1, Y1, 0, 0);
+//
+//                let pair6 = new electronPair(true, 5, X2, Y2, 0, 0);
+//
+//                let pair7 = new electronPair(false, 5, -Y1, X1, 30, -30);
+//
+//                let pair8 = new electronPair(false, 5, -Y1, X1, 30, 30);
+//                break;
+//
+//            case 6:
+//                let pair9 = new electronPair(true, 5, X1, Y1, 0, 0);
+//
+//                let pair10 = new electronPair(true, 5, X2, Y2, 0, 0);
+//
+//                let pair11 = new electronPair(true, 5, X3, Y3, 0, 0);
+//
+//                let pair12 = new electronPair(false, 5, X1, Y1, 60, 0);
+
+        }
+    }
 
     function draw() {
-        let borderWidth = document.documentElement.clientWidth - 1320;
-        for (i = 0; i < elementStatus.length; i++) {
-            ctx.beginPath();
-            if (elementStatus[i].status === true) {
-                ctx.clearRect(elementStatus[i].x, elementStatus[i].y, 28, 28);
-                ctx.rect(elementStatus[i].x, elementStatus[i].y, 28, 28);
-                ctx.fillStyle = "rgba(0,0,0,0.5)";
-                ctx.fill();
-            } else {
-                ctx.clearRect(elementStatus[i].x, elementStatus[i].y, 28, 28);
-            }
-        }
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawNucleus(30, 30);
+        drawElectronPairs();
+        drawNucleus(-1, 30);
+
+        let store1 = calculatePosition(X1,Y1,dx1,dy1);
+        X1 = store1[0];
+        Y1 = store1[1];
+        dx1 = store1[2];
+        dy1 = store1[3];
+
+        let store2 = calculatePosition(X2,Y2,dx2,dy2);
+        X2 = store2[0];
+        Y2 = store2[1];
+        dx2 = store2[2];
+        dy2 = store2[3];
+
+        let store3 = calculatePosition(X3,Y3,dx3,dy3);
+        X3 = store3[0];
+        Y3 = store3[1];
+        dx3 = store3[2];
+        dy3 = store3[3];
+
+
+        //y = asin(t);
+        //x= bcos(t);
+
+        requestAnimationFrame(draw);
     }
 
-    setInterval(draw,10);
-    c.addEventListener('click', onClickHandler, true);
-    function onClickHandler(e) {
-        let tableRect = c.getBoundingClientRect();
-        let X = e.clientX - tableRect.left;
-        let Y = e.clientY - tableRect.top;
-        for (i = 0; i < elementStatus.length; i++) {
-            if (X > elementStatus[i].x && X < (elementStatus[i].x + 28) && Y > elementStatus[i].y && Y < (elementStatus[i].y + 28)) {
-                if (elementStatus[i].status === true){
-                    elementStatus[i].status = false;
-                }   else {
-                    elementStatus[i].status = true;
-                }
-
-        }
-
-        }
-    }
+    draw();
 </script>
-
+</body>
 </html>
