@@ -97,7 +97,7 @@
 
         .mainOverlay {
             position: relative;
-            z-index: 9;
+            z-index: 1009;
         }
 
         img {
@@ -118,7 +118,7 @@
             -ms-user-select: none;
             -o-user-select: none;
             user-select: none;
-            z-index: 11;
+            z-index: 110;
         }
 
         #beaker {
@@ -167,9 +167,9 @@
 <body style="margin: 0;">
 <div class="border">
     <div class="mainScreen">
-        <img src="Resources/Beaker.png" id="beaker">
-        <img src="Resources/Main Screen Background.jpg" id="mainBg">
-        <img src="Resources/Beaker Liquid.png" id="beakerLiquid">
+        <!--<img src="Resources/Beaker.png" id="beaker">-->
+        <!--<img src="Resources/Main Screen Background.jpg" id="mainBg">-->
+        <!--<img src="Resources/Beaker Liquid.png" id="beakerLiquid">-->
         <!--Below line is canvas for main #Note 01 -->
         <canvas id="main" class="mainOverlay" width="658" height="656">
         </canvas>
@@ -227,9 +227,9 @@
 //        };
     //still working on this area will give errors
 
-    let powderImg= new Image();
-    let rockImg= new Image();
-    let stripImg= new Image();
+    let powderImg= document.createElement("img");
+    let rockImg= document.createElement("img");
+    let stripImg= document.createElement("img");
 
     powderImg.src = "Resources/Powder.png";
     rockImg.src = "Resources/Rock.png";
@@ -301,8 +301,11 @@
             if (this.image !== undefined)
             {console.log("HI");
                 mainCtx.beginPath();
-                mainCtx.drawImage(this.image, this.x, this.y);
+                mainCtx.drawImage(powderImg, this.x, this.y);
                 mainCtx.closePath();
+            } else {
+                alert("GOOD ONE MRINAANK, CHECK LINE 300 - 310");
+
             }
         }
     }
@@ -325,10 +328,13 @@
 
     class CovalentCompound extends Compound
     {
-        constructor(atoms, mp, bp, waterSoluble)
+        constructor(atoms, mp, bp, waterSoluble,formula)
         {
             super(atoms, mp, bp, waterSoluble);
+            this.formula = formula;
         }
+
+
     }
 
     class Reaction
@@ -406,12 +412,12 @@
             ["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true, powderImg),
 //
         ["MgO"]: new IonicCompound(["Mg", "O"], 2825, 3600, false, powderImg),
-        ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true, rockImg),
-        ["H2"]: new CovalentCompound(["H"], -259, -252, false, rockImg),
-        ["O2"]: new CovalentCompound(["O"], -219, -183, false, rockImg),
-        ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false, rockImg),
-        ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false, stripImg),
-        ["Na"]: new CovalentCompound(["Na"], 98, 883, false, rockImg),
+        ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true,"H1O1H", rockImg),
+        ["H2"]: new CovalentCompound(["H"], -259, -252, false,"H1H", rockImg),
+        ["O2"]: new CovalentCompound(["O"], -219, -183, false,"O2O", rockImg),
+        ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false,"Cl1Cl", rockImg),
+        ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false,"Mg", stripImg),
+        ["Na"]: new CovalentCompound(["Na"], 98, 883, false,"Na", rockImg),
 
 //          Michaels Compounds
         ["F2"]: new CovalentCompound(["F"], 0, 100, true, rockImg),
@@ -516,8 +522,8 @@
 
     var beaker = document.getElementById("beaker");
     var beakerLiquid = document.getElementById("beakerLiquid");
-    beaker.style.zIndex = 3;
-    beakerLiquid.style.zIndex = 2;
+//    beaker.style.zIndex = 3;
+//    beakerLiquid.style.zIndex = 2;
 
     var compoundCombinations = [];
     for (let compound in possibleCompounds)
@@ -724,7 +730,6 @@
             else if (elementStatus[i].status === true)
             {
                 ctx.rect(elementStatus[i].x, elementStatus[i].y, 28, 28);
-
                 ctx.fillStyle = elementStatus[i].outlineColour;
                 ctx.fill();
                 ctx.clearRect(elementStatus[i].x + 2, elementStatus[i].y + 2, 24, 24);
@@ -746,6 +751,7 @@
             }
             catch (Exception)
             {
+                alert("");
                 console.log(currentCompounds[i]);
             }
         }
