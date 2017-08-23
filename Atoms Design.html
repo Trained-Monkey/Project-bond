@@ -29,6 +29,8 @@
     var pair1Y = canvas.height/2;
     var numberOfElectrons = 8;
     var dx = 0;
+    var scalingFactor = 15;
+    var shellRadius = 50;
 
     var nucleusImage = new Image();
     nucleusImage.src ="Resources/Nucleus.png";
@@ -71,11 +73,9 @@
         drawNucleus();
         drawElectron();
         dx += 0.01;
-        if (dx > 360)
-        {
-            dx = 0;
-        }
         console.log(dx);
+
+
         requestAnimationFrame(draw);
     }
 
