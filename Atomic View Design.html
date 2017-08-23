@@ -10,7 +10,7 @@
         }
 
         canvas {
-            background: #eeeeee;
+            background: #00017e;
             display: block;
             margin: 0 auto;
         }
@@ -37,7 +37,7 @@
 
     var nucleusX = canvas.width / 2;
     var nucleusY = canvas.height / 2;
-    var sharedElectrons = 2;
+    let nucleusRadius = 30;
 
 
     var X1 = -10;
@@ -68,7 +68,7 @@
 
     class electronPair {
 
-        constructor(share, radius, posX, posY, xShift, yShift) {
+        constructor(share, radius, posX, posY, xShift, yShift, dx,dy, ) {
             if (share) {
                 ctx.beginPath();
                 ctx.drawImage(sharedElectronImage, canvas.width / 2 - posX - radius - xShift, canvas.height / 2 + posY - radius - yShift);
@@ -84,24 +84,24 @@
             }
             this.x = posX;
             this.y = posY;
-//            this.dx = dx;
-//            this.dy = dy
+            this.dx = dx;
+            this.dy = dy
 
 
         }
 
         calculatePosition(x,y,dx,dy){
-            x -= dx;
+            this.x -= dx;
             calc = 25 * 25 - 6.25 * x * x;
-            y = Math.sqrt(calc);
-            y *= dy1;
+            this.y = Math.sqrt(calc);
+            this.y *= dy;
 
             if (x <= -10) {
-                dx = -0.5;
-                dy = -1;
+                this.dx = -0.5;
+                this.dy = -1;
             } else if (x >= 10) {
-                dx = 0.5;
-                dy = 1;
+                this.dx = 0.5;
+                this.dy = 1;
             }
 
         }
@@ -123,10 +123,12 @@
 
         return [x,y,dx,dy];
 
+
+
     }
 
 
-    function drawElectronPairs() {
+    function drawElectronPairs(sharedElectrons,posX,posY) {
         switch (sharedElectrons) {
             case 2:
                 let pair1 = new electronPair(true, 5, X1, Y1, 0, 0);
@@ -136,6 +138,8 @@
                 let pair3 = new electronPair(false, 5, -Y1, X1, 30, -30);
 
                 let pair4 = new electronPair(false, 5, -Y1, X1, 30, 30);
+
+                return[pair1,pair2,pair3,pair4];
                 break;
 
 //            case 4:
@@ -161,33 +165,43 @@
     }
 
     function draw() {
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        drawNucleus(30, 30);
-        drawElectronPairs();
-        drawNucleus(-1, 30);
-
-        let store1 = calculatePosition(X1,Y1,dx1,dy1);
-        X1 = store1[0];
-        Y1 = store1[1];
-        dx1 = store1[2];
-        dy1 = store1[3];
-
-        let store2 = calculatePosition(X2,Y2,dx2,dy2);
-        X2 = store2[0];
-        Y2 = store2[1];
-        dx2 = store2[2];
-        dy2 = store2[3];
-
-        let store3 = calculatePosition(X3,Y3,dx3,dy3);
-        X3 = store3[0];
-        Y3 = store3[1];
-        dx3 = store3[2];
-        dy3 = store3[3];
+        var testCompound = ["Li",1,"O",1,"Li"];
+        if (testCompound.length === 5);
+            drawNucleus(15,30);
+            pairs = drawElectronPairs(testCompound[1] * 2);
+            drawNucleus(-16,30);
+            drawElectronPairs(testCompound[3] * 2);
+            drawNucleus(46,30);
 
 
-        //y = asin(t);
-        //x= bcos(t);
+
+
+//        ctx.clearRect(0, 0, canvas.width, canvas.height);
+//        drawNucleus(30, 30);
+//        drawElectronPairs();
+//        drawNucleus(-1, 30);
+//
+//        let store1 = calculatePosition(X1,Y1,dx1,dy1);
+//        X1 = store1[0];
+//        Y1 = store1[1];
+//        dx1 = store1[2];
+//        dy1 = store1[3];
+//
+//        let store2 = calculatePosition(X2,Y2,dx2,dy2);
+//        X2 = store2[0];
+//        Y2 = store2[1];
+//        dx2 = store2[2];
+//        dy2 = store2[3];
+//
+//        let store3 = calculatePosition(X3,Y3,dx3,dy3);
+//        X3 = store3[0];
+//        Y3 = store3[1];
+//        dx3 = store3[2];
+//        dy3 = store3[3];
+//
+//
+//        //y = asin(t);
+//        //x= bcos(t);
 
         requestAnimationFrame(draw);
     }
