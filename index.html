@@ -299,7 +299,7 @@
             }
 //            console.log(this.image === undefined,typeof powderImg);
             if (this.image !== undefined)
-            {
+            {console.log("HI");
                 mainCtx.beginPath();
                 mainCtx.drawImage(this.image, this.x, this.y);
                 mainCtx.closePath();
@@ -742,7 +742,7 @@
             try
             {
                 possibleCompounds[currentCompounds[i]].checkState(temperature, waterEnvironment);
-                currentCompounds[i].checkImage();
+                possibleCompounds[currentCompounds[i]].checkImage();
             }
             catch (Exception)
             {
