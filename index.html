@@ -219,21 +219,21 @@
     let ctx = c.getContext("2d");
     let mainC = document.getElementById("main");
     let mainCtx = mainC.getContext("2d");
-    let images =
-        {
-            ["powderImg"]:undefined,
-            ["rockImg"]: undefined,
-            ["stripImg"]: undefined,
-        };
+//    let images =
+//        {
+//            ["powderImg"]:undefined,
+//            ["rockImg"]: undefined,
+//            ["stripImg"]: undefined,
+//        };
     //still working on this area will give errors
-    console.log(typeof images.powderImg);
-    images.powderImg= new Image();
-    images.rockImg= new Image();
-    images.stripImg= new Image();
 
-    images.powderImg.src = "Resources/Powder.png";
-    images.rockImg.src = "Resources/Rock.png";
-    images.stripImg.src = "Resources/Strip.png";
+    let powderImg= new Image();
+    let rockImg= new Image();
+    let stripImg= new Image();
+
+    powderImg.src = "Resources/Powder.png";
+    rockImg.src = "Resources/Rock.png";
+    stripImg.src = "Resources/Strip.png";
     Set.prototype.isSuperset = function (subset)
     {
         for (let elem of subset)
@@ -256,12 +256,12 @@
             this.state = "SOLID";
             this.conductor = false;
             this.waterSoluble = waterSoluble;
-            this.x = 0;
-            this.y = 0;
+            this.x = 30;
+            this.y = 30;
             this.solidImage = solidImage;
 //            this.liquidImage = liquidImage;
 //            this.gasImage = gasImage;
-            this.image = undefined;
+
             this.checkImage();
         }
 
@@ -295,10 +295,15 @@
 //                case "GAS":
 //                    this.image = this.gasImage;
 //                    break;
+
             }
-            ctx.beginPath();
-            ctx.drawImage(this.image,this.x,this.y);
-            ctx.closePath();
+//            console.log(this.image === undefined,typeof powderImg);
+            if (this.image !== undefined)
+            {
+                mainCtx.beginPath();
+                mainCtx.drawImage(this.image, this.x, this.y);
+                mainCtx.closePath();
+            }
         }
     }
 
@@ -395,25 +400,25 @@
 
     var possibleCompounds = //TODO: Add waterSoluble
         {
-            ["NaH"]: new IonicCompound(["Na", "H"], 300, Infinity, images.powderImg),
-            ["NaCl"]: new IonicCompound(["Na", "Cl"], 801, 1465, images.powderImg),
+            ["NaH"]: new IonicCompound(["Na", "H"], 300, Infinity, powderImg),
+            ["NaCl"]: new IonicCompound(["Na", "Cl"], 801, 1465, powderImg),
 
-            ["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true, images.powderImg),
+            ["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true, powderImg),
 //
-        ["MgO"]: new IonicCompound(["Mg", "O"], 2825, 3600, false, images.powderImg),
-        ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true, images.rockImg),
-        ["H2"]: new CovalentCompound(["H"], -259, -252, false, images.rockImg),
-        ["O2"]: new CovalentCompound(["O"], -219, -183, false, images.rockImg),
-        ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false, images.rockImg),
-        ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false, images.stripImg),
-        ["Na"]: new CovalentCompound(["Na"], 98, 883, false, images.rockImg),
+        ["MgO"]: new IonicCompound(["Mg", "O"], 2825, 3600, false, powderImg),
+        ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true, rockImg),
+        ["H2"]: new CovalentCompound(["H"], -259, -252, false, rockImg),
+        ["O2"]: new CovalentCompound(["O"], -219, -183, false, rockImg),
+        ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false, rockImg),
+        ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false, stripImg),
+        ["Na"]: new CovalentCompound(["Na"], 98, 883, false, rockImg),
 
 //          Michaels Compounds
-        ["F2"]: new CovalentCompound(["F"], 0, 100, true, images.rockImg),
-        ["HF"]: new CovalentCompound(["H", "F"], 0, 100, true, images.powderImg),
-        ["LiOH"]: new IonicCompound(["Li", "OH"], 0, 100, true, images.powderImg),
-        ["Li"]: new IonicCompound(["Li"], 0, 100, false, images.rockImg),
-        ["Li2O"]: new IonicCompound(["Li", "O"], 1438, 2600, false, images.powderImg),
+        ["F2"]: new CovalentCompound(["F"], 0, 100, true, rockImg),
+        ["HF"]: new CovalentCompound(["H", "F"], 0, 100, true, powderImg),
+        ["LiOH"]: new IonicCompound(["Li", "OH"], 0, 100, true, powderImg),
+        ["Li"]: new IonicCompound(["Li"], 0, 100, false, rockImg),
+        ["Li2O"]: new IonicCompound(["Li", "O"], 1438, 2600, false, powderImg),
 
     };
 
