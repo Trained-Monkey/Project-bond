@@ -20,11 +20,11 @@
 </head>
 <body>
 <div>
-    <canvas id="myCanvas" width="480" height="320"></canvas>
+    <canvas id="main" width="480" height="320"></canvas>
 </div>
 <script>
-    var canvas = document.getElementById("myCanvas");
-    var ctx = canvas.getContext("2d");
+    var main = document.getElementById("main");
+    var mainCtx = main.getContext("2d");
 
     var nucleusImage = document.createElement("img");
     nucleusImage.src = "Resources/Nucleus.png";
@@ -35,17 +35,13 @@
     var sharedElectronImage = document.createElement("img");
     sharedElectronImage.src = "Resources/Shared Electron.png";
 
-
-    let electronConfig = [];
-
-
-    function drawNucleus(nucleusX, nucleusY, zIndex) {
+    function drawNucleus(nucleusX, nucleusY) {
 
 //        ctx.arc(nucleusX - 30, nucleusY, 30, 0, Math.PI * 2);
 //        nucleusImage.style.left = nucleusX + "px";
 //        nucleusImage.style.top = nucleusY + "px";
 //        nucleusImage.style.zIndex = 1000;
-        ctx.drawImage(nucleusImage, nucleusX, nucleusY)
+        mainCtx.drawImage(nucleusImage, nucleusX, nucleusY)
 
     }
 
@@ -56,15 +52,15 @@
             this.horizontal = horizontal;
             switch (pairNo) {
                 case 1:
-                    this.x = -10;
+                    this.x = 10;
                     this.y = 0;
                     break;
                 case 2:
-                    this.x = 0;
+                    this.x = 5;
                     this.y = Math.sqrt(25 * 25 - 6.25 * this.x * this.x);
                     break;
                 case 3:
-                    this.x = 10;
+                    this.x = 0;
                     this.y = Math.sqrt(25 * 25 - 6.25 * this.x * this.x);
             }
             this.dx = 0.5;
@@ -88,231 +84,468 @@
             }
         }
 
-
         drawElectron() {
             if (this.horizontal) {
                 if (this.share) {
-                    ctx.beginPath();
-                    ctx.drawImage(sharedElectronImage, canvas.width / 2 - this.y - this.radius - this.centreX, canvas.height / 2 - this.radius - this.x - this.centreY);
-                    ctx.drawImage(sharedElectronImage, canvas.width / 2 + this.y - this.radius - this.centreX, canvas.height / 2 - this.radius + this.x - this.centreY);
-                    ctx.fill();
-                    ctx.closePath();
+                    mainCtx.beginPath();
+                    mainCtx.drawImage(sharedElectronImage, main.width / 2 - this.y - this.radius - this.centreX, main.height / 2 - this.radius - this.x - this.centreY);
+                    mainCtx.drawImage(sharedElectronImage, main.width / 2 + this.y - this.radius - this.centreX, main.height / 2 - this.radius + this.x - this.centreY);
+                    mainCtx.fill();
+                    mainCtx.closePath();
                 } else {
-                    ctx.beginPath();
-                    ctx.drawImage(electronImage, canvas.width / 2 - this.radius - this.y - this.centreX, canvas.height / 2 - this.radius - this.x - this.centreY);
-                    ctx.drawImage(electronImage, canvas.width / 2 - this.radius + this.y - this.centreX, canvas.height / 2 - this.radius + this.x - this.centreY);
-                    ctx.fill();
-                    ctx.closePath();
+                    mainCtx.beginPath();
+                    mainCtx.drawImage(electronImage, main.width / 2 - this.radius - this.y - this.centreX, main.height / 2 - this.radius - this.x - this.centreY);
+                    mainCtx.drawImage(electronImage, main.width / 2 - this.radius + this.y - this.centreX, main.height / 2 - this.radius + this.x - this.centreY);
+                    mainCtx.fill();
+                    mainCtx.closePath();
                 }
             } else {
                 if (this.share) {
-                    ctx.beginPath();
-                    ctx.drawImage(sharedElectronImage, canvas.width / 2 - this.x - this.radius - this.centreX, canvas.height / 2 - this.radius + this.y);
-                    ctx.drawImage(sharedElectronImage, canvas.width / 2 + this.x - this.radius - this.centreX, canvas.height / 2 - this.radius - this.y);
-                    ctx.fill();
-                    ctx.closePath();
+                    mainCtx.beginPath();
+                    mainCtx.drawImage(sharedElectronImage, main.width / 2 - this.x - this.radius - this.centreX, main.height / 2 - this.radius + this.y);
+                    mainCtx.drawImage(sharedElectronImage, main.width / 2 + this.x - this.radius - this.centreX, main.height / 2 - this.radius - this.y);
+                    mainCtx.fill();
+                    mainCtx.closePath();
                 } else {
-                    ctx.beginPath();
-                    ctx.drawImage(electronImage, canvas.width / 2 - this.radius - this.x - this.centreX, canvas.height / 2 - this.radius + this.y);
-                    ctx.drawImage(electronImage, canvas.width / 2 - this.radius + this.x - this.centreX, canvas.height / 2 - this.radius - this.y);
-                    ctx.fill();
-                    ctx.closePath();
+                    mainCtx.beginPath();
+                    mainCtx.drawImage(electronImage, main.width / 2 - this.radius - this.x - this.centreX, main.height / 2 - this.radius + this.y);
+                    mainCtx.drawImage(electronImage, main.width / 2 - this.radius + this.x - this.centreX, main.height / 2 - this.radius - this.y);
+                    mainCtx.fill();
+                    mainCtx.closePath();
                 }
 
             }
         }
     }
 
-
-    //    class electronPair {
-    //
-    //        constructor(share, radius, posX, posY, xShift, yShift) {
-    //            if (share) {
-    //                ctx.beginPath();
-    //                ctx.drawImage(sharedElectronImage, canvas.width / 2 - posX - radius - xShift, canvas.height / 2 + posY - radius - yShift);
-    //                ctx.drawImage(sharedElectronImage, canvas.width / 2 + posX - radius - xShift, canvas.height / 2 - posY - radius - yShift);
-    //                ctx.fill();
-    //                ctx.closePath();
-    //            } else {
-    //                ctx.beginPath();
-    //                ctx.drawImage(electronImage, canvas.width / 2 - posX - radius - xShift, canvas.height / 2 + posY - radius - yShift);
-    //                ctx.drawImage(electronImage, canvas.width / 2 + posX - radius - xShift, canvas.height / 2 - posY - radius - yShift);
-    //                ctx.fill();
-    //                ctx.closePath();
-    //            }
-    //            this.x = posX;
-    //            this.y = posY;
-    ////            this.dx = dx;
-    ////            this.dy = dy
-    //
-    //
-    //        }
-    //
-    //        calculatePosition(x,y,dx,dy){
-    //            x -= dx;
-    //            calc = 25 * 25 - 6.25 * x * x;
-    //            y = Math.sqrt(calc);
-    //            y *= dy1;
-    //
-    //            if (x <= -10) {
-    //                dx = -0.5;
-    //                dy = -1;
-    //            } else if (x >= 10) {
-    //                dx = 0.5;
-    //                dy = 1;
-    //            }
-    //
-    //        }
-    //    }
 
     class compoundElectronConfig {
         constructor(formula) {
             this.centre = 30;
+            this.formula = formula;
             switch (formula.length) {
                 case 1:
 
                     this.atoms = 1;
-                    this.pair1 = new electronPair(this.centre, this.centre,false,1,false);
-                    this.pair2 = new electronPair(this.centre, this.centre,true,1,false);
-                    this.pair3 = new electronPair(-this.centre, -this.centre,false,1,true);
-                    this.pair4 = new electronPair(-this.centre, -this.centre,true,1,false);
-                    break;
+//                    Left Pair
+                    this.pair1 = new electronPair(this.centre, this.centre, false, 1, false);
 
+//                    Top Pair
+                    this.pair2 = new electronPair(this.centre - 31, this.centre, true, 1, false);
+
+//                    Right Pair
+                    this.pair3 = new electronPair(-this.centre, -this.centre, false, 1, false);
+
+//                    Bottom Pair
+                    this.pair4 = new electronPair(-this.centre + 31, -this.centre, true, 1, false);
+                    this.electronPairs = [this.pair1, this.pair3, this.pair4, this.pair2];
+                    if (formula[0] === "He" || formula[0] === "H") {
+                        this.pair6 = new electronPair(-this.centre + 31, -this.centre, true, 1, false);
+                        this.electronPairs = [this.pair6];
+                    }
+                    break;
                 case 3:
 
-                    this.atoms = 2;
-                    this.pair1 = new electronPair(this.centre + 31,this.centre,false,1,false);
-                    this.pair2 = new electronPair(this.centre,this.centre,true,1,false);
-                    this.pair3 = new electronPair(-this.centre + 31, this.centre,false,1,true);
-                    this.pair4 = new electronPair(this.centre,- this.centre,true,1,false);
-//                    this.pair5 = new electronPair(this.centre - 31,this.centre,false,1,false);
-                    this.pair6 = new electronPair(this.centre - 61,this.centre,true,1,false);
-                    this.pair7 = new electronPair(-this.centre - 31, this.centre,false,1,false);
-                    this.pair8 = new electronPair(this.centre - 61,- this.centre,true,1,false);
-                    break;
+                    switch (this.formula[1]) {
+                        case 1:
 
+                            this.atoms = 2;
+//                    Left Pair
+                            this.pair1 = new electronPair(this.centre + 31, this.centre, false, 1, false);
+                            this.pair5 = new electronPair(this.centre - 29, this.centre, false, 1, true);
+//                    Top Pair
+                            this.pair2 = new electronPair(this.centre, this.centre, true, 1, false);
+                            this.pair6 = new electronPair(this.centre - 61, this.centre, true, 1, false);
+//                    Right Pair
+                            this.pair3 = new electronPair(-this.centre + 31, this.centre, false, 1, true);
+                            this.pair7 = new electronPair(-this.centre - 31, this.centre, false, 1, false);
+//                    Bottom Pair
+                            this.pair4 = new electronPair(this.centre, -this.centre, true, 1, false);
+                            this.pair8 = new electronPair(this.centre - 61, -this.centre, true, 1, false);
+
+                            if (formula[0] === "H") {
+                                this.electronPairs = [this.pair3, this.pair6, this.pair7, this.pair8];
+
+                            } else if (formula[2] === "H") {
+                                this.electronPairs = [this.pair1, this.pair2, this.pair4, this.pair5];
+
+
+                            } else if (formula[2] === "H" && formula[0] === "H") {
+                                this.electronPairs = [this.pair3];
+
+                            } else {
+                                this.electronPairs = [this.pair1, this.pair3, this.pair4, this.pair2, this.pair5, this.pair7, this.pair8, this.pair6];
+                            }
+
+                            break;
+
+                        case 2:
+//                            Left Pair
+                            this.atoms = 2;
+                            this.pair1 = new electronPair(this.centre - 29, this.centre, false, 2, true);
+                            this.pair5 = new electronPair(this.centre - 29, this.centre, false, 1, true);
+//                    Top Pair
+                            this.pair2 = new electronPair(this.centre, this.centre, true, 1, false);
+                            this.pair6 = new electronPair(this.centre - 61, this.centre, true, 1, false);
+//                    Right Pair
+                            this.pair3 = new electronPair(-this.centre + 31, this.centre, false, 1, true);
+                            this.pair7 = new electronPair(-this.centre + 31, this.centre, false, 2, true);
+//                    Bottom Pair
+                            this.pair4 = new electronPair(this.centre, -this.centre, true, 1, false);
+                            this.pair8 = new electronPair(this.centre - 61, -this.centre, true, 1, false);
+                            this.electronPairs = [this.pair1, this.pair5, this.pair4, this.pair7, this.pair3, this.pair2, this.pair8, this.pair6];
+
+                            break;
+
+                        case 3:
+//                            Left Pair
+                            this.atoms = 2;
+//                    Left Pair 1
+                            this.pair1 = new electronPair(this.centre + 31, this.centre, false, 1, false);
+//                            this.pair5 = new electronPair(-this.centre + 31,this.centre,false,1,true);
+//                    Top Pair
+                            this.pair2 = new electronPair(this.centre - 29, this.centre, false, 2, true);
+//                            this.pair6 = new electronPair(this.centre - 29,this.centre,false,2,true);
+//                    Right Pair 2
+                            this.pair3 = new electronPair(-this.centre + 31, this.centre, false, 1, true);
+                            this.pair7 = new electronPair(-this.centre - 31, this.centre, false, 1, false);
+//                    Bottom Pair
+                            this.pair4 = new electronPair(this.centre - 29, this.centre, false, 3, true);
+
+                            this.electronPairs = [this.pair3, this.pair4, this.pair2, this.pair7, this.pair1];
+                            break;
+
+                    }
+                    break;
                 case 5:
 
                     this.atoms = 3;
+                    switch (this.formula[1]) {
+                        case 1:
+//                    Left Pair
+                            this.pair1 = new electronPair(this.centre + 62, this.centre, false, 1, false);
+                            this.pair5 = new electronPair(this.centre, this.centre, false, 1, true);
+                            this.pair9 = new electronPair(this.centre - 62, this.centre, false, 1, true);
+
+//                    Top Pair
+                            this.pair4 = new electronPair(this.centre + 31, this.centre, true, 1, false);
+                            this.pair8 = new electronPair(this.centre - 31, this.centre, true, 1, false);
+                            this.pair12 = new electronPair(this.centre - 93, this.centre, true, 1, false);
+
+
+//                    Right Pair
+                            this.pair3 = new electronPair(-this.centre - 62, -this.centre, false, 1, false);
+                            this.pair7 = new electronPair(-this.centre, -this.centre, false, 1, true);
+//                            this.pair11 = new electronPair(-this.centre + 62, -this.centre,false,1,true);
+
+
+//                    Bottom Pair
+                            this.pair2 = new electronPair(-this.centre + 93, -this.centre, true, 1, false);
+                            this.pair6 = new electronPair(-this.centre + 31, -this.centre, true, 1, false);
+                            this.pair10 = new electronPair(-this.centre - 31, -this.centre, true, 1, false);
+
+
+                            this.electronPairs = [this.pair1, this.pair2, this.pair10, this.pair4, this.pair5, this.pair6, this.pair8, this.pair9, this.pair3, this.pair12];
+                            if (this.formula[0] === "H" && this.formula[4] === "H" && this.formula[2] ==="O"){
+                                this.electronPairs = [this.pair5,this.pair6,this.pair7,this.pair8];
+                            }
+
+
+                            break;
+                        case 2:
+//                    Left Pair
+                            this.pair1 = new electronPair(this.centre, this.centre, false, 2, true);
+                            this.pair5 = new electronPair(this.centre, this.centre, false, 1, true);
+//                            this.pair9 = new electronPair(this.centre - 62, this.centre,false,1,true);
+
+//                    Top Pair
+                            this.pair2 = new electronPair(this.centre + 31, this.centre, true, 1, false);
+//                            this.pair8 = new electronPair(this.centre - 31, this.centre,true,1,false);
+                            this.pair6 = new electronPair(this.centre - 93, this.centre, true, 1, false);
+
+
+//                    Right Pair
+                            this.pair3 = new electronPair(-this.centre, -this.centre, false, 2, true);
+                            this.pair7 = new electronPair(-this.centre, -this.centre, false, 1, true);
+//                            this.pair11 = new electronPair(-this.centre + 62, -this.centre,false,1,true);
+
+
+//                    Bottom Pair
+                            this.pair4 = new electronPair(-this.centre + 93, -this.centre, true, 1, false);
+//                            this.pair6 = new electronPair(-this.centre + 31, -this.centre,true,1,false);
+                            this.pair8 = new electronPair(-this.centre - 31, -this.centre, true, 1, false);
+
+
+                            this.electronPairs = [this.pair2, this.pair6, this.pair1, this.pair5, this.pair4, this.pair8, this.pair7, this.pair3];
+                            break;
+                    }
+
                     break;
             }
-
-            this.formula = formula;
-
         }
 
         drawCompound() {
-            switch(this.atoms){
+
+            switch (this.atoms) {
                 case 1:
-                    drawNucleus(canvas.width/2 - this.centre,canvas.height/2 - this.centre);
-                    this.pair1.drawElectron();
-                    this.pair2.drawElectron();
-                    this.pair3.drawElectron();
-                    this.pair4.drawElectron();
-                    this.pair1.updatePosition();
-                    this.pair2.updatePosition();
-                    this.pair3.updatePosition();
-                    this.pair4.updatePosition();
+
+                    for (this.pairs = 0; this.pairs < (this.electronPairs.length); this.pairs += 2) {
+                        this.electronPairs[this.pairs].drawElectron();
+                        this.electronPairs[this.pairs].updatePosition();
+                    }
+
+                    drawNucleus(main.width / 2 - this.centre, main.height / 2 - this.centre);
+                    mainCtx.font = "30px Arial";
+                    mainCtx.textAlign = "center";
+                    mainCtx.fillText(this.formula[0], main.width / 2, main.height / 2 + 10);
+
+                    for (this.pairs = 1; this.pairs < (this.electronPairs.length); this.pairs += 2) {
+                        this.electronPairs[this.pairs].drawElectron();
+                        this.electronPairs[this.pairs].updatePosition();
+                    }
                     break;
-
-
                 case 2:
 
-                    this.pair1.drawElectron();
-                    this.pair4.drawElectron();
-                    drawNucleus(canvas.width/2 - this.centre - 31,canvas.height/2 - this.centre);
-                    this.pair2.drawElectron();
-                    this.pair3.drawElectron();
+                    switch (this.formula[1]) {
+                        case 1:
+                            if (this.formula[0] === "H" || this.formula[2] === "H") {
+                                if
+                                (this.formula[0] === "H" && this.formula[2] === "H") {
+                                    drawNucleus(main.width / 2 - this.centre - 31, main.height / 2 - this.centre);
+                                    this.electronPairs[0].drawElectron();
+                                    this.electronPairs[0].updatePosition();
+                                    drawNucleus(main.width / 2 - this.centre + 31, main.height / 2 - this.centre);
+                                } else if (this.formula[2] === "H") {
+                                    drawNucleus(main.width / 2 - this.centre - 31, main.height / 2 - this.centre);
+                                    this.electronPairs[0].drawElectron();
+                                    this.electronPairs[3].drawElectron();
+                                    this.electronPairs[0].updatePosition();
+                                    this.electronPairs[3].updatePosition();
+                                    drawNucleus(main.width / 2 - this.centre + 31, main.height / 2 - this.centre);
+                                    this.electronPairs[1].drawElectron();
+                                    this.electronPairs[2].drawElectron();
+                                    this.electronPairs[1].updatePosition();
+                                    this.electronPairs[2].updatePosition();
 
-//                    this.pair5.drawElectron();
-                    this.pair8.drawElectron();
-                    drawNucleus(canvas.width/2 - this.centre + 31,canvas.height/2 - this.centre);
-                    this.pair6.drawElectron();
-                    this.pair7.drawElectron();
+                                } else if (this.formula[0] === "H") {
+
+                                    drawNucleus(main.width / 2 - this.centre - 31, main.height / 2 - this.centre);
+                                    this.electronPairs[0].drawElectron();
+                                    this.electronPairs[3].drawElectron();
+                                    this.electronPairs[0].updatePosition();
+                                    this.electronPairs[3].updatePosition();
+                                    drawNucleus(main.width / 2 - this.centre + 31, main.height / 2 - this.centre);
+                                    this.electronPairs[1].drawElectron();
+                                    this.electronPairs[2].drawElectron();
+                                    this.electronPairs[1].updatePosition();
+                                    this.electronPairs[2].updatePosition();
+
+                                }
+                                break;
 
 
-                    this.pair1.updatePosition();
-                    this.pair2.updatePosition();
-                    this.pair3.updatePosition();
-                    this.pair4.updatePosition();
-//                    this.pair5.updatePosition();
-                    this.pair6.updatePosition();
-                    this.pair7.updatePosition();
-                    this.pair8.updatePosition();
+                            } else {
+                                for
+                                (this.pairs = 0;
+                                 this.pairs < 4;
+                                 this.pairs += 2
+                                ) {
+                                    this.electronPairs[this.pairs].drawElectron();
+                                    this.electronPairs[this.pairs].updatePosition();
+                                }
 
+                                drawNucleus(main.width / 2 - this.centre - 31, main.height / 2 - this.centre);
+
+                                for (this.pairs = 1; this.pairs < 4; this.pairs += 2) {
+                                    this.electronPairs[this.pairs].drawElectron();
+                                    this.electronPairs[this.pairs].updatePosition();
+                                }
+
+                                for (this.pairs = 4; this.pairs < 8; this.pairs += 2) {
+                                    this.electronPairs[this.pairs].drawElectron();
+                                    this.electronPairs[this.pairs].updatePosition();
+                                }
+
+                                drawNucleus(main.width / 2 - this.centre + 31, main.height / 2 - this.centre);
+
+
+                                for (this.pairs = 5; this.pairs < 8; this.pairs += 2) {
+                                    this.electronPairs[this.pairs].drawElectron();
+                                    this.electronPairs[this.pairs].updatePosition();
+                                }
+
+                                break;
+
+                            }
+
+                        case 2:
+                            for
+                            (this.pairs = 0;
+                             this.pairs < 4;
+                             this.pairs++
+                            ) {
+                                this.electronPairs[this.pairs].drawElectron();
+                                this.electronPairs[this.pairs].updatePosition();
+                            }
+
+                            drawNucleus(main.width / 2 - this.centre - 31, main.height / 2 - this.centre);
+
+//                            for (this.pairs = 1; this.pairs < 4; this.pairs += 2) {
+//                                this.electronPairs[this.pairs].drawElectron();
+//                                this.electronPairs[this.pairs].updatePosition();
+//                            }
+
+                            for (this.pairs = 4; this.pairs < 8; this.pairs += 2) {
+                                this.electronPairs[this.pairs].drawElectron();
+                                this.electronPairs[this.pairs].updatePosition();
+                            }
+
+                            drawNucleus(main.width / 2 - this.centre + 31, main.height / 2 - this.centre);
+
+                            for (this.pairs = 5; this.pairs < 8; this.pairs += 2) {
+                                this.electronPairs[this.pairs].drawElectron();
+                                this.electronPairs[this.pairs].updatePosition();
+                            }
+                            break;
+
+                        case 3:
+                            for
+                            (this.pairs = 4;
+                             this.pairs < 5;
+                             this.pairs++
+                            ) {
+                                this.electronPairs[this.pairs].drawElectron();
+                                this.electronPairs[this.pairs].updatePosition();
+                            }
+                            drawNucleus(main.width / 2 - this.centre - 31, main.height / 2 - this.centre);
+                            for
+                            (this.pairs = 0;
+                             this.pairs < 3;
+                             this.pairs++
+                            ) {
+                                this.electronPairs[this.pairs].drawElectron();
+                                this.electronPairs[this.pairs].updatePosition();
+                            }
+
+//
+                            drawNucleus(main.width / 2 - this.centre + 31, main.height / 2 - this.centre);
+
+                            for
+                            (this.pairs = 3;
+                             this.pairs < 4;
+                             this.pairs++
+                            ) {
+                                this.electronPairs[this.pairs].drawElectron();
+                                this.electronPairs[this.pairs].updatePosition();
+                            }
+                            break;
+
+
+
+//
+                    }
+                    mainCtx.font = "30px Arial";
+                    mainCtx.textAlign = "center";
+                    mainCtx.fillText(this.formula[0], main.width / 2 - 31, main.height / 2 + 10);
+                    mainCtx.fillText(this.formula[2], main.width / 2 + 31, main.height / 2 + 10);
 
 //                    drawNucleus(canvas.width/2 + this.centre,canvas.height/2 - 30);
                     break;
                 case 3:
-                    drawNucleus(30,30);
+                    switch (this.formula[1]) {
+
+                        case 1:
+//                            alert(this.formula);
+
+                            if (this.formula[0] === "H" && this.formula[4] === "H" && this.formula[2] ==="O") {
+
+                                drawNucleus(main.width / 2 - this.centre - 61, main.height / 2 - this.centre);
+                                for (this.pairs = 0; this.pairs < 2; this.pairs++){
+                                    this.electronPairs[this.pairs].drawElectron();
+                                    this.electronPairs[this.pairs].updatePosition();
+                                }
+
+                                drawNucleus(main.width / 2 - this.centre, main.height / 2 - this.centre);
+
+                                for (this.pairs = 2; this.pairs < 4; this.pairs++){
+                                    this.electronPairs[this.pairs].drawElectron();
+                                    this.electronPairs[this.pairs].updatePosition();
+                                }
+
+                                drawNucleus(main.width / 2 - this.centre + 61, main.height / 2 - this.centre);
+                                break;
+                            }else {
+                                for (this.pairs = 0; this.pairs < 2; this.pairs += 1) {
+                                    this.electronPairs[this.pairs].drawElectron();
+                                    this.electronPairs[this.pairs].updatePosition();
+                                }
+                                drawNucleus(main.width / 2 - this.centre - 61, main.height / 2 - this.centre);
+
+                                for (this.pairs = 2; this.pairs < 6; this.pairs += 1) {
+                                    this.electronPairs[this.pairs].drawElectron();
+                                    this.electronPairs[this.pairs].updatePosition();
+                                }
+                                drawNucleus(main.width / 2 - this.centre, main.height / 2 - this.centre);
+
+                                for (this.pairs = 6; this.pairs < 8; this.pairs += 1) {
+                                    this.electronPairs[this.pairs].drawElectron();
+                                    this.electronPairs[this.pairs].updatePosition();
+                                }
+
+                                drawNucleus(main.width / 2 - this.centre + 61, main.height / 2 - this.centre);
+
+                                for (this.pairs = 8; this.pairs < (this.electronPairs.length); this.pairs += 1) {
+                                    this.electronPairs[this.pairs].drawElectron();
+                                    this.electronPairs[this.pairs].updatePosition();
+                                }
+                                break;
+                            }
+                        case 2:
+
+                            for (this.pairs = 4; this.pairs < 6; this.pairs++) {
+                                this.electronPairs[this.pairs].drawElectron();
+                                this.electronPairs[this.pairs].updatePosition();
+
+                            }
+
+                            drawNucleus(main.width / 2 - this.centre - 61, main.height / 2 - this.centre);
+                            for (this.pairs = 2; this.pairs < 4; this.pairs++) {
+                                this.electronPairs[this.pairs].drawElectron();
+                                this.electronPairs[this.pairs].updatePosition();
+
+                            }
+
+                            drawNucleus(main.width / 2 - this.centre, main.height / 2 - this.centre);
+                            for (this.pairs = 6; this.pairs < (this.electronPairs.length); this.pairs += 1) {
+                                this.electronPairs[this.pairs].drawElectron();
+                                this.electronPairs[this.pairs].updatePosition();
+                            }
+
+                            drawNucleus(main.width / 2 - this.centre + 61, main.height / 2 - this.centre);
+                            for (this.pairs = 0; this.pairs < 2; this.pairs++) {
+                                this.electronPairs[this.pairs].drawElectron();
+                                this.electronPairs[this.pairs].updatePosition();
+                            }
+                            break;
+
+                    }
+                    mainCtx.font = "30px Arial";
+                    mainCtx.textAlign = "center";
+                    mainCtx.fillText(this.formula[2], main.width / 2, main.height / 2 + 10);
+                    mainCtx.fillText(this.formula[0], main.width / 2 + 61, main.height / 2 + 10);
+                    mainCtx.fillText(this.formula[4], main.width / 2 - 61, main.height / 2 + 10);
                     break;
             }
-//
-
         }
 
-//        updatePosition(electron) {
-////        x -= dx;
-////        calc = 25 * 25 - 6.25 * x * x;
-////        y = Math.sqrt(calc);
-////        y *= dy1;
-////
-////        if (x <= -10) {
-////            dx = -0.5;
-////            dy = -1;
-////        } else if (x >= 10) {
-////            dx = 0.5;
-////            dy = 1;
-////        }
-//        }
+
     }
 
-
-    //    function drawElectronPairs() {
-    //        switch (sharedElectrons) {
-    //            case 2:
-    //                let pair1 = new electronPair(true, 5, X1, Y1, 0, 0);
-    //
-    //                let pair2 = new electronPair(false, 5, X1, Y1, 60, 0);
-    //
-    //                let pair3 = new electronPair(false, 5, -Y1, X1, 30, -30);
-    //
-    //                let pair4 = new electronPair(false, 5, -Y1, X1, 30, 30);
-    //
-    //                electronConfig = [pair1, pair2, pair3, pair4];
-    //                break;
-    //
-    //            case 4:
-    //                let pair5 = new electronPair(true, 5, X1, Y1, 0, 0);
-    //
-    //                let pair6 = new electronPair(true, 5, X2, Y2, 0, 0);
-    //
-    //                let pair7 = new electronPair(false, 5, -Y1, X1, 30, -30);
-    //
-    //                let pair8 = new electronPair(false, 5, -Y1, X1, 30, 30);
-    //                electronConfig = [pair5, pair6, pair7, pair8];
-    //                break;
-    //
-    //            case 6:
-    //                let pair9 = new electronPair(true, 5, X1, Y1, 0, 0);
-    //
-    //                let pair10 = new electronPair(true, 5, X2, Y2, 0, 0);
-    //
-    //                let pair11 = new electronPair(true, 5, X3, Y3, 0, 0);
-    //
-    //                let pair12 = new electronPair(false, 5, X1, Y1, 60, 0);
-    //                electronConfig = [pair9, pair10, pair11, pair8];
-    //
-    //        }
-    //    }
-
-    no = new compoundElectronConfig(["O", "O", "O"]);
+    no = new compoundElectronConfig(["H",1,"O",1,"H"]);
 
     function draw() {
-        ctx.clearRect(0,0,canvas.width,canvas.height);
+        mainCtx.clearRect(0, 0, main.width, main.height);
         no.drawCompound();
-
-
 
 
         requestAnimationFrame(draw);
