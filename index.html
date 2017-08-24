@@ -1004,7 +1004,7 @@
 
             ["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true, "Resources/Powder.png"),
             ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true,["H",1,"O",1,"H"], "Resources/Rock.png"),
-            ["H2"]: new CovalentCompound(["H"], -259, -252, false,"H1H", "Resources/Rock.png"),
+            ["H2"]: new CovalentCompound(["H"], -259, -252, false,["H",1,"H"], "Resources/Rock.png"),
             ["O2"]: new CovalentCompound(["O"], -219, -183, false,"O2O", "Resources/Rock.png"),
             ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false,"Cl1Cl", "Resources/Rock.png"),
             ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false,"Mg", "Resources/Strip.png"),
@@ -1218,9 +1218,9 @@
         } else if (microView)
         {
             view = "microView";
-            alert(currentCompounds[0]);
+            alert(possibleCompounds[currentCompounds[0]].formula);
 
-            no = new compoundElectronConfig(currentCompounds[0].formula);
+            no = new compoundElectronConfig(possibleCompounds[currentCompounds[0]].formula);
 
         } else
         {
