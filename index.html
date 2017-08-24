@@ -167,12 +167,11 @@
 <body style="margin: 0;">
 <div class="border">
     <div class="mainScreen">
-        <!--<img src="Resources/Beaker.png" id="beaker">-->
-        <!--<img src="Resources/Main Screen Background.jpg" id="mainBg">-->
-        <!--<img src="Resources/Beaker Liquid.png" id="beakerLiquid">-->
+        <img src="Resources/Beaker.png" id="beaker">
+        <img src="Resources/Main Screen Background.jpg" id="mainBg">
+        <img src="Resources/Beaker Liquid.png" id="beakerLiquid">
         <!--Below line is canvas for main #Note 01 -->
-        <canvas id="main" class="mainOverlay" width="658" height="656">
-        </canvas>
+        <canvas id="main" class="mainOverlay" width="658" height="656"></canvas>
 
 
     </div>
@@ -219,21 +218,15 @@
     let ctx = c.getContext("2d");
     let mainC = document.getElementById("main");
     let mainCtx = mainC.getContext("2d");
-//    let images =
-//        {
-//            ["powderImg"]:undefined,
-//            ["rockImg"]: undefined,
-//            ["stripImg"]: undefined,
-//        };
-    //still working on this area will give errors
 
-    let powderImg= document.createElement("img");
-    let rockImg= document.createElement("img");
-    let stripImg= document.createElement("img");
 
-    powderImg.src = "Resources/Powder.png";
-    rockImg.src = "Resources/Rock.png";
-    stripImg.src = "Resources/Strip.png";
+    //    let "Resources/Powder.png"= new Image();
+    //    let rockImg= document.createElement("img");
+    //    let "Resources/Strip.png"= document.createElement("img");
+    //
+    //    "Resources/Powder.png".src = "Resources/Powder.png";
+    //    rockImg.src = "Resources/Rock.png";
+    //    "Resources/Strip.png".src = "Resources/Strip.png";
     Set.prototype.isSuperset = function (subset)
     {
         for (let elem of subset)
@@ -248,21 +241,22 @@
 
     class Compound
     {
-        constructor(atoms, mp, bp, waterSoluble, solidImage,  x, y)
+        constructor(atoms, mp, bp, waterSoluble, solidImage, x, y)
         {
             this.atoms = atoms;
+            this.image = document.createElement("img");
             this.mp = mp;
             this.bp = bp;
             this.state = "SOLID";
             this.conductor = false;
             this.waterSoluble = waterSoluble;
-            this.x = 30;
-            this.y = 30;
+            this.x = -30;
+            this.y = 0;
             this.solidImage = solidImage;
 //            this.liquidImage = liquidImage;
 //            this.gasImage = gasImage;
 
-            this.checkImage();
+//            this.checkImage();
         }
 
         checkState(temperature, waterEnvironment)
@@ -284,39 +278,45 @@
 
         checkImage()
         {
-            switch (this.state)
+
+//            switch (this.state)
+//            {
+//                case "SOLID":
+//                    this.image = this.solidImage;
+//                    break;
+////                case "LIQUID" || "AQUEOUS":
+////                    this.image = this.liquidImage;
+////                    break;
+////                case "GAS":
+////                    this.image = this.gasImage;
+////                    break;
+//
+//            }
+            let image = new Image();
+            image.src = this.solidImage;
+//            this.image.src = this.solidImage;
+            try
             {
-                case "SOLID":
-                    this.image = this.solidImage;
-                    break;
-//                case "LIQUID" || "AQUEOUS":
-//                    this.image = this.liquidImage;
-//                    break;
-//                case "GAS":
-//                    this.image = this.gasImage;
-//                    break;
-
-            }
-//            console.log(this.image === undefined,typeof powderImg);
-            if (this.image !== undefined)
-            {console.log("HI");
                 mainCtx.beginPath();
-                mainCtx.drawImage(powderImg, this.x, this.y);
-                mainCtx.closePath();
-            } else {
-                alert("GOOD ONE MRINAANK, CHECK LINE 300 - 310");
+                mainCtx.drawImage(image, this.x, this.y);
 
+//                console.log("HI");
+                mainCtx.closePath();
+            }
+            catch (Exception)
+            {
+//                alert("GOOD ONE MRINAANK, CHECK LINE 300 - 310");
+                console.log(this.atoms);
             }
         }
     }
 
     class IonicCompound extends Compound
     {
-        constructor(atoms, mp, bp, waterSoluble)
+        constructor(atoms, mp, bp, waterSoluble, solidImage, x, y)
         {
-            super(atoms, mp, bp, waterSoluble);
+            super(atoms, mp, bp, waterSoluble, solidImage, x, y);
             //Define all variables for class here with this.[variableName]
-
         }
 
         checkState(temperature, waterEnvironment)
@@ -328,9 +328,9 @@
 
     class CovalentCompound extends Compound
     {
-        constructor(atoms, mp, bp, waterSoluble,formula)
+        constructor(atoms, mp, bp, waterSoluble, solidImage, x, y, formula)
         {
-            super(atoms, mp, bp, waterSoluble);
+            super(atoms, mp, bp, waterSoluble, solidImage, x, y);
             this.formula = formula;
         }
 
@@ -350,7 +350,8 @@
         {
             let willReact = true;
             let reactants = this.reactants;
-            for (let i = 0; i < this.reactants.length; i++)
+            let products = this.products;
+            for (let i = 0; i < reactants.length; i++)
             {
                 if (currentCompounds.find(function (element)
                     {
@@ -372,26 +373,26 @@
                     willReact = eval(property.toString() + this.requiredCondition);
                     break;
                 default:
-                    console.log(typeof property);
+//                    console.log(typeof property);
                     break;
             }
 
             if (willReact)
             {
-                for (let i = 0; i < this.reactants.length; i++)
+                for (let i = 0; i < reactants.length; i++)
                 {
                     currentCompounds.splice(i);
 
                 }
 
-                for (let i = 0; i < this.products.length; i++)
+                for (let i = 0; i < products.length; i++)
                 {
                     if (currentCompounds.find(function (element)
                         {
-                            return element === this.products[i]
+                            return element === products[i]
                         }) === undefined)
                     {
-                        currentCompounds.push(this.products[i]);
+                        currentCompounds.push(products[i]);
                     }
                 }
 
@@ -406,25 +407,25 @@
 
     var possibleCompounds = //TODO: Add waterSoluble
         {
-            ["NaH"]: new IonicCompound(["Na", "H"], 300, Infinity, powderImg),
-            ["NaCl"]: new IonicCompound(["Na", "Cl"], 801, 1465, powderImg),
+            ["NaH"]: new IonicCompound(["Na", "H"], 300, Infinity, "Resources/Powder.png"),
+            ["NaCl"]: new IonicCompound(["Na", "Cl"], 801, 1465, "Resources/Powder.png"),
 
-            ["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true, powderImg),
+            ["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true, "Resources/Powder.png"),
 //
-        ["MgO"]: new IonicCompound(["Mg", "O"], 2825, 3600, false, powderImg),
-        ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true,"H1O1H", rockImg),
-        ["H2"]: new CovalentCompound(["H"], -259, -252, false,"H1H", rockImg),
-        ["O2"]: new CovalentCompound(["O"], -219, -183, false,"O2O", rockImg),
-        ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false,"Cl1Cl", rockImg),
-        ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false,"Mg", stripImg),
-        ["Na"]: new CovalentCompound(["Na"], 98, 883, false,"Na", rockImg),
+        ["MgO"]: new IonicCompound(["Mg", "O"], 2825, 3600, false, "Resources/Powder.png"),
+        ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true, "Resources/Rock.png", "H1O1H"),
+        ["H2"]: new CovalentCompound(["H"], -259, -252, false, "Resources/Rock.png", "H1H"),
+        ["O2"]: new CovalentCompound(["O"], -219, -183, false, "Resources/Rock.png", "O2O"),
+        ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false, "Resources/Rock.png", "Cl1Cl"),
+        ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false, "Resources/Strip.png", "Mg"),
+        ["Na"]: new CovalentCompound(["Na"], 98, 883, false, "Resources/Rock.png", "Na"),
 
 //          Michaels Compounds
-        ["F2"]: new CovalentCompound(["F"], 0, 100, true, rockImg),
-        ["HF"]: new CovalentCompound(["H", "F"], 0, 100, true, powderImg),
-        ["LiOH"]: new IonicCompound(["Li", "OH"], 0, 100, true, powderImg),
-        ["Li"]: new IonicCompound(["Li"], 0, 100, false, rockImg),
-        ["Li2O"]: new IonicCompound(["Li", "O"], 1438, 2600, false, powderImg),
+        ["F2"]: new CovalentCompound(["F"], 0, 100, true, "Resources/Rock.png"),
+        ["HF"]: new CovalentCompound(["H", "F"], 0, 100, true, "Resources/Powder.png"),
+        ["LiOH"]: new IonicCompound(["Li", "OH"], 0, 100, true, "Resources/Powder.png"),
+        ["Li"]: new IonicCompound(["Li"], 0, 100, false, "Resources/Rock.png"),
+        ["Li2O"]: new IonicCompound(["Li", "O"], 1438, 2600, false, "Resources/Powder.png"),
 
     };
 
@@ -434,15 +435,15 @@
     var UV = false;
     var waterEnvironment = false;
     var possibleReactions =
-        [
+    [
 
-            [new Reaction(["H2", "O2"], ["H2O"], ">300"), "temperature"],
-            [new Reaction(["H2O"], ["H2", "O2"], ">20"), "current"],
-            [new Reaction(["MgO", "H2O"], ["MgOH2"], true), "waterEnvironment"],
-            [new Reaction(["Cl2", "H2"], ["HCl"], true), "UV"],
-            [new Reaction(["MgOH2"], ["Mg", "H2O"], ">100"), "temperature"],
-            [new Reaction(["Mg", "O2"], ["MgO"], ">50"), "temperature"],
-            [new Reaction(["NaCl"], ["NaOH", "Cl2", "H2"], ">20"), "current"],
+        [new Reaction(["H2", "O2"], ["H2O"], ">300"), "temperature"],
+        [new Reaction(["H2O"], ["H2", "O2"], ">20"), "current"],
+        [new Reaction(["MgO", "H2O"], ["MgOH2"], true), "waterEnvironment"],
+        [new Reaction(["Cl2", "H2"], ["HCl"], true), "UV"],
+        [new Reaction(["MgOH2"], ["Mg", "H2O"], ">100"), "temperature"],
+        [new Reaction(["Mg", "O2"], ["MgO"], ">50"), "temperature"],
+        [new Reaction(["NaCl"], ["NaOH", "Cl2", "H2"], ">20"), "current"],
 
 //          Michael's reactions
         [new Reaction(["H2O", "F2"], ["HF", "O2"], ">0"), "waterEnvironment"],
@@ -518,12 +519,10 @@
     ];
 
 
-
-
     var beaker = document.getElementById("beaker");
     var beakerLiquid = document.getElementById("beakerLiquid");
-//    beaker.style.zIndex = 3;
-//    beakerLiquid.style.zIndex = 2;
+    //    beaker.style.zIndex = 3;
+    //    beakerLiquid.style.zIndex = 2;
 
     var compoundCombinations = [];
     for (let compound in possibleCompounds)
@@ -646,7 +645,10 @@
                     break;
                 }
             }
-            currentCompounds.push(compound);
+            if (compound.length > 0)
+            {
+                currentCompounds.push(compound);
+            }
             elementStatus.forEach(function (x)
             {
                 x.status = false;
@@ -716,6 +718,25 @@
     //    simulationManager();
     function draw()
     {
+        if (view === "macroView")
+        {
+            mainCtx.beginPath();
+            mainCtx.clearRect(0, 0, 656, 658);
+        } else if (view === "moleculeView")
+        {
+            mainCtx.beginPath();
+            mainCtx.rect(0, 0, 658, 656);
+            mainCtx.fillStyle = ("rgba(0,0,0,1)");
+            mainCtx.fill();
+
+        } else if (view === "microView")
+        {
+            mainCtx.beginPath();
+            mainCtx.rect(0, 0, 658, 656);
+            mainCtx.fillStyle = ("rgba(0,0,0,1)");
+            mainCtx.fill();
+
+        }
 
         for (let i = 0; i < elementStatus.length; i++)
         {
@@ -746,12 +767,16 @@
         {
             try
             {
-                possibleCompounds[currentCompounds[i]].checkState(temperature, waterEnvironment);
+            possibleCompounds[currentCompounds[i]].checkState(temperature, waterEnvironment);
+            if (view === "macroView")
+            {
                 possibleCompounds[currentCompounds[i]].checkImage();
+            }
+
             }
             catch (Exception)
             {
-                alert("");
+//                alert("");
                 console.log(currentCompounds[i]);
             }
         }
@@ -766,26 +791,6 @@
                 beaker.style.zIndex = 3;
             }
 //
-        }
-
-        if (view === "macroView")
-        {
-            mainCtx.beginPath();
-            mainCtx.clearRect(0, 0, 656, 658);
-        } else if (view === "moleculeView")
-        {
-            mainCtx.beginPath();
-            mainCtx.rect(0, 0, 658, 656);
-            mainCtx.fillStyle = ("rgba(0,0,0,1)");
-            mainCtx.fill();
-
-        } else if (view === "microView")
-        {
-            mainCtx.beginPath();
-            mainCtx.rect(0, 0, 658, 656);
-            mainCtx.fillStyle = ("rgba(0,0,0,1)");
-            mainCtx.fill();
-
         }
 
 
