@@ -157,10 +157,6 @@
             margin-left: 50px;
         }
 
-        #moleculeView {
-            margin-left: 33px;
-        }
-
 
     </style>
 </head>
@@ -197,11 +193,9 @@
                     Current: <input id="currentTextBox" placeholder="0" title="Voltage">
                     Macroscopic View<input type="radio" name="views" id="macroView" title="Macro">
                     <br>
-                    Molecular View <input type="radio" name="views" id="moleculeView" title="Molecular">
-                    <br>
                     Atomic View <input type="radio" name="views" id="microView" title="Micro">
                     <br>
-                    <input type="button" id="tempUpdateButton" value="React!" onclick="tempUpdate()">
+                    <input type="button" id="tempUpdateButton" value="UPDATE" onclick="tempUpdate()">
                 </form>
             </div>
             <div class="infoBar">
@@ -217,24 +211,8 @@
     let view = "macroView";
     let c = document.getElementById("PT");
     let ctx = c.getContext("2d");
-    //    let images =
-    //        {
-    //            ["powderImg"]:undefined,
-    //            ["rockImg"]: undefined,
-    //            ["stripImg"]: undefined,
-    //        };
-    //still working on this area will give errors
-
-    let powderImg= document.createElement("img");
-    let rockImg= document.createElement("img");
-    let stripImg= document.createElement("img");
-
-    powderImg.src = "Resources/Powder.png";
-    rockImg.src = "Resources/Rock.png";
-    stripImg.src = "Resources/Strip.png";
-
-    var main = document.getElementById("main");
-    var mainCtx = main.getContext("2d");
+    let mainC = document.getElementById("main");
+    let mainCtx = mainC.getContext("2d");
 
     var nucleusImage = document.createElement("img");
     nucleusImage.src = "Resources/Nucleus.png";
@@ -245,7 +223,7 @@
     var sharedElectronImage = document.createElement("img");
     sharedElectronImage.src = "Resources/Shared Electron.png";
 
-    function drawNucleus(nucleusX, nucleusY, zIndex) {
+    function drawNucleus(nucleusX, nucleusY) {
 
 //        ctx.arc(nucleusX - 30, nucleusY, 30, 0, Math.PI * 2);
 //        nucleusImage.style.left = nucleusX + "px";
@@ -750,6 +728,21 @@
 
     }
 
+    //    let images =
+    //        {
+    //            ["powderImg"]:undefined,
+    //            ["rockImg"]: undefined,
+    //            ["stripImg"]: undefined,
+    //        };
+    //still working on this area will give errors
+
+    let powderImg= document.createElement("img");
+    let rockImg= document.createElement("img");
+    let stripImg= document.createElement("img");
+
+    powderImg.src = "Resources/Powder.png";
+    rockImg.src = "Resources/Rock.png";
+    stripImg.src = "Resources/Strip.png";
     Set.prototype.isSuperset = function (subset)
     {
         for (let elem of subset)
@@ -928,19 +921,32 @@
             ["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true, powderImg),
 //
         ["MgO"]: new IonicCompound(["Mg", "O"], 2825, 3600, false, powderImg),
-        ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true,"H1O1H", rockImg),
+        ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true,["H",1,"O",1,"H"], rockImg),
         ["H2"]: new CovalentCompound(["H"], -259, -252, false,"H1H", rockImg),
         ["O2"]: new CovalentCompound(["O"], -219, -183, false,"O2O", rockImg),
         ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false,"Cl1Cl", rockImg),
         ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false,"Mg", stripImg),
         ["Na"]: new CovalentCompound(["Na"], 98, 883, false,"Na", rockImg),
+        ["Cu"]: new IonicCompound(["Cu"],1085,2562,false,stripImg),
 
 //          Michaels Compounds
-        ["F2"]: new CovalentCompound(["F"], 0, 100, true, rockImg),
-        ["HF"]: new CovalentCompound(["H", "F"], 0, 100, true, powderImg),
-        ["LiOH"]: new IonicCompound(["Li", "OH"], 0, 100, true, powderImg),
-        ["Li"]: new IonicCompound(["Li"], 0, 100, false, rockImg),
+        ["F2"]: new CovalentCompound(["F"], -220, -188, true, rockImg),
+        ["HF"]: new CovalentCompound(["H", "F"], -84, 20, true, powderImg),
+        ["LiOH"]: new IonicCompound(["Li", "OH"], 462, 924, true, powderImg),
+        ["Li"]: new IonicCompound(["Li"], 180, 1330, false, rockImg),
         ["Li2O"]: new IonicCompound(["Li", "O"], 1438, 2600, false, powderImg),
+
+//        Side File Compounds
+        ["NaOH"]: new IonicCompound(["Na","OH"], 318, 1388, true, powderImg),
+        ["CuO"]: new IonicCompound(["Cu","O"],1326,2000,false,powderImg),
+
+//        Liquid Images
+        ["H2SO4"]: new IonicCompound(["H","SO4"], 10, 337, true, powderImg),
+
+        ["He"]: new IonicCompound(["He"], -272, -269, false, powderImg),
+        ["Ne"]: new IonicCompound(["Ne"], -249, -246, false, powderImg),
+
+
 
     };
 
@@ -960,77 +966,35 @@
             [new Reaction(["Mg", "O2"], ["MgO"], ">50"), "temperature"],
             [new Reaction(["NaCl"], ["NaOH", "Cl2", "H2"], ">20"), "current"],
 
+
 //          Michael's reactions
-        [new Reaction(["H2O", "F2"], ["HF", "O2"], ">0"), "waterEnvironment"],
-        [new Reaction(["Li", "O2"], ["Li2O"], ">300"), "temperature"],
-        [new Reaction(["Li2O", "HCl"], ["LiCl", "H2O"], ">100"), "temperature"],
-//          [new Reaction(["Li", "H2O"], ["LiOH"], true), "waterEnvironment"],
+            [new Reaction(["H2O", "F2"], ["HF", "O2"], true), "waterEnvironment"],
+            [new Reaction(["Li", "O2"], ["Li2O"], ">0"), "temperature"],
+            [new Reaction(["Li2O", "HCl"], ["LiCl", "H2O"], ">100"), "temperature"],
+            [new Reaction(["H2SO4"], ["H2","SO4"], ">20"), "current"],
+            [new Reaction(["Li", "H2O"], ["LiOH"], true), "waterEnvironment"],
     ];
     let borderWidth = document.documentElement.clientWidth - 1320;
     let elementStatus = [
-        {
-            element: "Hydrogen",
-            x: 61,
-            y: 31,
-            status: false,
-            symbol: "H",
-            enabled: true,
-            outlineColour: "rgba(220,0,0,0.8)"
-        },
-        {
-            element: "Lithium",
-            x: 61,
-            y: 61,
-            status: false,
-            symbol: "Li",
-            enabled: true,
-            outlineColour: "rgba(255,138,23,1)"
-        },
-        {
-            element: "Sodium",
-            x: 61,
-            y: 91,
-            status: false,
-            symbol: "Na",
-            enabled: true,
-            outlineColour: "rgba(255,100,0,1)"
-        },
-        {
-            element: "Magnesium",
-            x: 91,
-            y: 91,
-            status: false,
-            symbol: "Mg",
-            enabled: true,
-            outlineColour: "rgba(255,180,0,1)"
-        },
-        {
-            element: "Chloride",
-            x: 541,
-            y: 91,
-            status: false,
-            symbol: "Cl",
-            enabled: true,
-            outlineColour: "rgba(75,75,206,1)"
-        },
-        {
-            element: "Oxygen",
-            x: 511,
-            y: 61,
-            status: false,
-            symbol: "O",
-            enabled: true,
-            outlineColour: "rgba(75,75,206,1)"
-        },
-        {
-            element: "Fluorine",
-            x: 541,
-            y: 61,
-            status: false,
-            symbol: "F",
-            enabled: true,
-            outlineColour: "rgba(75,75,206,1)"
-        }
+        {element: "Hydrogen", x: 61, y: 31, status: false, symbol: "H", enabled: true, outlineColour: "rgba(220,0,0,0.8)"},
+        {element: "Lithium", x: 61, y: 61, status: false, symbol: "Li", enabled: true, outlineColour: "rgba(255,138,23,1)"},
+        {element: "Sodium", x: 61, y: 91, status: false, symbol: "Na", enabled: true, outlineColour: "rgba(255,100,0,1)"},
+        {element: "Magnesium", x: 91, y: 91, status: false, symbol: "Mg", enabled: true, outlineColour: "rgba(255,180,0,1)"},
+        {element: "Chloride", x: 541, y: 91, status: false, symbol: "Cl", enabled: true, outlineColour: "rgba(75,75,206,1)"},
+        {element: "Oxygen", x: 511, y: 61, status: false, symbol: "O", enabled: true, outlineColour: "rgba(75,75,206,1)"},
+        {element: "Fluorine", x: 541, y: 61, status: false, symbol: "F", enabled: true, outlineColour: "rgba(75,75,206,1)"},
+
+        {element: "Helium", x: 571, y: 31, status: false, symbol: "He", enabled: true, outlineColour: "rgba(191,0,223,1)"},
+        {element: "Neon", x: 571, y: 61, status: false, symbol: "Ne", enabled: true, outlineColour: "rgba(191,0,223,1)"},
+
+        {element: "Copper", x: 361, y: 121, status: false, symbol: "Cu", enabled: true, outlineColour: "rgba(84,156,64,1)"},
+
+        {element: "Hydroxide", x: 211, y: 268, status: false, symbol: "OH", enabled: true, outlineColour: "rgba(120,120,120,1)"},
+        {element: "Sulphate", x: 241, y: 268, status: false, symbol: "SO4", enabled: true, outlineColour: "rgba(120,120,120,1)"}
+
+
+
+
     ];
 
 
@@ -1181,19 +1145,18 @@
 
         let macroView = document.getElementById("macroView").checked;
 
-        let moleculeView = document.getElementById("moleculeView").checked;
-
         let microView = document.getElementById("microView").checked;
 
         if (macroView)
         {
             view = "macroView";
-        } else if (moleculeView)
-        {
-            view = "moleculeView";
         } else if (microView)
         {
-            view = "microView"
+            view = "microView";
+            alert(currentCompounds[0]);
+
+            no = new compoundElectronConfig(currentCompounds[0].formula);
+
         } else
         {
             view = "macroView";
@@ -1231,7 +1194,7 @@
     //    }
     //    simulationManager();
 
-    no = new compoundElectronConfig(["H",1,"O",1,"H"]);
+
     function draw()
     {
 
@@ -1290,14 +1253,7 @@
         {
             mainCtx.beginPath();
             mainCtx.clearRect(0, 0, 656, 658);
-        } else if (view === "moleculeView")
-        {
-//            mainCtx.beginPath();
-//            mainCtx.rect(0, 0, 658, 656);
-//            mainCtx.fillStyle = ("rgba(0,0,0,1)");
-//            mainCtx.fill();
-
-        } else if (view === "microView")
+        }  else if (view === "microView")
         {
 //            mainCtx.beginPath();
 //            mainCtx.rect(0, 0, 658, 656);
@@ -1307,7 +1263,13 @@
             mainCtx.rect(0,0,658,656);
             mainCtx.fillStyle = ("rgba(0,0,0,0.8)");
             mainCtx.fill();
-            no.drawCompound();
+            try {
+                no.drawCompound();
+            } catch(err) {
+
+            }
+
+
 
         }
 

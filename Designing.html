@@ -45,6 +45,63 @@
 
     }
 
+    class IonicCompoundConfig {
+        constructor(cation, anion) {
+            this.cation = cation;
+            this.anion = anion;
+            this.centre = 30;
+            if (this.anion === "H") {
+                this.pair1 = new electronPair(this.centre - 91, this.centre, true, 1, false);
+                this.electronPairs = [this.pair1];
+
+            } else {
+                this.pair2 = new electronPair(this.centre - 91, this.centre, true, 1, false);
+                this.pair1 = new electronPair(this.centre - 91, this.centre - 60, true, 1, false);
+                this.pair3 = new electronPair(this.centre - 61, this.centre, false, 1, false);
+                this.pair4 = new electronPair(this.centre - 121, this.centre, false, 1, false);
+                this.electronPairs = [this.pair1, this.pair2, this.pair3, this.pair4];
+
+
+            }
+
+        }
+
+        drawCompound() {
+//
+            drawNucleus(main.width / 2 - 30 - 61, main.height / 2 - 30);
+            mainCtx.font = "30px Arial";
+            mainCtx.textAlign = "center";
+            mainCtx.fillText(this.cation, main.width / 2 - 61, main.height / 2 + 10);
+
+
+            if (this.anion === "H") {
+                drawNucleus(main.width / 2 - 30 + 61, main.height / 2 - 30);
+                mainCtx.font = "30px Arial";
+                mainCtx.textAlign = "center";
+                mainCtx.fillText(this.anion, main.width / 2 + 61, main.height / 2 + 10);
+                for (this.i = 0; this.i < this.electronPairs.length; this.i++) {
+                    this.electronPairs[0].drawElectron();
+                    this.electronPairs[0].updatePosition();
+                }
+            } else {
+                for (this.i = 0; this.i < 4; this.i += 2) {
+                    this.electronPairs[this.i].drawElectron();
+                    this.electronPairs[this.i].updatePosition();
+                }
+                drawNucleus(main.width / 2 - 30 + 61, main.height / 2 - 30);
+                mainCtx.font = "30px Arial";
+                mainCtx.textAlign = "center";
+                mainCtx.fillText(this.anion, main.width / 2 + 61, main.height / 2 + 10);
+                for (this.i = 1; this.i < 4; this.i += 2) {
+                    this.electronPairs[this.i].drawElectron();
+                    this.electronPairs[this.i].updatePosition();
+                }
+            }
+
+
+        }
+    }
+
     class electronPair {
         constructor(centreX, centreY, horizontal, pairNo, share) {
             this.centreX = centreX;
@@ -246,8 +303,8 @@
 
 
                             this.electronPairs = [this.pair1, this.pair2, this.pair10, this.pair4, this.pair5, this.pair6, this.pair8, this.pair9, this.pair3, this.pair12];
-                            if (this.formula[0] === "H" && this.formula[4] === "H" && this.formula[2] ==="O"){
-                                this.electronPairs = [this.pair5,this.pair6,this.pair7,this.pair8];
+                            if (this.formula[0] === "H" && this.formula[4] === "H" && this.formula[2] === "O") {
+                                this.electronPairs = [this.pair5, this.pair6, this.pair7, this.pair8];
                             }
 
 
@@ -457,24 +514,24 @@
                         case 1:
 //                            alert(this.formula);
 
-                            if (this.formula[0] === "H" && this.formula[4] === "H" && this.formula[2] ==="O") {
+                            if (this.formula[0] === "H" && this.formula[4] === "H" && this.formula[2] === "O") {
 
                                 drawNucleus(main.width / 2 - this.centre - 61, main.height / 2 - this.centre);
-                                for (this.pairs = 0; this.pairs < 2; this.pairs++){
+                                for (this.pairs = 0; this.pairs < 2; this.pairs++) {
                                     this.electronPairs[this.pairs].drawElectron();
                                     this.electronPairs[this.pairs].updatePosition();
                                 }
 
                                 drawNucleus(main.width / 2 - this.centre, main.height / 2 - this.centre);
 
-                                for (this.pairs = 2; this.pairs < 4; this.pairs++){
+                                for (this.pairs = 2; this.pairs < 4; this.pairs++) {
                                     this.electronPairs[this.pairs].drawElectron();
                                     this.electronPairs[this.pairs].updatePosition();
                                 }
 
                                 drawNucleus(main.width / 2 - this.centre + 61, main.height / 2 - this.centre);
                                 break;
-                            }else {
+                            } else {
                                 for (this.pairs = 0; this.pairs < 2; this.pairs += 1) {
                                     this.electronPairs[this.pairs].drawElectron();
                                     this.electronPairs[this.pairs].updatePosition();
@@ -541,7 +598,9 @@
 
     }
 
-    no = new compoundElectronConfig(["H",1,"O",1,"H"]);
+    //    no = new compoundElectronConfig(["H",1,"O",1,"H"]);
+    no = new IonicCompoundConfig("A", "B");
+
 
     function draw() {
         mainCtx.clearRect(0, 0, main.width, main.height);
