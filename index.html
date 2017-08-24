@@ -985,26 +985,39 @@
     }
 
     var possibleCompounds = //TODO: Add waterSoluble
+//        "Resources/Powder.png"
+//        "Resources/Rock.png"
+//        "Resources/Strip.png"
         {
             ["NaH"]: new IonicCompound(["Na", "H"], 300, Infinity, "Resources/Powder.png"),
             ["NaCl"]: new IonicCompound(["Na", "Cl"], 801, 1465, "Resources/Powder.png"),
+            ["MgO"]: new IonicCompound(["Mg", "O"], 2825, 3600, false, "Resources/Powder.png"),
+            ["Cu"]: new IonicCompound(["Cu"],1085,2562,false,"Resources/Strip.png"),
+            ["LiOH"]: new IonicCompound(["Li", "OH"], 462, 924, true, "Resources/Powder.png"),
+            ["Li"]: new IonicCompound(["Li"], 180, 1330, false, "Resources/Rock.png"),
+            ["Li2O"]: new IonicCompound(["Li", "O"], 1438, 2600, false, "Resources/Powder.png"),
+            ["NaOH"]: new IonicCompound(["Na","OH"], 318, 1388, true, "Resources/Powder.png"),
+            ["CuO"]: new IonicCompound(["Cu","O"],1326,2000,false,"Resources/Powder.png"),
+            ["H2SO4"]: new IonicCompound(["H","SO4"], 10, 337, true, "Resources/Powder.png"),
+            ["He"]: new IonicCompound(["He"], -272, -269, false, "Resources/Powder.png"),
+            ["Ne"]: new IonicCompound(["Ne"], -249, -246, false, "Resources/Powder.png"),
 
             ["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true, "Resources/Powder.png"),
-//
-        ["MgO"]: new IonicCompound(["Mg", "O"], 2825, 3600, false, "Resources/Powder.png"),
-        ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true, "Resources/Powder.png", ["H", 1, "O", 1, "H"]),
-        ["H2"]: new CovalentCompound(["H"], -259, -252, false, "Resources/Rock.png", "H1H"),
-        ["O2"]: new CovalentCompound(["O"], -219, -183, false, "Resources/Rock.png", "O2O"),
-        ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false, "Resources/Rock.png", "Cl1Cl"),
-        ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false, "Resources/Strip.png", "Mg"),
-        ["Na"]: new CovalentCompound(["Na"], 98, 883, false, "Resources/Rock.png", "Na"),
+            ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true,["H",1,"O",1,"H"], "Resources/Rock.png"),
+            ["H2"]: new CovalentCompound(["H"], -259, -252, false,"H1H", "Resources/Rock.png"),
+            ["O2"]: new CovalentCompound(["O"], -219, -183, false,"O2O", "Resources/Rock.png"),
+            ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false,"Cl1Cl", "Resources/Rock.png"),
+            ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false,"Mg", "Resources/Strip.png"),
+            ["Na"]: new CovalentCompound(["Na"], 98, 883, false,"Na", "Resources/Rock.png"),
+            ["F2"]: new CovalentCompound(["F"], -220, -188, true, "Resources/Rock.png"),
+            ["HF"]: new CovalentCompound(["H", "F"], -84, 20, true, "Resources/Powder.png"),
 
-//          Michaels Compounds
-        ["F2"]: new CovalentCompound(["F"], 0, 100, true, "Resources/Rock.png"),
-        ["HF"]: new CovalentCompound(["H", "F"], 0, 100, true, "Resources/Powder.png"),
-        ["LiOH"]: new IonicCompound(["Li", "OH"], 0, 100, true, "Resources/Powder.png"),
-        ["Li"]: new IonicCompound(["Li"], 0, 100, false, "Resources/Rock.png"),
-        ["Li2O"]: new IonicCompound(["Li", "O"], 1438, 2600, false, "Resources/Powder.png"),
+
+    //        Side File Compounds
+
+
+    //        Liquid Images
+
 
     };
 
@@ -1015,7 +1028,6 @@
     var waterEnvironment = false;
     var possibleReactions =
         [
-
             [new Reaction(["H2", "O2"], ["H2O"], ">300"), "temperature"],
             [new Reaction(["H2O"], ["H2", "O2"], ">20"), "current"],
             [new Reaction(["MgO", "H2O"], ["MgOH2"], true), "waterEnvironment"],
@@ -1024,77 +1036,29 @@
             [new Reaction(["Mg", "O2"], ["MgO"], ">50"), "temperature"],
             [new Reaction(["NaCl"], ["NaOH", "Cl2", "H2"], ">20"), "current"],
 
+
 //          Michael's reactions
-        [new Reaction(["H2O", "F2"], ["HF", "O2"], ">0"), "waterEnvironment"],
-        [new Reaction(["Li", "O2"], ["Li2O"], ">300"), "temperature"],
-        [new Reaction(["Li2O", "HCl"], ["LiCl", "H2O"], ">100"), "temperature"],
+            [new Reaction(["H2O", "F2"], ["HF", "O2"], true), "waterEnvironment"],
+            [new Reaction(["Li", "O2"], ["Li2O"], ">0"), "temperature"],
+            [new Reaction(["Li2O", "HCl"], ["LiCl", "H2O"], ">100"), "temperature"],
+            [new Reaction(["H2SO4"], ["H2","SO4"], ">20"), "current"],
+            [new Reaction(["Li", "H2O"], ["LiOH"], true), "waterEnvironment"],
 //          [new Reaction(["Li", "H2O"], ["LiOH"], true), "waterEnvironment"],
     ];
     let borderWidth = document.documentElement.clientWidth - 1320;
     let elementStatus = [
-        {
-            element: "Hydrogen",
-            x: 61,
-            y: 31,
-            status: false,
-            symbol: "H",
-            enabled: true,
-            outlineColour: "rgba(220,0,0,0.8)"
-        },
-        {
-            element: "Lithium",
-            x: 61,
-            y: 61,
-            status: false,
-            symbol: "Li",
-            enabled: true,
-            outlineColour: "rgba(255,138,23,1)"
-        },
-        {
-            element: "Sodium",
-            x: 61,
-            y: 91,
-            status: false,
-            symbol: "Na",
-            enabled: true,
-            outlineColour: "rgba(255,100,0,1)"
-        },
-        {
-            element: "Magnesium",
-            x: 91,
-            y: 91,
-            status: false,
-            symbol: "Mg",
-            enabled: true,
-            outlineColour: "rgba(255,180,0,1)"
-        },
-        {
-            element: "Chloride",
-            x: 541,
-            y: 91,
-            status: false,
-            symbol: "Cl",
-            enabled: true,
-            outlineColour: "rgba(75,75,206,1)"
-        },
-        {
-            element: "Oxygen",
-            x: 511,
-            y: 61,
-            status: false,
-            symbol: "O",
-            enabled: true,
-            outlineColour: "rgba(75,75,206,1)"
-        },
-        {
-            element: "Fluorine",
-            x: 541,
-            y: 61,
-            status: false,
-            symbol: "F",
-            enabled: true,
-            outlineColour: "rgba(75,75,206,1)"
-        }
+        {element: "Hydrogen", x: 61, y: 31, status: false, symbol: "H", enabled: true, outlineColour: "rgba(220,0,0,0.8)"},
+        {element: "Lithium", x: 61, y: 61, status: false, symbol: "Li", enabled: true, outlineColour: "rgba(255,138,23,1)"},
+        {element: "Sodium", x: 61, y: 91, status: false, symbol: "Na", enabled: true, outlineColour: "rgba(255,100,0,1)"},
+        {element: "Magnesium", x: 91, y: 91, status: false, symbol: "Mg", enabled: true, outlineColour: "rgba(255,180,0,1)"},
+        {element: "Chloride", x: 541, y: 91, status: false, symbol: "Cl", enabled: true, outlineColour: "rgba(75,75,206,1)"},
+        {element: "Oxygen", x: 511, y: 61, status: false, symbol: "O", enabled: true, outlineColour: "rgba(75,75,206,1)"},
+        {element: "Fluorine", x: 541, y: 61, status: false, symbol: "F", enabled: true, outlineColour: "rgba(75,75,206,1)"},
+        {element: "Helium", x: 571, y: 31, status: false, symbol: "He", enabled: true, outlineColour: "rgba(191,0,223,1)"},
+        {element: "Neon", x: 571, y: 61, status: false, symbol: "Ne", enabled: true, outlineColour: "rgba(191,0,223,1)"},
+        {element: "Copper", x: 361, y: 121, status: false, symbol: "Cu", enabled: true, outlineColour: "rgba(84,156,64,1)"},
+        {element: "Hydroxide", x: 211, y: 268, status: false, symbol: "OH", enabled: true, outlineColour: "rgba(120,120,120,1)"},
+        {element: "Sulphate", x: 241, y: 268, status: false, symbol: "SO4", enabled: true, outlineColour: "rgba(120,120,120,1)"}
     ];
 
 
