@@ -141,12 +141,12 @@
         }
 
         #tempTextBox {
-            margin-left: 12%;
+            margin-left: 1.8%;
 
         }
 
         #currentTextBox {
-            margin-left: 39.8%;
+            margin-left: 37.5%;
         }
 
         #macroView {
@@ -189,7 +189,7 @@
         <div class="bottomBar">
             <div class="optionsBar">
                 <form id="update">
-                    Temperature(Celsius): <input id="tempTextBox" placeholder="0" title="Celsius">
+                    Temperature(Celsius): <button type = "button" id = "negative" title = "negativeRadio" onclick="return negativeUpdate()"> - </button> <input id="tempTextBox" placeholder="0" title="Celsius">
                     Current: <input id="currentTextBox" placeholder="0" title="Voltage">
                     Macroscopic View<input type="radio" name="views" id="macroView" title="Macro">
                     <br>
@@ -199,6 +199,9 @@
                 </form>
             </div>
             <div class="infoBar">
+                Compound:
+
+                <button onclick = "nextCompound()">Next Compound</button>
 
             </div>
         </div>
@@ -999,26 +1002,18 @@
             ["NaOH"]: new IonicCompound(["Na","OH"], 318, 1388, true, "Resources/Powder.png"),
             ["CuO"]: new IonicCompound(["Cu","O"],1326,2000,false,"Resources/Powder.png"),
             ["H2SO4"]: new IonicCompound(["H","SO4"], 10, 337, true, "Resources/Powder.png"),
-            ["He"]: new IonicCompound(["He"], -272, -269, false, "Resources/Powder.png"),
-            ["Ne"]: new IonicCompound(["Ne"], -249, -246, false, "Resources/Powder.png"),
+            ["HCl"]: new IonicCompound(["H", "Cl"], -114, -85, true, "Resources/Powder.png"),
 
-            ["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true, "Resources/Powder.png"),
             ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true,["H",1,"O",1,"H"], "Resources/Rock.png"),
             ["H2"]: new CovalentCompound(["H"], -259, -252, false,["H",1,"H"], "Resources/Rock.png"),
-            ["O2"]: new CovalentCompound(["O"], -219, -183, false,"O2O", "Resources/Rock.png"),
-            ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false,"Cl1Cl", "Resources/Rock.png"),
-            ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false,"Mg", "Resources/Strip.png"),
-            ["Na"]: new CovalentCompound(["Na"], 98, 883, false,"Na", "Resources/Rock.png"),
-            ["F2"]: new CovalentCompound(["F"], -220, -188, true, "Resources/Rock.png"),
-            ["HF"]: new CovalentCompound(["H", "F"], -84, 20, true, "Resources/Powder.png"),
-
-
-    //        Side File Compounds
-
-
-    //        Liquid Images
-
-
+            ["O2"]: new CovalentCompound(["O"], -219, -183, false,["O",2,"O"], "Resources/Rock.png"),
+            ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false,["Cl",1,"Cl"], "Resources/Rock.png"),
+            ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false,["Mg"], "Resources/Strip.png"),
+            ["Na"]: new CovalentCompound(["Na"], 98, 883, false,["Na"], "Resources/Rock.png"),
+            ["F2"]: new CovalentCompound(["F"], -220, -188, true,["F",1,"F"], "Resources/Rock.png"),
+            ["HF"]: new CovalentCompound(["H", "F"], -84, 20, true,["H",1,"F"], "Resources/Powder.png"),
+            ["He"]: new CovalentCompound(["He"], -272, -269, false,["He"], "Resources/Powder.png"),
+            ["Ne"]: new CovalentCompound(["Ne"], -249, -246, false,["Ne"], "Resources/Powder.png"),
     };
 
     var currentCompounds = [];
@@ -1229,6 +1224,14 @@
 
         document.getElementById("tempTextBox").placeholder = temperature.toString();
         document.getElementById("currentTextBox").placeholder = current;
+
+
+    }
+
+    function negativeUpdate(){
+        var store = document.getElementById("tempTextBox").value;
+        store *= -1;
+        document.getElementById("tempTextBox").value = store;
 
 
     }
