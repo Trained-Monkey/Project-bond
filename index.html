@@ -178,7 +178,6 @@
             <img src="Resources/Program Bar.jpg">
         </div>
 
-
         <div class="periodicTable">
 
             <img class="table" src="Resources/Periodic Table.jpg">
@@ -201,8 +200,16 @@
             <div class="infoBar">
                 Atomic View:
                 <br>
-                Compound:
-                <br>
+                Compounds: <select id = "selectedCompound" title="CompoundList" onchange="updateCompound()">
+                <option id="option1">None</option>
+                <option id="option2">None</option>
+                <option id="option3">None</option>
+                <option id="option4">None</option>
+                <option id="option5">None</option>
+                <option id="option6">None</option>
+                <option id="option7">None</option>
+            </select>
+                <p id = "chemicalFormula">Formula:</p>
 
                 <button onclick = "nextCompound()">Next Compound</button>
 
@@ -219,6 +226,8 @@
     let ctx = c.getContext("2d");
     let mainC = document.getElementById("main");
     let mainCtx = mainC.getContext("2d");
+
+    var selectedCompound = 0;
 
     var nucleusImage = document.createElement("img");
     nucleusImage.src = "Resources/Nucleus.png";
@@ -1026,7 +1035,7 @@
             {
                 for (let i = 0; i < this.reactants.length; i++)
                 {
-                    currentCompounds.splice(i);
+                        currentCompounds.splice(i);
 
                 }
 
@@ -1049,6 +1058,8 @@
             }
         }
     }
+
+
 
     var possibleCompounds = //TODO: Add waterSoluble
 //        "Resources/Powder.png"
@@ -1089,7 +1100,7 @@
     var possibleReactions =
         [
             [new Reaction(["H2", "O2"], ["H2O"], ">300"), "temperature"],
-            [new Reaction(["H2O"], ["H2", "O2"], ">20"), "current"],
+//            [new Reaction(["H2O"], ["H2", "O2"], ">20"), "current"],
             [new Reaction(["MgO", "H2O"], ["MgOH2"], true), "waterEnvironment"],
             [new Reaction(["Cl2", "H2"], ["HCl"], true), "UV"],
             [new Reaction(["MgOH2"], ["Mg", "H2O"], ">100"), "temperature"],
@@ -1169,6 +1180,95 @@
     });
 
 
+    function tempUpdate()
+    {
+        temperature = document.getElementById("tempTextBox").value;
+        current = document.getElementById("currentTextBox").value;
+
+
+        let macroView = document.getElementById("macroView").checked;
+
+        let microView = document.getElementById("microView").checked;
+
+        if (macroView)
+        {
+            view = "macroView";
+        } else if (microView)
+        {
+            view = "microView";
+//            alert(possibleCompounds[currentCompounds[0]].formula);
+//            alert(selectedCompound);
+
+            switch (possibleCompounds[selectedCompound] instanceof CovalentCompound){
+                case true:
+
+                    no = new compoundElectronConfig(possibleCompounds[selectedCompound].formula);
+                    break;
+                case false:
+                    no = new IonicCompoundConfig(possibleCompounds[selectedCompound].ions[0],possibleCompounds[selectedCompound].ions[1]);
+                    break;
+
+
+            }
+
+        } else
+        {
+            view = "macroView";
+        }
+
+        document.getElementById("tempTextBox").placeholder = temperature.toString();
+        document.getElementById("currentTextBox").placeholder = current;
+
+
+    }
+
+    function updateCompound(){
+//        id.options[id.selectedIndex].value;
+        option1 = document.getElementById("option1");
+        option2 = document.getElementById("option2");
+        option3 = document.getElementById("option3");
+        option4 = document.getElementById("option4");
+        option5 = document.getElementById("option5");
+        option6 = document.getElementById("option6");
+        option7 = document.getElementById("option7");
+
+        try{
+            for (compound = 0; compound < 7; compound++){
+                console.log(currentCompounds[compound]);
+                if (currentCompounds[compound] !== undefined) {
+                    eval("option" + (compound + 1).toString()).innerHTML = currentCompounds[compound];
+                } else {
+                    eval("option" + (compound + 1).toString()).innerHTML = "None";
+
+                }
+            }
+        } catch(err){
+            alert("ERROR");
+        }
+        var selectedCompounds = document.getElementById("selectedCompound");
+        selectedCompound = selectedCompounds.options[selectedCompounds.selectedIndex].value;
+//        alert(selectedCompound);
+        switch (possibleCompounds[selectedCompound] instanceof CovalentCompound){
+            case true:
+
+                no = new compoundElectronConfig(possibleCompounds[selectedCompound].formula);
+                break;
+            case false:
+                no = new IonicCompoundConfig(possibleCompounds[selectedCompound].ions[0],possibleCompounds[selectedCompound].ions[1]);
+                break;
+
+
+        }
+    }
+
+    function negativeUpdate(){
+        var store = document.getElementById("tempTextBox").value;
+        store *= -1;
+        document.getElementById("tempTextBox").value = store;
+
+
+    }
+
     function onClickHandler(e)
     {
         let tableRect = c.getBoundingClientRect();
@@ -1197,6 +1297,7 @@
         }
 
         elementStatus.forEach(function (x)
+
         {
             if (!possibleBondPartner.has(x.symbol) && !x.status)
             {
@@ -1210,6 +1311,8 @@
 
             }
         });
+//        updateCompound();
+
 
 
         let fakeCompound = false;
@@ -1259,57 +1362,11 @@
                 x.enabled = true;
             });
 
+            updateCompound();
+
         }
     }
 
-    function tempUpdate()
-    {
-        temperature = document.getElementById("tempTextBox").value;
-        current = document.getElementById("currentTextBox").value;
-
-        let macroView = document.getElementById("macroView").checked;
-
-        let microView = document.getElementById("microView").checked;
-
-        if (macroView)
-        {
-            view = "macroView";
-        } else if (microView)
-        {
-            view = "microView";
-//            alert(possibleCompounds[currentCompounds[0]].formula);
-
-//            switch (possibleCompounds[currentCompounds[0]] instanceof ){
-//                case CovalentCompound:
-                    no = new compoundElectronConfig(possibleCompounds[currentCompounds[0]].formula);
-//                    alert();
-//                    break;
-//                case IonicCompound:
-//                    no = new IonicCompoundConfig(possibleCompounds[currentCompounds[0]].formula);
-//                    alert("IONIC");
-//                    break;
-
-
-//            }
-
-        } else
-        {
-            view = "macroView";
-        }
-
-        document.getElementById("tempTextBox").placeholder = temperature.toString();
-        document.getElementById("currentTextBox").placeholder = current;
-
-
-    }
-
-    function negativeUpdate(){
-        var store = document.getElementById("tempTextBox").value;
-        store *= -1;
-        document.getElementById("tempTextBox").value = store;
-
-
-    }
 
     //     kek
     //    function simulationManager()
@@ -1343,6 +1400,7 @@
         {
             mainCtx.beginPath();
             mainCtx.clearRect(0, 0, 656, 658);
+
         } else if (view === "microView")
         {
 //            mainCtx.beginPath();
@@ -1353,15 +1411,13 @@
             mainCtx.rect(0, 0, 658, 656);
             mainCtx.fillStyle = ("rgba(0,0,0,0.8)");
             mainCtx.fill();
-            try
-            {
+
+            try{
                 no.drawCompound();
             } catch (err)
             {
 
             }
-
-
         }
 
         for (let i = 0; i < elementStatus.length; i++)
@@ -1398,13 +1454,18 @@
                 {
                     possibleCompounds[currentCompounds[i]].checkImage();
                 }
+
             }
             catch (Exception)
             {
-                alert("");
+//                alert("");
                 console.log(currentCompounds[i]);
             }
         }
+
+
+        waterEnvironment = new Set(currentCompounds).has("H2O");
+
         for (let i = 0; i < currentCompounds.length; i++)
         {
             if (currentCompounds[i].state === "GAS")
@@ -1417,7 +1478,6 @@
             }
 //
         }
-
 
         requestAnimationFrame(draw);
     }
