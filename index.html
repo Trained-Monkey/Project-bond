@@ -141,12 +141,7 @@
         }
 
         #tempTextBox {
-            margin-left: 1.8%;
-
-        }
-
-        #currentTextBox {
-            margin-left: 37.5%;
+            margin-left: 4px;
         }
 
         #infoBar {
@@ -154,13 +149,6 @@
             margin-left: 5px;
         }
 
-        #macroView {
-            margin-left: 20px;
-        }
-
-        #microView {
-            margin-left: 50px;
-        }
 
 
     </style>
@@ -198,7 +186,7 @@
                     <div id = "currentTemperature">Current Temperature: 25C</div>
                     <br>
                     <br>
-                    <input type="button" id="tempUpdateButton" value="UPDATE" onclick="tempUpdate()">
+                    <input type="button" id="tempUpdateButton" value="Update" onclick="tempUpdate()"><button type="button" id="clearCompounds" onclick = "clearCompound()">Clear Compounds</button>
                 </form>
             </div>
             <div class="infoBar">
@@ -1257,7 +1245,9 @@
         }
     });
 
-
+    function clearCompound(){
+        currentCompounds = []
+    }
 
     function onClickHandler(e)
     {

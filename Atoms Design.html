@@ -141,12 +141,7 @@
         }
 
         #tempTextBox {
-            margin-left: 1.8%;
-
-        }
-
-        #currentTextBox {
-            margin-left: 37.5%;
+            margin-left: 4px;
         }
 
         #infoBar {
@@ -154,13 +149,6 @@
             margin-left: 5px;
         }
 
-        #macroView {
-            margin-left: 20px;
-        }
-
-        #microView {
-            margin-left: 50px;
-        }
 
 
     </style>
@@ -193,28 +181,28 @@
         <div class="bottomBar">
             <div class="optionsBar">
                 <form id="update">
-                    Temperature(Celsius): <button type = "button" id = "negative" title = "negativeRadio" onclick="return negativeUpdate()"> - </button> <input id="tempTextBox" placeholder="between -3000 & 3000" title="Celsius">
+                    Temperature(Celsius): <button type = "button" id = "negative" title = "negativeRadio" onclick="return negativeUpdate()"> - </button> <input id="tempTextBox" onkeypress="if (event.keyCode == 13) return false" placeholder="between -3000 & 3000" title="Celsius">
                     Current: <input type = "checkbox" id="currentCheck" title="Voltage" onclick="tempUpdate()">
                     <div id = "currentTemperature">Current Temperature: 25C</div>
                     <br>
                     <br>
-                    <input type="button" id="tempUpdateButton" value="UPDATE" onclick="tempUpdate()">
+                    <input type="button" id="tempUpdateButton" value="Update" onclick="tempUpdate()"><button type="button" id="clearCompounds" onclick = "clearCompound()">Clear Compounds</button>
                 </form>
             </div>
             <div class="infoBar">
                 <div id  ="infoBar" >
-                 Atomic View: <input type = "checkbox" id = "check" onclick="toggleAtomic()">
-                <br>
-                 Compounds: <select id = "selectedCompound" title="CompoundList" onchange="updateCompound()">
-                <option id="option1">None</option>
-                <option id="option2">None</option>
-                <option id="option3">None</option>
-                <option id="option4">None</option>
-                <option id="option5">None</option>
-                <option id="option6">None</option>
-                <option id="option7">None</option>
+                    Atomic View: <input type = "checkbox" id = "check" onclick="toggleAtomic()">
+                    <br>
+                    Compounds: <select id = "selectedCompound" title="CompoundList" onchange="updateCompound()">
+                    <option id="option1">None</option>
+                    <option id="option2">None</option>
+                    <option id="option3">None</option>
+                    <option id="option4">None</option>
+                    <option id="option5">None</option>
+                    <option id="option6">None</option>
+                    <option id="option7">None</option>
 
-            </select>
+                </select>
                 </div>
 
             </div>
@@ -1162,53 +1150,6 @@
         compoundCombinations.push(new Set(possibleCompounds[compound].atoms))
     }
 
-    c.addEventListener('click', onClickHandler, true);
-    document.getElementById("tempTextBox").addEventListener("keydown", function (e)
-    {
-        var key = e.keyCode ? e.keyCode : e.which;
-
-        if (!( [8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
-                (key === 65 && ( e.ctrlKey || e.metaKey  ) ) ||
-                (key >= 35 && key <= 40) ||
-                (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
-                (key >= 96 && key <= 105)
-            ))
-        {
-            e.preventDefault();
-        }
-
-        if (key === 13){
-            tempUpdate();
-        }
-
-
-
-
-    });
-//    document.getElementById("currentTextBox").addEventListener("keydown", function (e)
-//    {
-//        var key = e.keyCode ? e.keyCode : e.which;
-//
-//        if (!( [8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
-//                (key == 65 && ( e.ctrlKey || e.metaKey  ) ) ||
-//                (key >= 35 && key <= 40) ||
-//                (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
-//                (key >= 96 && key <= 105)
-//            ))
-//        {
-//            e.preventDefault();
-//        }
-//
-//        if (key === 13){
-//            alert();
-//            tempUpdate();
-//            alert();
-//        }
-//
-//
-//    });
-
-
     function tempUpdate() {
         storedTemperature = document.getElementById("tempTextBox").value;
         current = document.getElementById("currentCheck").checked;
@@ -1233,7 +1174,6 @@
 
 
         document.getElementById("currentTemperature").innerHTML = "Current Temperature: " + tempText +"C";
-
         document.getElementById("tempTextBox").value = "";
 
     }
@@ -1283,6 +1223,30 @@
         document.getElementById("tempTextBox").value = store;
 
 
+    }
+
+    c.addEventListener('click', onClickHandler, true);
+    document.getElementById("tempTextBox").addEventListener("keydown", function (e)
+    {
+        var key = e.keyCode ? e.keyCode : e.which;
+
+        if (!( [8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
+                (key === 65 && ( e.ctrlKey || e.metaKey  ) ) ||
+                (key >= 35 && key <= 40) ||
+                (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
+                (key >= 96 && key <= 105)
+            ))
+        {
+            e.preventDefault();
+        }
+
+        if (key === 13){
+            tempUpdate();
+        }
+    });
+
+    function clearCompound(){
+        currentCompounds = []
     }
 
     function onClickHandler(e)
@@ -1508,7 +1472,6 @@
                 console.log(currentCompounds[i]);
             }
         }
-
 
         waterEnvironment = new Set(currentCompounds).has("H2O");
 
