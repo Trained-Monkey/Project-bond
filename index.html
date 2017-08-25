@@ -149,6 +149,11 @@
             margin-left: 37.5%;
         }
 
+        #infoBar {
+            position: relative;
+            margin-left: 5px;
+        }
+
         #macroView {
             margin-left: 20px;
         }
@@ -198,20 +203,23 @@
                 </form>
             </div>
             <div class="infoBar">
-                Atomic View: <input type = "checkbox" id = "check" onclick="toggleAtomic()">
-                <br>
-                Compounds: <select id = "selectedCompound" title="CompoundList" onchange="updateCompound()">
-                <option id="option1">None</option>
-                <option id="option2">None</option>
-                <option id="option3">None</option>
-                <option id="option4">None</option>
-                <option id="option5">None</option>
-                <option id="option6">None</option>
-                <option id="option7">None</option>
-            </select>
-                <p id = "chemicalFormula">Formula:</p>
+                <div id  ="infoBar" >
+                    Atomic View: <input type = "checkbox" id = "check" onclick="toggleAtomic()">
+                    <br>
+                    Compounds: <select id = "selectedCompound" title="CompoundList" onchange="updateCompound()">
+                    <option id="option1">None</option>
+                    <option id="option2">None</option>
+                    <option id="option3">None</option>
+                    <option id="option4">None</option>
+                    <option id="option5">None</option>
+                    <option id="option6">None</option>
+                    <option id="option7">None</option>
 
-                <button onclick = "nextCompound()">Next Compound</button>
+                </select>
+                    <p id = "chemicalFormula"> Formula:</p>
+
+                    <button onclick = "nextCompound()">Next Compound</button>
+                </div>
 
             </div>
         </div>
@@ -1085,7 +1093,9 @@
         ["Ne"]: new CovalentCompound(["Ne"], -249, -246, false,"Resources/Powder.png",0,0,["Ne"]),
         ["Cu"]: new CovalentCompound(["Cu"],1085,2562,false,"Resources/Strip.png",0,0,["Cu"]),
         ["Li"]: new CovalentCompound(["Li"], 180, 1330, false, "Resources/Rock.png",0,0,["Li"]),
+        ["Ar"]: new CovalentCompound(["Ag"], 180, 1330, false, "Resources/Rock.png",0,0,["Li"]),
         ["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true, "Resources/Powder.png",0,0,["H",1,"Cl"]),
+        ["CO2"]: new CovalentCompound(["C", "O"], -79, -79, true, "Resources/Powder.png",0,0,["O",2,"C",2,"O"]),
     };
     var currentCompounds = [];
     var temperature = 25;
@@ -1117,15 +1127,31 @@
         {element: "Hydrogen", x: 61, y: 31, status: false, symbol: "H", enabled: true, outlineColour: "rgba(220,0,0,0.8)"},
         {element: "Lithium", x: 61, y: 61, status: false, symbol: "Li", enabled: true, outlineColour: "rgba(255,138,23,1)"},
         {element: "Sodium", x: 61, y: 91, status: false, symbol: "Na", enabled: true, outlineColour: "rgba(255,100,0,1)"},
+        {element: "Potassium", x: 61, y: 121, status: false, symbol: "K", enabled: true, outlineColour: "rgba(255,100,0,1)"},
+
         {element: "Magnesium", x: 91, y: 91, status: false, symbol: "Mg", enabled: true, outlineColour: "rgba(255,180,0,1)"},
-        {element: "Chloride", x: 541, y: 91, status: false, symbol: "Cl", enabled: true, outlineColour: "rgba(75,75,206,1)"},
+        {element: "Calcium", x: 91, y: 121, status: false, symbol: "Ca", enabled: true, outlineColour: "rgba(255,180,0,1)"},
+
+        {element: "Carbon", x: 481, y: 61, status: false, symbol: "C", enabled: true, outlineColour: "rgba(75,75,206,1)"},
+
         {element: "Oxygen", x: 511, y: 61, status: false, symbol: "O", enabled: true, outlineColour: "rgba(75,75,206,1)"},
+        {element: "Sulfur", x: 511, y: 91, status: false, symbol: "S", enabled: true, outlineColour: "rgba(75,75,206,1)"},
+
         {element: "Fluorine", x: 541, y: 61, status: false, symbol: "F", enabled: true, outlineColour: "rgba(75,75,206,1)"},
+        {element: "Chloride", x: 541, y: 91, status: false, symbol: "Cl", enabled: true, outlineColour: "rgba(75,75,206,1)"},
+
         {element: "Helium", x: 571, y: 31, status: false, symbol: "He", enabled: true, outlineColour: "rgba(191,0,223,1)"},
         {element: "Neon", x: 571, y: 61, status: false, symbol: "Ne", enabled: true, outlineColour: "rgba(191,0,223,1)"},
+        {element: "Argon", x: 571, y: 91, status: false, symbol: "Ar", enabled: true, outlineColour: "rgba(191,0,223,1)"},
+
         {element: "Copper", x: 361, y: 121, status: false, symbol: "Cu", enabled: true, outlineColour: "rgba(84,156,64,1)"},
+
+        {element: "Zinc", x: 391, y: 121, status: false, symbol: "Zn", enabled: true, outlineColour: "rgba(189,95,75,1)"},
+
+
         {element: "Hydroxide", x: 211, y: 268, status: false, symbol: "OH", enabled: true, outlineColour: "rgba(120,120,120,1)"},
-        {element: "Sulphate", x: 241, y: 268, status: false, symbol: "SO4", enabled: true, outlineColour: "rgba(120,120,120,1)"}
+        {element: "Sulphate", x: 241, y: 268, status: false, symbol: "SO4", enabled: true, outlineColour: "rgba(120,120,120,1)"},
+        {element: "Nitrate", x: 271, y: 268, status: false, symbol: "NO3", enabled: true, outlineColour: "rgba(120,120,120,1)"}
     ];
 
 
@@ -1155,6 +1181,14 @@
             e.preventDefault();
         }
 
+        if (key === 13){
+            alert();
+            tempUpdate();
+            alert();
+        }
+
+
+
 
     });
     document.getElementById("currentTextBox").addEventListener("keydown", function (e)
@@ -1169,6 +1203,12 @@
             ))
         {
             e.preventDefault();
+        }
+
+        if (key === 13){
+            alert();
+            tempUpdate();
+            alert();
         }
 
 
@@ -1194,6 +1234,7 @@
         option5 = document.getElementById("option5");
         option6 = document.getElementById("option6");
         option7 = document.getElementById("option7");
+        shownFormula = document.getElementById("chemicalFormula");
 
         try{
             for (compound = 0; compound < 7; compound++){
@@ -1219,9 +1260,9 @@
             case false:
                 no = new IonicCompoundConfig(possibleCompounds[selectedCompound].ions[0],possibleCompounds[selectedCompound].ions[1]);
                 break;
-
-
         }
+
+
     }
 
     function negativeUpdate(){
@@ -1333,33 +1374,34 @@
     function toggleAtomic(){
         microView = document.getElementById("check").checked;
 
-        if (!microView)
-        {
-            view = "macroView";
-        } else if (microView)
-        {
-            view = "microView";
+        try {
+
+            if (!microView) {
+                view = "macroView";
+            } else if (microView) {
+                view = "microView";
 //            alert(possibleCompounds[currentCompounds[0]].formula);
 //            alert(selectedCompound);
 
-            switch (possibleCompounds[selectedCompound] instanceof CovalentCompound){
-                case true:
+                switch (possibleCompounds[selectedCompound] instanceof CovalentCompound) {
+                    case true:
 
-                    no = new compoundElectronConfig(possibleCompounds[selectedCompound].formula);
-                    break;
-                case false:
-                    no = new IonicCompoundConfig(possibleCompounds[selectedCompound].ions[0],possibleCompounds[selectedCompound].ions[1]);
-                    break;
+                        no = new compoundElectronConfig(possibleCompounds[selectedCompound].formula);
+                        break;
+                    case false:
+                        no = new IonicCompoundConfig(possibleCompounds[selectedCompound].ions[0], possibleCompounds[selectedCompound].ions[1]);
+                        break;
 
 
+                }
+
+            } else {
+                view = "macroView";
             }
+        } catch(err){
 
-        } else
-        {
-            view = "macroView";
         }
     }
-
 
     //     kek
     //    function simulationManager()
@@ -1385,7 +1427,6 @@
     //        requestAnimationFrame(simulationManager);
     //    }
     //    simulationManager();
-
 
     function draw()
     {
