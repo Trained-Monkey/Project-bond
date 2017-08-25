@@ -839,25 +839,44 @@
             this.solidImage = solidImage;
             this.liquidImage = liquidImage;
             this.gasImage = gasImage;
+//            this.firstTime = false;
 
 //            this.checkImage();
         }
 
         checkState(temperature, waterEnvironment)
         {
+//            let name = "";
+//            let currentState = this.state;
+//
+//            for (let i in possibleCompounds)
+//            {
+//                if (possibleCompounds[i].atoms.filter(x=> !new Set(this.atoms).has(x)).length === 0)
+//                {
+//                    name = i;
+//                    break;
+//                }
+//            }
+//            let reaction = name + " (" + this.state + ") --> ";
             if (temperature >= this.bp)
             {
-                this.state = "GAS"
+                this.state = "GAS";
             }
             else if (temperature >= this.mp)
             {
-                this.state = "LIQUID"
+                this.state = "LIQUID";
             }
             else
             {
-                this.state = "SOLID"
-            }
+                this.state = "SOLID";
 
+            }
+//            if(currentState !== this.state)
+//            {
+//                console.log(currentState);
+//                reaction += name + " (" + this.state + ")";
+//                recentReactions.unshift(reaction);
+//            }
 //            if (waterEnvironment && this.waterSoluble)
 //            {
 //                this.state = "AQUEOUS";
@@ -918,6 +937,7 @@
         checkState(temperature, waterEnvironment)
         {
             super.checkState(temperature, waterEnvironment);
+
             this.conductor = (this.state === "LIQUID" || this.state === "AQUEOUS");
         }
     }
@@ -1221,7 +1241,10 @@
                 no = new compoundElectronConfig(possibleCompounds[selectedCompound].formula);
                 break;
             case false:
-                no = new IonicCompoundConfig(possibleCompounds[selectedCompound].ions[0],possibleCompounds[selectedCompound].ions[1]);
+                if (possibleCompounds[selectedCompound] !== undefined)
+                {
+                    no = new IonicCompoundConfig(possibleCompounds[selectedCompound].ions[0], possibleCompounds[selectedCompound].ions[1]);
+                }
                 break;
         }
 
@@ -1518,6 +1541,7 @@
 //
         }
 
+        displayRecent();
         requestAnimationFrame(draw);
     }
 
