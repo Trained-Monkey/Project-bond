@@ -1065,14 +1065,14 @@
 
     var possibleCompounds = //TODO: Add waterSoluble
         {
-            ["NaH"]: new IonicCompound(["Na", "H"], 300, Infinity, false,"Resources/Powder.png",0,0,["Na","H"]),
-            ["NaCl"]: new IonicCompound(["Na", "Cl"], 801, 1465,true, "Resources/Powder.png",0,0,["Na","Cl"]),
-            ["MgO"]: new IonicCompound(["Mg", "O"], 2825, 3600, false, "Resources/Powder.png",0,0,["Mg","O"]),
-            ["LiOH"]: new IonicCompound(["Li", "OH"], 462, 924, true, "Resources/Powder.png",0,0,["Li","OH"]),
-            ["Li2O"]: new IonicCompound(["Li", "O"], 1438, 2600, false, "Resources/Powder.png",0,0,["Li","O"]),
-            ["NaOH"]: new IonicCompound(["Na","OH"], 318, 1388, true, "Resources/Powder.png",0,0,["Na","OH"]),
-            ["CuO"]: new IonicCompound(["Cu","O"],1326,2000,false,"Resources/Powder.png",0,0,["Cu","O"]),
-            ["H2SO4"]: new IonicCompound(["H","SO4"], 10, 337, true, "Resources/Powder.png",0,0,["H","SO4"]),
+            ["NaH"]: new IonicCompound(["Na", "H"], 300, Infinity, false,"Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Na","H"]),
+            ["NaCl"]: new IonicCompound(["Na", "Cl"], 801, 1465,true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Na","Cl"]),
+            ["MgO"]: new IonicCompound(["Mg", "O"], 2825, 3600, false, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Mg","O"]),
+            ["LiOH"]: new IonicCompound(["Li", "OH"], 462, 924, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Li","OH"]),
+            ["Li2O"]: new IonicCompound(["Li", "O"], 1438, 2600, false, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Li","O"]),
+            ["NaOH"]: new IonicCompound(["Na","OH"], 318, 1388, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Na","OH"]),
+            ["CuO"]: new IonicCompound(["Cu","O"],1326,2000,false,"Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Cu","O"]),
+            ["H2SO4"]: new IonicCompound(["H","SO4"], 10, 337, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["H","SO4"]),
 
 
 //            constructor(atoms, mp, bp, waterSoluble, solidImage, x, y, formula)
@@ -1364,9 +1364,9 @@
     }
 
     function displayRecent(){
-        place0 = document.getElementById("recentReactionsText1");
-        place1 = document.getElementById("recentReactionsText2");
-        for (a=0;a<2;a++){
+        let place0 = document.getElementById("recentReactionsText1");
+        let place1 = document.getElementById("recentReactionsText2");
+        for (let a=0;a<2;a++){
             if (recentReactions[a] !== undefined){
                 eval("place" + a).innerHTML = recentReactions[a];
             } else if (a === 0){
