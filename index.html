@@ -193,7 +193,7 @@
         <div class="bottomBar">
             <div class="optionsBar">
                 <form id="update">
-                    Temperature(Celsius): <button type = "button" id = "negative" title = "negativeRadio" onclick="return negativeUpdate()"> - </button> <input id="tempTextBox" placeholder="between -3000 & 3000" title="Celsius">
+                    Temperature(Celsius): <button type = "button" id = "negative" title = "negativeRadio" onclick="return negativeUpdate()"> - </button> <input id="tempTextBox" onkeypress="if (event.keyCode == 13) return false" placeholder="between -3000 & 3000" title="Celsius">
                     Current: <input type = "checkbox" id="currentCheck" title="Voltage" onclick="tempUpdate()">
                     <div id = "currentTemperature">Current Temperature: 25C</div>
                     <br>
@@ -1162,53 +1162,6 @@
         compoundCombinations.push(new Set(possibleCompounds[compound].atoms))
     }
 
-    c.addEventListener('click', onClickHandler, true);
-    document.getElementById("tempTextBox").addEventListener("keydown", function (e)
-    {
-        var key = e.keyCode ? e.keyCode : e.which;
-
-        if (!( [8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
-                (key === 65 && ( e.ctrlKey || e.metaKey  ) ) ||
-                (key >= 35 && key <= 40) ||
-                (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
-                (key >= 96 && key <= 105)
-            ))
-        {
-            e.preventDefault();
-        }
-
-        if (key === 13){
-            tempUpdate();
-        }
-
-
-
-
-    });
-    //    document.getElementById("currentTextBox").addEventListener("keydown", function (e)
-    //    {
-    //        var key = e.keyCode ? e.keyCode : e.which;
-    //
-    //        if (!( [8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
-    //                (key == 65 && ( e.ctrlKey || e.metaKey  ) ) ||
-    //                (key >= 35 && key <= 40) ||
-    //                (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
-    //                (key >= 96 && key <= 105)
-    //            ))
-    //        {
-    //            e.preventDefault();
-    //        }
-    //
-    //        if (key === 13){
-    //            alert();
-    //            tempUpdate();
-    //            alert();
-    //        }
-    //
-    //
-    //    });
-
-
     function tempUpdate() {
         storedTemperature = document.getElementById("tempTextBox").value;
         current = document.getElementById("currentCheck").checked;
@@ -1233,7 +1186,6 @@
 
 
         document.getElementById("currentTemperature").innerHTML = "Current Temperature: " + tempText +"C";
-
         document.getElementById("tempTextBox").value = "";
 
     }
@@ -1284,6 +1236,28 @@
 
 
     }
+
+    c.addEventListener('click', onClickHandler, true);
+    document.getElementById("tempTextBox").addEventListener("keydown", function (e)
+    {
+        var key = e.keyCode ? e.keyCode : e.which;
+
+        if (!( [8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
+                (key === 65 && ( e.ctrlKey || e.metaKey  ) ) ||
+                (key >= 35 && key <= 40) ||
+                (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
+                (key >= 96 && key <= 105)
+            ))
+        {
+            e.preventDefault();
+        }
+
+        if (key === 13){
+            tempUpdate();
+        }
+    });
+
+
 
     function onClickHandler(e)
     {
