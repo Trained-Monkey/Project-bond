@@ -180,20 +180,24 @@
 
         <div class="bottomBar">
             <div class="optionsBar">
+                <!--Bottom right bar-->
                 <form id="update">
                     Temperature(Celsius): <button type = "button" id = "negative" title = "negativeRadio" onclick="return negativeUpdate()"> - </button> <input id="tempTextBox" onkeypress="if (event.keyCode == 13) return false" placeholder="between -3000 & 3000" title="Celsius">
                     Current: <input type = "checkbox" id="currentCheck" title="Voltage" onclick="tempUpdate()">
+                    <!--Current Temperature-->
                     <div id = "currentTemperature">Current Temperature: 25C</div>
                     <br>
                     <br>
                     <input type="button" id="tempUpdateButton" value="Update" onclick="tempUpdate()"><button type="button" id="clearCompounds" onclick = "clearCompound()">Clear Compounds</button>
                 </form>
             </div>
+            <!--Bottom left bar-->
             <div class="infoBar">
                 <div id  ="infoBar" >
                     Atomic View: <input type = "checkbox" id = "check" onclick="toggleAtomic()">
                     <br>
                     Compounds: <select id = "selectedCompound" title="CompoundList" onchange="updateCompound()">
+                    <!--Compounds on the screen-->
                     <option id="option1">None</option>
                     <option id="option2">None</option>
                     <option id="option3">None</option>
@@ -204,6 +208,7 @@
                     </select>
                     <br>
                     <br>
+                    <!--Past 2 reactions-->
                     Recent Reactions:
                     <div id="recentReactionsText1">None</div>
                     <div id="recentReactionsText2"></div>
@@ -217,8 +222,11 @@
 </body>
 <script type="text/javascript">
     let view = "macroView";
+//    Canvas for the periodic table
     let c = document.getElementById("PT");
     let ctx = c.getContext("2d");
+
+//    Canvas for the centre screen
     let mainC = document.getElementById("main");
     let mainCtx = mainC.getContext("2d");
     let recentReactions = [];
@@ -797,21 +805,7 @@
 
     }
 
-    //    let images =
-    //        {
-    //            ["powderImg"]:undefined,
-    //            [""Resources/Rock.png""]: undefined,
-    //            ["stripImg"]: undefined,
-    //        };
-    //still working on this area will give errors
 
-    //    let powderImg= document.createElement("img");
-    //    let "Resources/Rock.png"= document.createElement("img");
-    //    let stripImg= document.createElement("img");
-
-    //    powderImg.src = "Resources/Powder.png";
-    //    "Resources/Rock.png".src = "Resources/Rock.png";
-    //    stripImg.src = "Resources/Strip.png";
     Set.prototype.isSuperset = function (subset)
     {
         for (let elem of subset)
@@ -839,25 +833,10 @@
             this.solidImage = solidImage;
             this.liquidImage = liquidImage;
             this.gasImage = gasImage;
-//            this.firstTime = false;
-
-//            this.checkImage();
         }
 
         checkState(temperature, waterEnvironment)
         {
-//            let name = "";
-//            let currentState = this.state;
-//
-//            for (let i in possibleCompounds)
-//            {
-//                if (possibleCompounds[i].atoms.filter(x=> !new Set(this.atoms).has(x)).length === 0)
-//                {
-//                    name = i;
-//                    break;
-//                }
-//            }
-//            let reaction = name + " (" + this.state + ") --> ";
             if (temperature >= this.bp)
             {
                 this.state = "GAS";
@@ -871,16 +850,7 @@
                 this.state = "SOLID";
 
             }
-//            if(currentState !== this.state)
-//            {
-//                console.log(currentState);
-//                reaction += name + " (" + this.state + ")";
-//                recentReactions.unshift(reaction);
-//            }
-//            if (waterEnvironment && this.waterSoluble)
-//            {
-//                this.state = "AQUEOUS";
-//            }
+
         }
 
         checkImage()
@@ -898,16 +868,7 @@
                     break;
 
             }
-//            console.log(this.image === undefined,typeof powderImg);
-//            if (this.image !== undefined)
-//            {console.log("HI");
-//                mainCtx.beginPath();
-//                mainCtx.drawImage(powderImg, this.x, this.y);
-//                mainCtx.closePath();
-//            } else {
-//
-//
-//            }
+
             let image = new Image();
             image.src = this.image;
 
@@ -923,7 +884,8 @@
             }
         }
     }
-    //  Ionic Compounds
+
+    //  Sets Up Ionic Compounds
     class IonicCompound extends Compound
     {
         constructor(atoms, mp, bp, waterSoluble, solidImage,liquidImage,gasImage, x, y,ions)
@@ -942,6 +904,8 @@
         }
     }
 
+
+//  Sets Up Covalent Compounds
     class CovalentCompound extends Compound
     {
         constructor(atoms, mp, bp, waterSoluble, solidImage,liquidImage,gasImage, x, y,formula)
@@ -954,6 +918,7 @@
 
     }
 
+//    Sets Up Ionic Compounds draw function
     class IonicCompoundConfig {
         constructor(cation, anion) {
             this.cation = cation;
@@ -1010,7 +975,7 @@
 
         }
     }
-
+//  Checks for reactions
     class Reaction
     {
         constructor(reactants, products, requiredCondition)
@@ -1083,6 +1048,7 @@
         }
     }
 
+//    List of possible compounds
     var possibleCompounds = //TODO: Add waterSoluble
         {
             ["NaH"]: new IonicCompound(["Na", "H"], 300, Infinity, false,"Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Na","H"]),
@@ -1093,10 +1059,17 @@
             ["NaOH"]: new IonicCompound(["Na","OH"], 318, 1388, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Na","OH"]),
             ["CuO"]: new IonicCompound(["Cu","O"],1326,2000,false,"Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Cu","O"]),
             ["H2SO4"]: new IonicCompound(["H","SO4"], 10, 337, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["H","SO4"]),
+            ["KNO3"]: new IonicCompound(["K","NO3"], 334, 400, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["K","NO3"]),
+            ["CaO"]: new IonicCompound(["Ca","O"], 2572, 2850, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Ca","O"]),
+            ["KO2"]: new IonicCompound(["K","O"], 740, 740, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["K","O"]),
+            ["ZnO"]: new IonicCompound(["Zn","O"], 1975, 2360, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Zn","O"]),
+            ["CuSO4"]: new IonicCompound(["Cu","SO4"], 110, 200, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Cu","SO4"]),
+            ["MgOH2"]: new IonicCompound(["Mg","OH"], 110, 350, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Mg","OH"]),
 
 
-//            constructor(atoms, mp, bp, waterSoluble, solidImage, x, y, formula)
-        ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true,"Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["H",1,"O",1,"H"]),
+
+
+            ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true,"Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["H",1,"O",1,"H"]),
         ["H2"]: new CovalentCompound(["H"], -259, -252, false,"Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["H",1,"H"]),
         ["O2"]: new CovalentCompound(["O"], -219, -183, false,"Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["O",2,"O"]),
         ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false,"Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Cl",1,"Cl"]),
@@ -1108,7 +1081,14 @@
         ["Ne"]: new CovalentCompound(["Ne"], -249, -246, false,"Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Ne"]),
         ["Cu"]: new CovalentCompound(["Cu"],1085,2562,false,"Resources/Strip.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Cu"]),
         ["Li"]: new CovalentCompound(["Li"], 180, 1330, false, "Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Li"]),
-        ["Ar"]: new CovalentCompound(["Ag"], 180, 1330, false, "Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Li"]),
+        ["Ar"]: new CovalentCompound(["Ar"], -189, -186, false, "Resources/Gas.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Ar"]),
+        ["K"]: new CovalentCompound(["K"], 64, 759, false, "Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["K"]),
+        ["Ca"]: new CovalentCompound(["Ca"], 842, 1484, false, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Ca"]),
+        ["Zn"]: new CovalentCompound(["Zn"], 420, 907, false, "Resources/Strip.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Zn"]),
+        ["S"]: new CovalentCompound(["S"], 115, 445, false, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["S"]),
+        ["HS"]: new CovalentCompound(["H","S"], -82, -60, false, "Resources/Liquid.png","Resources/Liquid.png","Resources/Gas.png",0,0,["H",1,"S"]),
+
+
         ["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["H",1,"Cl"]),
         ["CO2"]: new CovalentCompound(["C", "O"], -79, -79, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["O",2,"C",2,"O"]),
     };
@@ -1117,6 +1097,8 @@
     var current = false;
     var UV = false;
     var waterEnvironment = false;
+
+//    Possible Reactions
     var possibleReactions =
     [
         [new Reaction(["H2", "O2"], ["H2O"], ">300"), "temperature"],
@@ -1126,6 +1108,11 @@
         [new Reaction(["MgOH2"], ["Mg", "H2O"], ">100"), "temperature"],
         [new Reaction(["Mg", "O2"], ["MgO"], ">50"), "temperature"],
         [new Reaction(["NaCl"], ["NaOH", "Cl2", "H2"], true), "current"],
+        [new Reaction(["K","O2"], ["KO2"], ">50"), "temperature"],
+        [new Reaction(["Zn","O2"], ["ZnO"], ">50"), "temperature"],
+        [new Reaction(["NaCl","H2O"], ["NaOH", "Cl2", "H2"], true), "current"],
+        [new Reaction(["CuSO4"], ["Cu", "SO4"], true), "current"],
+
 
 
 
@@ -1138,6 +1125,7 @@
         [new Reaction(["Li", "H2O"], ["LiOH"], true), "waterEnvironment"],
     ];
     let borderWidth = document.documentElement.clientWidth - 1320;
+//    Elements on the periodic table
     let elementStatus = [
         {element: "Hydrogen", x: 61, y: 31, status: false, symbol: "H", enabled: true, outlineColour: "rgba(220,0,0,0.8)"},
         {element: "Lithium", x: 61, y: 61, status: false, symbol: "Li", enabled: true, outlineColour: "rgba(255,138,23,1)"},
@@ -1161,7 +1149,7 @@
 
         {element: "Copper", x: 361, y: 121, status: false, symbol: "Cu", enabled: true, outlineColour: "rgba(84,156,64,1)"},
 
-        {element: "Zinc", x: 391, y: 121, status: false, symbol: "Zn", enabled: true, outlineColour: "rgba(189,95,75,1)"},
+        {element: "Zinc", x: 391, y: 121, status: false, symbol: "Zn", enabled: true, outlineColour: "rgba(9,165,192,1)"},
 
 
         {element: "Hydroxide", x: 211, y: 268, status: false, symbol: "OH", enabled: true, outlineColour: "rgba(120,120,120,1)"},
@@ -1169,11 +1157,8 @@
         {element: "Nitrate", x: 271, y: 268, status: false, symbol: "NO3", enabled: true, outlineColour: "rgba(120,120,120,1)"}
     ];
 
-
     var beaker = document.getElementById("beaker");
     var beakerLiquid = document.getElementById("beakerLiquid");
-    //    beaker.style.zIndex = 3;
-    //    beakerLiquid.style.zIndex = 2;
 
     var compoundCombinations = [];
     for (let compound in possibleCompounds)
@@ -1181,15 +1166,11 @@
         compoundCombinations.push(new Set(possibleCompounds[compound].atoms))
     }
 
+//    Function that assigns temperature to value in text box
     function tempUpdate() {
         let storedTemperature = document.getElementById("tempTextBox").value;
         current = document.getElementById("currentCheck").checked;
 
-//        if (storedTemperature !== "" && storedTemperature >= -3000 && storedTemperature <= 3000){
-//            temperature = storedTemperature;
-//        } else if (storedTemperature < -3000 || storedTemperature >3000) {
-//            alert("Temperature out of range, must be between -3000 & 3000 inclusive")
-//        }
         temperature = Math.max(-3000, Math.min(storedTemperature, 3000));
         if (current){
             current = document.getElementById("currentCheck").checked = true;
@@ -1209,8 +1190,8 @@
 
     }
 
+//    Updates list of compounds for the user to select from
     function updateCompound(){
-//        id.options[id.selectedIndex].value;
         option1 = document.getElementById("option1");
         option2 = document.getElementById("option2");
         option3 = document.getElementById("option3");
@@ -1234,7 +1215,6 @@
         }
         var selectedCompounds = document.getElementById("selectedCompound");
         selectedCompound = selectedCompounds.options[selectedCompounds.selectedIndex].value;
-//        alert(selectedCompound);
         switch (possibleCompounds[selectedCompound] instanceof CovalentCompound){
             case true:
 
@@ -1251,6 +1231,7 @@
 
     }
 
+//    Turns value inside temperature box to negative
     function negativeUpdate(){
         var store = document.getElementById("tempTextBox").value;
         store *= -1;
@@ -1259,6 +1240,7 @@
 
     }
 
+//    Event listener for when the user clicks or presses a key, removes cases of letters being inputed into text box
     c.addEventListener('click', onClickHandler, true);
     document.getElementById("tempTextBox").addEventListener("keydown", function (e)
     {
@@ -1279,6 +1261,7 @@
         }
     });
 
+//    Clears currentCompounds list
     function clearCompound(){
         currentCompounds = [];
 
@@ -1286,6 +1269,7 @@
         updateCompound();
     }
 
+//
     function onClickHandler(e)
     {
         let tableRect = c.getBoundingClientRect();
@@ -1318,17 +1302,13 @@
         {
             if (!possibleBondPartner.has(x.symbol) && !x.status)
             {
-
                 x.enabled = false;
-
             }
             else
             {
                 x.enabled = true;
-
             }
         });
-//        updateCompound();
 
 
 
@@ -1386,6 +1366,7 @@
 
     }
 
+//    Displays the most recent reactions
     function displayRecent(){
         let place0 = document.getElementById("recentReactionsText1");
         let place1 = document.getElementById("recentReactionsText2");
@@ -1400,6 +1381,7 @@
         }
     }
 
+//    Toggles atomic view of the atom
     function toggleAtomic(){
         microView = document.getElementById("check").checked;
 
@@ -1432,44 +1414,18 @@
         }
     }
 
-    //     kek
-    //    function simulationManager()
-    //    {
-    //        for (let i =1; i <possibleReactions.length;i++)
-    //        {
-    //            currentCompounds = possibleReactions[i][0].checkForActivation(currentCompounds,eval(possibleReactions[i][1]));
-    //        }
-    //
-    //        for (let i = 0; i < currentCompounds.length; i++)
-    //        {
-    //            try
-    //            {
-    //                possibleCompounds[currentCompounds[i]].checkState(temperature, waterEnvironment);
-    //            }
-    //            catch (Exception)
-    //            {
-    //
-    //            }
-    //        }
-    //
-    //
-    //        requestAnimationFrame(simulationManager);
-    //    }
-    //    simulationManager();
 
     function draw()
     {
         if (view === "macroView")
         {
+//            Clears the screen
             mainCtx.beginPath();
             mainCtx.clearRect(0, 0, 656, 658);
 
         } else if (view === "microView")
+//
         {
-//            mainCtx.beginPath();
-//            mainCtx.rect(0, 0, 658, 656);
-//            mainCtx.fillStyle = ("rgba(0,0,0,1)");
-//            mainCtx.fill();
             mainCtx.clearRect(0, 0, 658, 656);
             mainCtx.rect(0, 0, 658, 656);
             mainCtx.fillStyle = ("rgba(0,0,0,0.8)");
@@ -1482,7 +1438,7 @@
 
             }
         }
-
+//        Highlights & Outlines elements
         for (let i = 0; i < elementStatus.length; i++)
         {
             ctx.beginPath();
@@ -1504,10 +1460,12 @@
                 ctx.clearRect(elementStatus[i].x - 1, elementStatus[i].y - 1, 30, 30);
             }
         }
+//        Check if a reaction is occuring
         for (let i = 0; i < possibleReactions.length; i++)
         {
             currentCompounds = possibleReactions[i][0].checkForActivation(currentCompounds, eval(possibleReactions[i][1]));
         }
+//        Check is the state of a compound will change
         for (let i = 0; i < currentCompounds.length; i++)
         {
             try
@@ -1525,7 +1483,7 @@
                 console.log(currentCompounds[i]);
             }
         }
-
+//          Check if a reaction occurs from existing in water
         waterEnvironment = new Set(currentCompounds).has("H2O");
 
         for (let i = 0; i < currentCompounds.length; i++)
@@ -1538,7 +1496,6 @@
 
                 beaker.style.zIndex = 3;
             }
-//
         }
 
         displayRecent();
