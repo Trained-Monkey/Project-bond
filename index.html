@@ -193,12 +193,11 @@
         <div class="bottomBar">
             <div class="optionsBar">
                 <form id="update">
-                    Temperature(Celsius): <button type = "button" id = "negative" title = "negativeRadio" onclick="return negativeUpdate()"> - </button> <input id="tempTextBox" placeholder="0" title="Celsius">
-                    Current: <input id="currentTextBox" placeholder="0" title="Voltage">
-                    <!--Macroscopic View<input type="radio" name="views" id="macroView" title="Macro">-->
-                    <!--<br>-->
-                    <!--Atomic View <input type="radio" name="views" id="microView" title="Micro">-->
-                    <!--<br>-->
+                    Temperature(Celsius): <button type = "button" id = "negative" title = "negativeRadio" onclick="return negativeUpdate()"> - </button> <input id="tempTextBox" placeholder="25" title="Celsius">
+                    Current: <input type = "checkbox" id="currentCheck" title="Voltage" onclick="tempUpdate()">
+                    <div id = "currentTemperature">Current Temperature: 25C</div>
+                    <br>
+                    <br>
                     <input type="button" id="tempUpdateButton" value="UPDATE" onclick="tempUpdate()">
                 </form>
             </div>
@@ -216,9 +215,6 @@
                     <option id="option7">None</option>
 
                 </select>
-                    <p id = "chemicalFormula"> Formula:</p>
-
-                    <button onclick = "nextCompound()">Next Compound</button>
                 </div>
 
             </div>
@@ -1099,7 +1095,7 @@
     };
     var currentCompounds = [];
     var temperature = 25;
-    var current = 0;
+    var current = false;
     var UV = false;
     var waterEnvironment = false;
     var possibleReactions =
@@ -1182,49 +1178,64 @@
         }
 
         if (key === 13){
-            alert();
             tempUpdate();
-            alert();
         }
 
 
 
 
     });
-    document.getElementById("currentTextBox").addEventListener("keydown", function (e)
-    {
-        var key = e.keyCode ? e.keyCode : e.which;
+    //    document.getElementById("currentTextBox").addEventListener("keydown", function (e)
+    //    {
+    //        var key = e.keyCode ? e.keyCode : e.which;
+    //
+    //        if (!( [8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
+    //                (key == 65 && ( e.ctrlKey || e.metaKey  ) ) ||
+    //                (key >= 35 && key <= 40) ||
+    //                (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
+    //                (key >= 96 && key <= 105)
+    //            ))
+    //        {
+    //            e.preventDefault();
+    //        }
+    //
+    //        if (key === 13){
+    //            alert();
+    //            tempUpdate();
+    //            alert();
+    //        }
+    //
+    //
+    //    });
 
-        if (!( [8, 9, 13, 27, 46, 110, 190].indexOf(key) !== -1 ||
-                (key == 65 && ( e.ctrlKey || e.metaKey  ) ) ||
-                (key >= 35 && key <= 40) ||
-                (key >= 48 && key <= 57 && !(e.shiftKey || e.altKey)) ||
-                (key >= 96 && key <= 105)
-            ))
-        {
-            e.preventDefault();
+
+    function tempUpdate() {
+        storedTemperature = document.getElementById("tempTextBox").value;
+        current = document.getElementById("currentCheck").checked;
+
+        if (storedTemperature !== ""){
+            temperature = storedTemperature;
         }
 
-        if (key === 13){
-            alert();
-            tempUpdate();
-            alert();
+        if (current){
+            current = document.getElementById("currentCheck").checked = true;
+        } else {
+            current = document.getElementById("currentCheck").checked = false;
+        }
+
+        if (temperature < 0){
+            tempText = temperature.toString();
+        } else {
+            tempText = temperature.toString();
         }
 
 
-    });
+        document.getElementById("currentTemperature").innerHTML = "Current Temperature: " + tempText +"C";
 
-
-    function tempUpdate()
-    {
-        temperature = document.getElementById("tempTextBox").value;
-        current = document.getElementById("currentTextBox").value;
 
         document.getElementById("tempTextBox").placeholder = temperature.toString();
-        document.getElementById("currentTextBox").placeholder = current;
-
-
     }
+
     function updateCompound(){
 //        id.options[id.selectedIndex].value;
         option1 = document.getElementById("option1");
@@ -1234,7 +1245,6 @@
         option5 = document.getElementById("option5");
         option6 = document.getElementById("option6");
         option7 = document.getElementById("option7");
-        shownFormula = document.getElementById("chemicalFormula");
 
         try{
             for (compound = 0; compound < 7; compound++){
