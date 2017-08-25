@@ -193,7 +193,7 @@
         <div class="bottomBar">
             <div class="optionsBar">
                 <form id="update">
-                    Temperature(Celsius): <button type = "button" id = "negative" title = "negativeRadio" onclick="return negativeUpdate()"> - </button> <input id="tempTextBox" placeholder="25" title="Celsius">
+                    Temperature(Celsius): <button type = "button" id = "negative" title = "negativeRadio" onclick="return negativeUpdate()"> - </button> <input id="tempTextBox" placeholder="between -3000 & 3000" title="Celsius">
                     Current: <input type = "checkbox" id="currentCheck" title="Voltage" onclick="tempUpdate()">
                     <div id = "currentTemperature">Current Temperature: 25C</div>
                     <br>
@@ -1213,8 +1213,10 @@
         storedTemperature = document.getElementById("tempTextBox").value;
         current = document.getElementById("currentCheck").checked;
 
-        if (storedTemperature !== ""){
+        if (storedTemperature !== "" && storedTemperature >= -3000 && storedTemperature <= 3000){
             temperature = storedTemperature;
+        } else if (storedTemperature < -3000 || storedTemperature >3000) {
+            alert("Temperature out of range, must be between -3000 & 3000 inclusive")
         }
 
         if (current){
@@ -1232,8 +1234,8 @@
 
         document.getElementById("currentTemperature").innerHTML = "Current Temperature: " + tempText +"C";
 
+        document.getElementById("tempTextBox").value = "";
 
-        document.getElementById("tempTextBox").placeholder = temperature.toString();
     }
 
     function updateCompound(){
