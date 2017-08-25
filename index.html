@@ -821,7 +821,7 @@
 
     class Compound
     {
-        constructor(atoms, mp, bp, waterSoluble, solidImage, x, y)
+        constructor(atoms, mp, bp, waterSoluble, solidImage,liquidImage,gasImage, x, y)
         {
             this.atoms = atoms;
             this.mp = mp;
@@ -832,8 +832,8 @@
             this.x = 0;
             this.y = 0;
             this.solidImage = solidImage;
-//            this.liquidImage = liquidImage;
-//            this.gasImage = gasImage;
+            this.liquidImage = liquidImage;
+            this.gasImage = gasImage;
 
 //            this.checkImage();
         }
@@ -848,28 +848,32 @@
             {
                 this.state = "LIQUID"
             }
-
-            if (waterEnvironment && this.waterSoluble)
+            else
             {
-                this.state = "AQUEOUS";
+                this.state = "SOLID"
             }
+
+//            if (waterEnvironment && this.waterSoluble)
+//            {
+//                this.state = "AQUEOUS";
+//            }
         }
 
         checkImage()
         {
-//            switch (this.state)
-//            {
-//                case "SOLID":
-//                    this.image = this.solidImage;
-//                    break;
-//                case "LIQUID" || "AQUEOUS":
-//                    this.image = this.liquidImage;
-//                    break;
-//                case "GAS":
-//                    this.image = this.gasImage;
-//                    break;
+            switch (this.state)
+            {
+                case "SOLID":
+                    this.image = this.solidImage;
+                    break;
+                case "LIQUID" || "AQUEOUS":
+                    this.image = this.liquidImage;
+                    break;
+                case "GAS":
+                    this.image = this.gasImage;
+                    break;
 
-//            }
+            }
 //            console.log(this.image === undefined,typeof powderImg);
 //            if (this.image !== undefined)
 //            {console.log("HI");
@@ -881,7 +885,7 @@
 //
 //            }
             let image = new Image();
-            image.src = this.solidImage;
+            image.src = this.image;
 
             try
             {
@@ -898,9 +902,9 @@
     //  Ionic Compounds
     class IonicCompound extends Compound
     {
-        constructor(atoms, mp, bp, waterSoluble, solidImage, x, y,ions)
+        constructor(atoms, mp, bp, waterSoluble, solidImage,liquidImage,gasImage, x, y,ions)
         {
-            super(atoms, mp, bp, waterSoluble, solidImage, x, y);
+            super(atoms, mp, bp, waterSoluble, solidImage,liquidImage,gasImage, x, y);
             //Define all variables for class here with this.[variableName]
             this.ions = ions;
 
@@ -915,9 +919,9 @@
 
     class CovalentCompound extends Compound
     {
-        constructor(atoms, mp, bp, waterSoluble, solidImage, x, y, formula)
+        constructor(atoms, mp, bp, waterSoluble, solidImage,liquidImage,gasImage, x, y,formula)
         {
-            super(atoms, mp, bp, waterSoluble, solidImage, x, y);
+            super(atoms, mp, bp, waterSoluble, solidImage,liquidImage,gasImage, x, y);
 
             this.formula = formula;
         }
@@ -1058,33 +1062,33 @@
 //        "Resources/Powder.png"
 //        "Resources/Rock.png"
 //        "Resources/Strip.png"
-        {
-            ["NaH"]: new IonicCompound(["Na", "H"], 300, Infinity, false,"Resources/Powder.png",0,0,["Na","H"]),
-            ["NaCl"]: new IonicCompound(["Na", "Cl"], 801, 1465,true, "Resources/Powder.png",0,0,["Na","Cl"]),
-            ["MgO"]: new IonicCompound(["Mg", "O"], 2825, 3600, false, "Resources/Powder.png",0,0,["Mg","O"]),
-            ["LiOH"]: new IonicCompound(["Li", "OH"], 462, 924, true, "Resources/Powder.png",0,0,["Li","OH"]),
-            ["Li2O"]: new IonicCompound(["Li", "O"], 1438, 2600, false, "Resources/Powder.png",0,0,["Li","O"]),
-            ["NaOH"]: new IonicCompound(["Na","OH"], 318, 1388, true, "Resources/Powder.png",0,0,["Na","OH"]),
-            ["CuO"]: new IonicCompound(["Cu","O"],1326,2000,false,"Resources/Powder.png",0,0,["Cu","O"]),
-            ["H2SO4"]: new IonicCompound(["H","SO4"], 10, 337, true, "Resources/Powder.png",0,0,["H","SO4"]),
+    {
+        ["NaH"]: new IonicCompound(["Na", "H"], 300, Infinity, false,"Resources/Powder.png","Resources/Powder.png","Resources/Powder.png", 0,0,["Na","H"]),
+        ["NaCl"]: new IonicCompound(["Na", "Cl"], 801, 1465,true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Na","Cl"]),
+        ["MgO"]: new IonicCompound(["Mg", "O"], 2825, 3600, false, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Mg","O"]),
+        ["LiOH"]: new IonicCompound(["Li", "OH"], 462, 924, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Li","OH"]),
+        ["Li2O"]: new IonicCompound(["Li", "O"], 1438, 2600, false, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Li","O"]),
+        ["NaOH"]: new IonicCompound(["Na","OH"], 318, 1388, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Na","OH"]),
+        ["CuO"]: new IonicCompound(["Cu","O"],1326,2000,false,"Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Cu","O"]),
+        ["H2SO4"]: new IonicCompound(["H","SO4"], 10, 337, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["H","SO4"]),
 
 
 //            constructor(atoms, mp, bp, waterSoluble, solidImage, x, y, formula)
-        ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true,"Resources/Liquid.png",0,0,["H",1,"O",1,"H"]),
-        ["H2"]: new CovalentCompound(["H"], -259, -252, false,"Resources/Gas.png",0,0,["H",1,"H"]),
-        ["O2"]: new CovalentCompound(["O"], -219, -183, false,"Resources/Rock.png",0,0,["O",2,"O"]),
-        ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false,"Resources/Rock.png",0,0,["Cl",1,"Cl"]),
-        ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false,"Resources/Strip.png",0,0,["Mg"]),
-        ["Na"]: new CovalentCompound(["Na"], 98, 883, false,"Resources/Rock.png",0,0,["Na"]),
-        ["F2"]: new CovalentCompound(["F"], -220, -188, true,"Resources/Rock.png",0,0,["F",1,"F"]),
-        ["HF"]: new CovalentCompound(["H", "F"], -84, 20, true,"Resources/Powder.png",0,0,["H",1,"F"]),
-        ["He"]: new CovalentCompound(["He"], -272, -269, false, "Resources/Powder.png",0,0,["He"]),
-        ["Ne"]: new CovalentCompound(["Ne"], -249, -246, false,"Resources/Powder.png",0,0,["Ne"]),
-        ["Cu"]: new CovalentCompound(["Cu"],1085,2562,false,"Resources/Strip.png",0,0,["Cu"]),
-        ["Li"]: new CovalentCompound(["Li"], 180, 1330, false, "Resources/Rock.png",0,0,["Li"]),
-        ["Ar"]: new CovalentCompound(["Ag"], 180, 1330, false, "Resources/Rock.png",0,0,["Li"]),
-        ["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true, "Resources/Powder.png",0,0,["H",1,"Cl"]),
-        ["CO2"]: new CovalentCompound(["C", "O"], -79, -79, true, "Resources/Powder.png",0,0,["O",2,"C",2,"O"]),
+        ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true,"Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["H",1,"O",1,"H"]),
+        ["H2"]: new CovalentCompound(["H"], -259, -252, false,"Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["H",1,"H"]),
+        ["O2"]: new CovalentCompound(["O"], -219, -183, false,"Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["O",2,"O"]),
+        ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false,"Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Cl",1,"Cl"]),
+        ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false,"Resources/Strip.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Mg"]),
+        ["Na"]: new CovalentCompound(["Na"], 98, 883, false,"Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Na"]),
+        ["F2"]: new CovalentCompound(["F"], -220, -188, true,"Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["F",1,"F"]),
+        ["HF"]: new CovalentCompound(["H", "F"], -84, 20, true,"Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["H",1,"F"]),
+        ["He"]: new CovalentCompound(["He"], -272, -269, false, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["He"]),
+        ["Ne"]: new CovalentCompound(["Ne"], -249, -246, false,"Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Ne"]),
+        ["Cu"]: new CovalentCompound(["Cu"],1085,2562,false,"Resources/Strip.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Cu"]),
+        ["Li"]: new CovalentCompound(["Li"], 180, 1330, false, "Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Li"]),
+        ["Ar"]: new CovalentCompound(["Ag"], 180, 1330, false, "Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Li"]),
+        ["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["H",1,"Cl"]),
+        ["CO2"]: new CovalentCompound(["C", "O"], -79, -79, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["O",2,"C",2,"O"]),
     };
     var currentCompounds = [];
     var temperature = 25;
@@ -1092,9 +1096,9 @@
     var UV = false;
     var waterEnvironment = false;
     var possibleReactions =
-        [
-            [new Reaction(["H2", "O2"], ["H2O"], ">300"), "temperature"],
-            [new Reaction(["H2O"], ["H2", "O2"], true), "current"],
+    [
+        [new Reaction(["H2", "O2"], ["H2O"], ">300"), "temperature"],
+        [new Reaction(["H2O"], ["H2", "O2"], true), "current"],
         [new Reaction(["MgO", "H2O"], ["MgOH2"], true), "waterEnvironment"],
         [new Reaction(["Cl2", "H2"], ["HCl"], true), "UV"],
         [new Reaction(["MgOH2"], ["Mg", "H2O"], ">100"), "temperature"],
@@ -1156,15 +1160,15 @@
     }
 
     function tempUpdate() {
-        storedTemperature = document.getElementById("tempTextBox").value;
+        let storedTemperature = document.getElementById("tempTextBox").value;
         current = document.getElementById("currentCheck").checked;
 
-        if (storedTemperature !== "" && storedTemperature >= -3000 && storedTemperature <= 3000){
-            temperature = storedTemperature;
-        } else if (storedTemperature < -3000 || storedTemperature >3000) {
-            alert("Temperature out of range, must be between -3000 & 3000 inclusive")
-        }
-
+//        if (storedTemperature !== "" && storedTemperature >= -3000 && storedTemperature <= 3000){
+//            temperature = storedTemperature;
+//        } else if (storedTemperature < -3000 || storedTemperature >3000) {
+//            alert("Temperature out of range, must be between -3000 & 3000 inclusive")
+//        }
+        temperature = Math.max(-3000, Math.min(storedTemperature, 3000));
         if (current){
             current = document.getElementById("currentCheck").checked = true;
         } else {
