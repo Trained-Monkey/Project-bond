@@ -1,221 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Project Bond</title>
-    <style>
-
-        /* A 60 pixel reduction is needed when calculating the width and height to include the border */
-        :root {
-            --compulsoryWidth: 1320px;
-            --compulsoryHeight: 660px;
-            --screenWidth: 100%;
-            --screenHeight: 100%;
-        }
-
-        .border {
-            border-width: calc(calc(100vw - var(--compulsoryWidth)) / 2);
-            border-bottom: calc(calc(100vh - var(--compulsoryHeight)) / 2);
-            border-top: calc(calc(100vh - var(--compulsoryHeight)) / 2);
-            border-style: solid;
-            border-color: white;
-            width: 1320px;
-            height: 660px;
-
-        }
-
-        .mainScreen {
-            float: left;
-            border-width: 2px;
-            border-color: black;
-            border-style: solid;
-            border-right: 0;
-            width: 658px;
-            height: 656px;
-            background: #ffffff;
-        }
-
-        .sideBar {
-            float: left;
-            height: 660px;
-            width: 660px;
-        }
-
-        .programNameBar {
-            float: top;
-            height: 90px;
-            width: 660px;
-        }
-
-        .periodicTable {
-            display: inline-block;
-            height: 450px;
-            position: relative;
-        }
-
-        .bottomBar {
-            height: 180px;
-            width: 660px;
-        }
-
-        .optionsBar {
-
-            float: left;
-            border-width: 2px;
-            border-right: 1px;
-            border-top: 0;
-            border-color: black;
-            border-style: solid;
-            padding-top: 2px;
-            padding-left: 0;
-            width: 327px;
-            height: 116px;
-            background: white;
-        }
-
-        .infoBar {
-            float: right;
-            border-width: 2px;
-            border-left: 1px;
-            border-style: solid;
-            border-color: black;
-            border-top: 0;
-            height: 118px;
-            width: 327px;
-            background: white;
-        }
-
-        .table {
-            position: absolute;
-            z-index: 11;
-        }
-
-        .Overlay {
-            position: relative;
-            z-index: 12;
-        }
-
-        .mainOverlay {
-            position: relative;
-            z-index: 1009;
-        }
-
-        img {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            -o-user-select: none;
-            user-select: none;
-        }
-
-        canvas {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            -o-user-select: none;
-            user-select: none;
-            z-index: 1009;
-        }
-
-        #beaker {
-            position: absolute;
-            z-index: 2;
-        }
-
-        #mainBg {
-            position: absolute;
-            z-index: 0;
-        }
-
-        #beakerLiquid {
-            position: absolute;
-            z-index: 1;
-        }
-
-        #update {
-            padding-left: 6px;
-        }
-
-        #tempTextBox {
-            margin-left: 4px;
-        }
-
-        #infoBar {
-            position: relative;
-            margin-left: 5px;
-        }
-
-
-
-    </style>
-</head>
-<body style="margin: 0;">
-<div class="border">
-    <div class="mainScreen">
-        <img src="Resources/Beaker.png" id="beaker">
-        <img src="Resources/Main Screen Background.jpg" id="mainBg">
-        <img src="Resources/Beaker Liquid.png" id="beakerLiquid">
-        <!--Below line is canvas for main #Note 01 -->
-        <canvas id="main" class="mainOverlay" width="658" height="656">
-        </canvas>
-
-
-    </div>
-    <div class="sideBar">
-        <!-- <img src> here when image is designed-->
-        <div class="programNameBar">
-            <img src="Resources/Program Bar.jpg">
-        </div>
-
-        <div class="periodicTable">
-
-            <img class="table" src="Resources/Periodic Table.jpg">
-            <canvas id="PT" class="Overlay" width="660" height="446"></canvas>
-
-        </div>
-
-        <div class="bottomBar">
-            <div class="optionsBar">
-                <form id="update">
-                    Temperature(Celsius): <button type = "button" id = "negative" title = "negativeRadio" onclick="return negativeUpdate()"> - </button> <input id="tempTextBox" onkeypress="if (event.keyCode == 13) return false" placeholder="between -3000 & 3000" title="Celsius">
-                    Current: <input type = "checkbox" id="currentCheck" title="Voltage" onclick="tempUpdate()">
-                    <div id = "currentTemperature">Current Temperature: 25C</div>
-                    <br>
-                    <br>
-                    <input type="button" id="tempUpdateButton" value="Update" onclick="tempUpdate()"><button type="button" id="clearCompounds" onclick = "clearCompound()">Clear Compounds</button>
-                </form>
-            </div>
-            <div class="infoBar">
-                <div id  ="infoBar" >
-                    Atomic View: <input type = "checkbox" id = "check" onclick="toggleAtomic()">
-                    <br>
-                    Compounds: <select id = "selectedCompound" title="CompoundList" onchange="updateCompound()">
-                    <option id="option1">None</option>
-                    <option id="option2">None</option>
-                    <option id="option3">None</option>
-                    <option id="option4">None</option>
-                    <option id="option5">None</option>
-                    <option id="option6">None</option>
-                    <option id="option7">None</option>
-
-                </select>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
-</body>
-<script type="text/javascript">
+window.onload = function(){
     let view = "macroView";
+    //    Canvas for the periodic table
     let c = document.getElementById("PT");
     let ctx = c.getContext("2d");
+
+    //    Canvas for the centre screen
     let mainC = document.getElementById("main");
     let mainCtx = mainC.getContext("2d");
+    let recentReactions = [];
 
     var selectedCompound = 0;
 
@@ -231,10 +23,10 @@
     function drawNucleus(nucleusX, nucleusY)
     {
 
-//        ctx.arc(nucleusX - 30, nucleusY, 30, 0, Math.PI * 2);
-//        nucleusImage.style.left = nucleusX + "px";
-//        nucleusImage.style.top = nucleusY + "px";
-//        nucleusImage.style.zIndex = 1000;
+    //        ctx.arc(nucleusX - 30, nucleusY, 30, 0, Math.PI * 2);
+    //        nucleusImage.style.left = nucleusX + "px";
+    //        nucleusImage.style.top = nucleusY + "px";
+    //        nucleusImage.style.zIndex = 1000;
         mainCtx.drawImage(nucleusImage, nucleusX, nucleusY)
 
     }
@@ -336,16 +128,16 @@
                 case 1:
 
                     this.atoms = 1;
-//                    Left Pair
+    //                    Left Pair
                     this.pair1 = new electronPair(this.centre, this.centre, false, 1, false);
 
-//                    Top Pair
+    //                    Top Pair
                     this.pair2 = new electronPair(this.centre - 31, this.centre, true, 1, false);
 
-//                    Right Pair
+    //                    Right Pair
                     this.pair3 = new electronPair(-this.centre, -this.centre, false, 1, false);
 
-//                    Bottom Pair
+    //                    Bottom Pair
                     this.pair4 = new electronPair(-this.centre + 31, -this.centre, true, 1, false);
                     this.electronPairs = [this.pair1, this.pair3, this.pair4, this.pair2];
                     if (formula[0] === "He" || formula[0] === "H")
@@ -361,16 +153,16 @@
                         case 1:
 
                             this.atoms = 2;
-//                    Left Pair
+    //                    Left Pair
                             this.pair1 = new electronPair(this.centre + 31, this.centre, false, 1, false);
                             this.pair5 = new electronPair(this.centre - 29, this.centre, false, 1, true);
-//                    Top Pair
+    //                    Top Pair
                             this.pair2 = new electronPair(this.centre, this.centre, true, 1, false);
                             this.pair6 = new electronPair(this.centre - 61, this.centre, true, 1, false);
-//                    Right Pair
+    //                    Right Pair
                             this.pair3 = new electronPair(-this.centre + 31, this.centre, false, 1, true);
                             this.pair7 = new electronPair(-this.centre - 31, this.centre, false, 1, false);
-//                    Bottom Pair
+    //                    Bottom Pair
                             this.pair4 = new electronPair(this.centre, -this.centre, true, 1, false);
                             this.pair8 = new electronPair(this.centre - 61, -this.centre, true, 1, false);
 
@@ -395,17 +187,17 @@
                             break;
 
                         case 2:
-//                            Left Pair
+    //                            Left Pair
                             this.atoms = 2;
                             this.pair1 = new electronPair(this.centre - 29, this.centre, false, 2, true);
                             this.pair5 = new electronPair(this.centre - 29, this.centre, false, 1, true);
-//                    Top Pair
+    //                    Top Pair
                             this.pair2 = new electronPair(this.centre, this.centre, true, 1, false);
                             this.pair6 = new electronPair(this.centre - 61, this.centre, true, 1, false);
-//                    Right Pair
+    //                    Right Pair
                             this.pair3 = new electronPair(-this.centre + 31, this.centre, false, 1, true);
                             this.pair7 = new electronPair(-this.centre + 31, this.centre, false, 2, true);
-//                    Bottom Pair
+    //                    Bottom Pair
                             this.pair4 = new electronPair(this.centre, -this.centre, true, 1, false);
                             this.pair8 = new electronPair(this.centre - 61, -this.centre, true, 1, false);
                             this.electronPairs = [this.pair1, this.pair5, this.pair4, this.pair7, this.pair3, this.pair2, this.pair8, this.pair6];
@@ -413,18 +205,18 @@
                             break;
 
                         case 3:
-//                            Left Pair
+    //                            Left Pair
                             this.atoms = 2;
-//                    Left Pair 1
+    //                    Left Pair 1
                             this.pair1 = new electronPair(this.centre + 31, this.centre, false, 1, false);
-//                            this.pair5 = new electronPair(-this.centre + 31,this.centre,false,1,true);
-//                    Top Pair
+    //                            this.pair5 = new electronPair(-this.centre + 31,this.centre,false,1,true);
+    //                    Top Pair
                             this.pair2 = new electronPair(this.centre - 29, this.centre, false, 2, true);
-//                            this.pair6 = new electronPair(this.centre - 29,this.centre,false,2,true);
-//                    Right Pair 2
+    //                            this.pair6 = new electronPair(this.centre - 29,this.centre,false,2,true);
+    //                    Right Pair 2
                             this.pair3 = new electronPair(-this.centre + 31, this.centre, false, 1, true);
                             this.pair7 = new electronPair(-this.centre - 31, this.centre, false, 1, false);
-//                    Bottom Pair
+    //                    Bottom Pair
                             this.pair4 = new electronPair(this.centre - 29, this.centre, false, 3, true);
 
                             this.electronPairs = [this.pair3, this.pair4, this.pair2, this.pair7, this.pair1];
@@ -438,24 +230,24 @@
                     switch (this.formula[1])
                     {
                         case 1:
-//                    Left Pair
+    //                    Left Pair
                             this.pair1 = new electronPair(this.centre + 62, this.centre, false, 1, false);
                             this.pair5 = new electronPair(this.centre, this.centre, false, 1, true);
                             this.pair9 = new electronPair(this.centre - 62, this.centre, false, 1, true);
 
-//                    Top Pair
+    //                    Top Pair
                             this.pair4 = new electronPair(this.centre + 31, this.centre, true, 1, false);
                             this.pair8 = new electronPair(this.centre - 31, this.centre, true, 1, false);
                             this.pair12 = new electronPair(this.centre - 93, this.centre, true, 1, false);
 
 
-//                    Right Pair
+    //                    Right Pair
                             this.pair3 = new electronPair(-this.centre - 62, -this.centre, false, 1, false);
                             this.pair7 = new electronPair(-this.centre, -this.centre, false, 1, true);
-//                            this.pair11 = new electronPair(-this.centre + 62, -this.centre,false,1,true);
+    //                            this.pair11 = new electronPair(-this.centre + 62, -this.centre,false,1,true);
 
 
-//                    Bottom Pair
+    //                    Bottom Pair
                             this.pair2 = new electronPair(-this.centre + 93, -this.centre, true, 1, false);
                             this.pair6 = new electronPair(-this.centre + 31, -this.centre, true, 1, false);
                             this.pair10 = new electronPair(-this.centre - 31, -this.centre, true, 1, false);
@@ -470,26 +262,26 @@
 
                             break;
                         case 2:
-//                    Left Pair
+    //                    Left Pair
                             this.pair1 = new electronPair(this.centre, this.centre, false, 2, true);
                             this.pair5 = new electronPair(this.centre, this.centre, false, 1, true);
-//                            this.pair9 = new electronPair(this.centre - 62, this.centre,false,1,true);
+    //                            this.pair9 = new electronPair(this.centre - 62, this.centre,false,1,true);
 
-//                    Top Pair
+    //                    Top Pair
                             this.pair2 = new electronPair(this.centre + 31, this.centre, true, 1, false);
-//                            this.pair8 = new electronPair(this.centre - 31, this.centre,true,1,false);
+    //                            this.pair8 = new electronPair(this.centre - 31, this.centre,true,1,false);
                             this.pair6 = new electronPair(this.centre - 93, this.centre, true, 1, false);
 
 
-//                    Right Pair
+    //                    Right Pair
                             this.pair3 = new electronPair(-this.centre, -this.centre, false, 2, true);
                             this.pair7 = new electronPair(-this.centre, -this.centre, false, 1, true);
-//                            this.pair11 = new electronPair(-this.centre + 62, -this.centre,false,1,true);
+    //                            this.pair11 = new electronPair(-this.centre + 62, -this.centre,false,1,true);
 
 
-//                    Bottom Pair
+    //                    Bottom Pair
                             this.pair4 = new electronPair(-this.centre + 93, -this.centre, true, 1, false);
-//                            this.pair6 = new electronPair(-this.centre + 31, -this.centre,true,1,false);
+    //                            this.pair6 = new electronPair(-this.centre + 31, -this.centre,true,1,false);
                             this.pair8 = new electronPair(-this.centre - 31, -this.centre, true, 1, false);
 
 
@@ -574,8 +366,8 @@
                             {
                                 for
                                 (this.pairs = 0;
-                                 this.pairs < 4;
-                                 this.pairs += 2
+                                    this.pairs < 4;
+                                    this.pairs += 2
                                 )
                                 {
                                     this.electronPairs[this.pairs].drawElectron();
@@ -612,8 +404,8 @@
                         case 2:
                             for
                             (this.pairs = 0;
-                             this.pairs < 4;
-                             this.pairs++
+                                this.pairs < 4;
+                                this.pairs++
                             )
                             {
                                 this.electronPairs[this.pairs].drawElectron();
@@ -622,10 +414,10 @@
 
                             drawNucleus(main.width / 2 - this.centre - 31, main.height / 2 - this.centre);
 
-//                            for (this.pairs = 1; this.pairs < 4; this.pairs += 2) {
-//                                this.electronPairs[this.pairs].drawElectron();
-//                                this.electronPairs[this.pairs].updatePosition();
-//                            }
+    //                            for (this.pairs = 1; this.pairs < 4; this.pairs += 2) {
+    //                                this.electronPairs[this.pairs].drawElectron();
+    //                                this.electronPairs[this.pairs].updatePosition();
+    //                            }
 
                             for (this.pairs = 4; this.pairs < 8; this.pairs += 2)
                             {
@@ -645,8 +437,8 @@
                         case 3:
                             for
                             (this.pairs = 4;
-                             this.pairs < 5;
-                             this.pairs++
+                                this.pairs < 5;
+                                this.pairs++
                             )
                             {
                                 this.electronPairs[this.pairs].drawElectron();
@@ -655,21 +447,21 @@
                             drawNucleus(main.width / 2 - this.centre - 31, main.height / 2 - this.centre);
                             for
                             (this.pairs = 0;
-                             this.pairs < 3;
-                             this.pairs++
+                                this.pairs < 3;
+                                this.pairs++
                             )
                             {
                                 this.electronPairs[this.pairs].drawElectron();
                                 this.electronPairs[this.pairs].updatePosition();
                             }
 
-//
+    //
                             drawNucleus(main.width / 2 - this.centre + 31, main.height / 2 - this.centre);
 
                             for
                             (this.pairs = 3;
-                             this.pairs < 4;
-                             this.pairs++
+                                this.pairs < 4;
+                                this.pairs++
                             )
                             {
                                 this.electronPairs[this.pairs].drawElectron();
@@ -679,21 +471,21 @@
 
 
 
-//
+    //
                     }
                     mainCtx.font = "30px Arial";
                     mainCtx.textAlign = "center";
                     mainCtx.fillText(this.formula[0], main.width / 2 - 31, main.height / 2 + 10);
                     mainCtx.fillText(this.formula[2], main.width / 2 + 31, main.height / 2 + 10);
 
-//                    drawNucleus(canvas.width/2 + this.centre,canvas.height/2 - 30);
+    //                    drawNucleus(canvas.width/2 + this.centre,canvas.height/2 - 30);
                     break;
                 case 3:
                     switch (this.formula[1])
                     {
 
                         case 1:
-//                            alert(this.formula);
+    //                            alert(this.formula);
 
                             if (this.formula[0] === "H" && this.formula[4] === "H" && this.formula[2] === "O")
                             {
@@ -791,21 +583,7 @@
 
     }
 
-    //    let images =
-    //        {
-    //            ["powderImg"]:undefined,
-    //            [""Resources/Rock.png""]: undefined,
-    //            ["stripImg"]: undefined,
-    //        };
-    //still working on this area will give errors
 
-    //    let powderImg= document.createElement("img");
-    //    let "Resources/Rock.png"= document.createElement("img");
-    //    let stripImg= document.createElement("img");
-
-    //    powderImg.src = "Resources/Powder.png";
-    //    "Resources/Rock.png".src = "Resources/Rock.png";
-    //    stripImg.src = "Resources/Strip.png";
     Set.prototype.isSuperset = function (subset)
     {
         for (let elem of subset)
@@ -820,7 +598,7 @@
 
     class Compound
     {
-        constructor(atoms, mp, bp, waterSoluble, solidImage, x, y)
+        constructor(atoms, mp, bp, waterSoluble, solidImage,liquidImage,gasImage, x, y)
         {
             this.atoms = atoms;
             this.mp = mp;
@@ -831,56 +609,46 @@
             this.x = 0;
             this.y = 0;
             this.solidImage = solidImage;
-//            this.liquidImage = liquidImage;
-//            this.gasImage = gasImage;
-
-//            this.checkImage();
+            this.liquidImage = liquidImage;
+            this.gasImage = gasImage;
         }
 
         checkState(temperature, waterEnvironment)
         {
             if (temperature >= this.bp)
             {
-                this.state = "GAS"
+                this.state = "GAS";
             }
             else if (temperature >= this.mp)
             {
-                this.state = "LIQUID"
+                this.state = "LIQUID";
+            }
+            else
+            {
+                this.state = "SOLID";
+
             }
 
-            if (waterEnvironment && this.waterSoluble)
-            {
-                this.state = "AQUEOUS";
-            }
         }
 
         checkImage()
         {
-//            switch (this.state)
-//            {
-//                case "SOLID":
-//                    this.image = this.solidImage;
-//                    break;
-//                case "LIQUID" || "AQUEOUS":
-//                    this.image = this.liquidImage;
-//                    break;
-//                case "GAS":
-//                    this.image = this.gasImage;
-//                    break;
+            switch (this.state)
+            {
+                case "SOLID":
+                    this.image = this.solidImage;
+                    break;
+                case "LIQUID" || "AQUEOUS":
+                    this.image = this.liquidImage;
+                    break;
+                case "GAS":
+                    this.image = this.gasImage;
+                    break;
 
-//            }
-//            console.log(this.image === undefined,typeof powderImg);
-//            if (this.image !== undefined)
-//            {console.log("HI");
-//                mainCtx.beginPath();
-//                mainCtx.drawImage(powderImg, this.x, this.y);
-//                mainCtx.closePath();
-//            } else {
-//
-//
-//            }
+            }
+
             let image = new Image();
-            image.src = this.solidImage;
+            image.src = this.image;
 
             try
             {
@@ -894,12 +662,13 @@
             }
         }
     }
-    //  Ionic Compounds
+
+    //  Sets Up Ionic Compounds
     class IonicCompound extends Compound
     {
-        constructor(atoms, mp, bp, waterSoluble, solidImage, x, y,ions)
+        constructor(atoms, mp, bp, waterSoluble, solidImage,liquidImage,gasImage, x, y,ions)
         {
-            super(atoms, mp, bp, waterSoluble, solidImage, x, y);
+            super(atoms, mp, bp, waterSoluble, solidImage,liquidImage,gasImage, x, y);
             //Define all variables for class here with this.[variableName]
             this.ions = ions;
 
@@ -908,15 +677,18 @@
         checkState(temperature, waterEnvironment)
         {
             super.checkState(temperature, waterEnvironment);
+
             this.conductor = (this.state === "LIQUID" || this.state === "AQUEOUS");
         }
     }
 
+
+    //  Sets Up Covalent Compounds
     class CovalentCompound extends Compound
     {
-        constructor(atoms, mp, bp, waterSoluble, solidImage, x, y, formula)
+        constructor(atoms, mp, bp, waterSoluble, solidImage,liquidImage,gasImage, x, y,formula)
         {
-            super(atoms, mp, bp, waterSoluble, solidImage, x, y);
+            super(atoms, mp, bp, waterSoluble, solidImage,liquidImage,gasImage, x, y);
 
             this.formula = formula;
         }
@@ -924,6 +696,7 @@
 
     }
 
+    //    Sets Up Ionic Compounds draw function
     class IonicCompoundConfig {
         constructor(cation, anion) {
             this.cation = cation;
@@ -946,7 +719,7 @@
         }
 
         drawCompound() {
-//
+    //
             drawNucleus(main.width / 2 - 30 - 61, main.height / 2 - 30);
             mainCtx.font = "30px Arial";
             mainCtx.textAlign = "center";
@@ -980,13 +753,14 @@
 
         }
     }
-
+    //  Checks for reactions
     class Reaction
     {
         constructor(reactants, products, requiredCondition)
         {
             this.reactants = reactants;
             this.products = products;
+            let reaction = "";
             this.requiredCondition = requiredCondition;
         }
 
@@ -995,6 +769,7 @@
             let willReact = true;
             let reactants = this.reactants;
             let products = this.products;
+            let reaction = "";
             for (let i = 0; i < this.reactants.length; i++)
             {
                 if (currentCompounds.find(function (element)
@@ -1023,12 +798,10 @@
 
             if (willReact)
             {
-                for (let i = 0; i < this.reactants.length; i++)
-                {
-                    currentCompounds.splice(i);
-
-                }
-
+                currentCompounds = currentCompounds.filter(x=> !new Set(reactants).has(x));
+                reactants.forEach(x=> reaction+= x+" + ");
+                reaction = reaction.slice(0,-2);
+                reaction+= "-->";
                 for (let i = 0; i < this.products.length; i++)
                 {
                     if (currentCompounds.find(function (element)
@@ -1036,9 +809,13 @@
                             return element === products[i]
                         }) === undefined)
                     {
+                        reaction+= " "+products[i] + " +";
                         currentCompounds.push(products[i]);
                     }
                 }
+
+                reaction =reaction.slice(0,-2);
+                recentReactions.unshift(reaction);
 
                 return currentCompounds;
             }
@@ -1049,64 +826,84 @@
         }
     }
 
+    //    List of possible compounds
     var possibleCompounds = //TODO: Add waterSoluble
-//        "Resources/Powder.png"
-//        "Resources/Rock.png"
-//        "Resources/Strip.png"
         {
-            ["NaH"]: new IonicCompound(["Na", "H"], 300, Infinity, false,"Resources/Powder.png",0,0,["Na","H"]),
-            ["NaCl"]: new IonicCompound(["Na", "Cl"], 801, 1465,true, "Resources/Powder.png",0,0,["Na","Cl"]),
-            ["MgO"]: new IonicCompound(["Mg", "O"], 2825, 3600, false, "Resources/Powder.png",0,0,["Mg","O"]),
-            ["LiOH"]: new IonicCompound(["Li", "OH"], 462, 924, true, "Resources/Powder.png",0,0,["Li","OH"]),
-            ["Li2O"]: new IonicCompound(["Li", "O"], 1438, 2600, false, "Resources/Powder.png",0,0,["Li","O"]),
-            ["NaOH"]: new IonicCompound(["Na","OH"], 318, 1388, true, "Resources/Powder.png",0,0,["Na","OH"]),
-            ["CuO"]: new IonicCompound(["Cu","O"],1326,2000,false,"Resources/Powder.png",0,0,["Cu","O"]),
-            ["H2SO4"]: new IonicCompound(["H","SO4"], 10, 337, true, "Resources/Powder.png",0,0,["H","SO4"]),
+            ["NaH"]: new IonicCompound(["Na", "H"], 300, Infinity, false,"Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Na","H"]),
+            ["NaCl"]: new IonicCompound(["Na", "Cl"], 801, 1465,true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Na","Cl"]),
+            ["MgO"]: new IonicCompound(["Mg", "O"], 2825, 3600, false, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Mg","O"]),
+            ["LiOH"]: new IonicCompound(["Li", "OH"], 462, 924, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Li","OH"]),
+            ["Li2O"]: new IonicCompound(["Li", "O"], 1438, 2600, false, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Li","O"]),
+            ["NaOH"]: new IonicCompound(["Na","OH"], 318, 1388, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Na","OH"]),
+            ["CuO"]: new IonicCompound(["Cu","O"],1326,2000,false,"Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Cu","O"]),
+            ["H2SO4"]: new IonicCompound(["H","SO4"], 10, 337, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["H","SO4"]),
+            ["KNO3"]: new IonicCompound(["K","NO3"], 334, 400, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["K","NO3"]),
+            ["CaO"]: new IonicCompound(["Ca","O"], 2572, 2850, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Ca","O"]),
+            ["KO2"]: new IonicCompound(["K","O"], 740, 740, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["K","O"]),
+            ["ZnO"]: new IonicCompound(["Zn","O"], 1975, 2360, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Zn","O"]),
+            ["CuSO4"]: new IonicCompound(["Cu","SO4"], 110, 200, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Cu","SO4"]),
+            ["MgOH2"]: new IonicCompound(["Mg","OH"], 110, 350, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Mg","OH"]),
 
 
-//            constructor(atoms, mp, bp, waterSoluble, solidImage, x, y, formula)
-        ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true,"Resources/Liquid.png",0,0,["H",1,"O",1,"H"]),
-        ["H2"]: new CovalentCompound(["H"], -259, -252, false,"Resources/Gas.png",0,0,["H",1,"H"]),
-        ["O2"]: new CovalentCompound(["O"], -219, -183, false,"Resources/Rock.png",0,0,["O",2,"O"]),
-        ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false,"Resources/Rock.png",0,0,["Cl",1,"Cl"]),
-        ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false,"Resources/Strip.png",0,0,["Mg"]),
-        ["Na"]: new CovalentCompound(["Na"], 98, 883, false,"Resources/Rock.png",0,0,["Na"]),
-        ["F2"]: new CovalentCompound(["F"], -220, -188, true,"Resources/Rock.png",0,0,["F",1,"F"]),
-        ["HF"]: new CovalentCompound(["H", "F"], -84, 20, true,"Resources/Powder.png",0,0,["H",1,"F"]),
-        ["He"]: new CovalentCompound(["He"], -272, -269, false, "Resources/Powder.png",0,0,["He"]),
-        ["Ne"]: new CovalentCompound(["Ne"], -249, -246, false,"Resources/Powder.png",0,0,["Ne"]),
-        ["Cu"]: new CovalentCompound(["Cu"],1085,2562,false,"Resources/Strip.png",0,0,["Cu"]),
-        ["Li"]: new CovalentCompound(["Li"], 180, 1330, false, "Resources/Rock.png",0,0,["Li"]),
-        ["Ar"]: new CovalentCompound(["Ag"], 180, 1330, false, "Resources/Rock.png",0,0,["Li"]),
-        ["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true, "Resources/Powder.png",0,0,["H",1,"Cl"]),
-        ["CO2"]: new CovalentCompound(["C", "O"], -79, -79, true, "Resources/Powder.png",0,0,["O",2,"C",2,"O"]),
+
+
+            ["H2O"]: new CovalentCompound(["H", "O"], 0, 100, true,"Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["H",1,"O",1,"H"]),
+        ["H2"]: new CovalentCompound(["H"], -259, -252, false,"Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["H",1,"H"]),
+        ["O2"]: new CovalentCompound(["O"], -219, -183, false,"Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["O",2,"O"]),
+        ["Cl2"]: new CovalentCompound(["Cl"], -102, -34, false,"Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Cl",1,"Cl"]),
+        ["Mg"]: new CovalentCompound(["Mg"], 620, 1091, false,"Resources/Strip.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Mg"]),
+        ["Na"]: new CovalentCompound(["Na"], 98, 883, false,"Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Na"]),
+        ["F2"]: new CovalentCompound(["F"], -220, -188, true,"Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["F",1,"F"]),
+        ["HF"]: new CovalentCompound(["H", "F"], -84, 20, true,"Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["H",1,"F"]),
+        ["He"]: new CovalentCompound(["He"], -272, -269, false, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["He"]),
+        ["Ne"]: new CovalentCompound(["Ne"], -249, -246, false,"Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Ne"]),
+        ["Cu"]: new CovalentCompound(["Cu"],1085,2562,false,"Resources/Strip.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Cu"]),
+        ["Li"]: new CovalentCompound(["Li"], 180, 1330, false, "Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Li"]),
+        ["Ar"]: new CovalentCompound(["Ar"], -189, -186, false, "Resources/Gas.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Ar"]),
+        ["K"]: new CovalentCompound(["K"], 64, 759, false, "Resources/Rock.png","Resources/Liquid.png","Resources/Gas.png",0,0,["K"]),
+        ["Ca"]: new CovalentCompound(["Ca"], 842, 1484, false, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Ca"]),
+        ["Zn"]: new CovalentCompound(["Zn"], 420, 907, false, "Resources/Strip.png","Resources/Liquid.png","Resources/Gas.png",0,0,["Zn"]),
+        ["S"]: new CovalentCompound(["S"], 115, 445, false, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["S"]),
+        ["HS"]: new CovalentCompound(["H","S"], -82, -60, false, "Resources/Liquid.png","Resources/Liquid.png","Resources/Gas.png",0,0,["H",1,"S"]),
+
+
+        ["HCl"]: new CovalentCompound(["H", "Cl"], -114, -85, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["H",1,"Cl"]),
+        ["CO2"]: new CovalentCompound(["C", "O"], -79, -79, true, "Resources/Powder.png","Resources/Liquid.png","Resources/Gas.png",0,0,["O",2,"C",2,"O"]),
     };
     var currentCompounds = [];
     var temperature = 25;
     var current = false;
     var UV = false;
     var waterEnvironment = false;
+
+    //    Possible Reactions
     var possibleReactions =
-        [
-            [new Reaction(["H2", "O2"], ["H2O"], ">300"), "temperature"],
-//            [new Reaction(["H2O"], ["H2", "O2"], ">20"), "current"],
+    [
+        [new Reaction(["H2", "O2"], ["H2O"], ">300"), "temperature"],
+        [new Reaction(["H2O"], ["H2", "O2"], true), "current"],
         [new Reaction(["MgO", "H2O"], ["MgOH2"], true), "waterEnvironment"],
         [new Reaction(["Cl2", "H2"], ["HCl"], true), "UV"],
         [new Reaction(["MgOH2"], ["Mg", "H2O"], ">100"), "temperature"],
         [new Reaction(["Mg", "O2"], ["MgO"], ">50"), "temperature"],
-        [new Reaction(["NaCl"], ["NaOH", "Cl2", "H2"], ">20"), "current"],
+        [new Reaction(["NaCl"], ["NaOH", "Cl2", "H2"], true), "current"],
+        [new Reaction(["K","O2"], ["KO2"], ">50"), "temperature"],
+        [new Reaction(["Zn","O2"], ["ZnO"], ">50"), "temperature"],
+        [new Reaction(["NaCl","H2O"], ["NaOH", "Cl2", "H2"], true), "current"],
+        [new Reaction(["CuSO4"], ["Cu", "SO4"], true), "current"],
 
 
 
-//          Michael's reactions
+
+    //          Michael's reactions
         [new Reaction(["H2O", "F2"], ["HF", "O2"], true), "waterEnvironment"],
         [new Reaction(["Li", "O2"], ["Li2O"], ">0"), "temperature"],
         [new Reaction(["Li2O", "HCl"], ["LiCl", "H2O"], ">100"), "temperature"],
-        [new Reaction(["H2SO4"], ["H2","SO4"], ">20"), "current"],
+        [new Reaction(["H2SO4"], ["H2","SO4"], true), "current"],
         [new Reaction(["Li", "H2O"], ["LiOH"], true), "waterEnvironment"],
-//          [new Reaction(["Li", "H2O"], ["LiOH"], true), "waterEnvironment"],
+        [new Reaction(["Li", "H2O"], ["LiOH"], true), "waterEnvironment"],
     ];
     let borderWidth = document.documentElement.clientWidth - 1320;
+    //    Elements on the periodic table
     let elementStatus = [
         {element: "Hydrogen", x: 61, y: 31, status: false, symbol: "H", enabled: true, outlineColour: "rgba(220,0,0,0.8)"},
         {element: "Lithium", x: 61, y: 61, status: false, symbol: "Li", enabled: true, outlineColour: "rgba(255,138,23,1)"},
@@ -1130,7 +927,7 @@
 
         {element: "Copper", x: 361, y: 121, status: false, symbol: "Cu", enabled: true, outlineColour: "rgba(84,156,64,1)"},
 
-        {element: "Zinc", x: 391, y: 121, status: false, symbol: "Zn", enabled: true, outlineColour: "rgba(189,95,75,1)"},
+        {element: "Zinc", x: 391, y: 121, status: false, symbol: "Zn", enabled: true, outlineColour: "rgba(9,165,192,1)"},
 
 
         {element: "Hydroxide", x: 211, y: 268, status: false, symbol: "OH", enabled: true, outlineColour: "rgba(120,120,120,1)"},
@@ -1138,11 +935,8 @@
         {element: "Nitrate", x: 271, y: 268, status: false, symbol: "NO3", enabled: true, outlineColour: "rgba(120,120,120,1)"}
     ];
 
-
     var beaker = document.getElementById("beaker");
     var beakerLiquid = document.getElementById("beakerLiquid");
-    //    beaker.style.zIndex = 3;
-    //    beakerLiquid.style.zIndex = 2;
 
     var compoundCombinations = [];
     for (let compound in possibleCompounds)
@@ -1150,16 +944,12 @@
         compoundCombinations.push(new Set(possibleCompounds[compound].atoms))
     }
 
+    //    Function that assigns temperature to value in text box
     function tempUpdate() {
-        storedTemperature = document.getElementById("tempTextBox").value;
+        let storedTemperature = document.getElementById("tempTextBox").value;
         current = document.getElementById("currentCheck").checked;
 
-        if (storedTemperature !== "" && storedTemperature >= -3000 && storedTemperature <= 3000){
-            temperature = storedTemperature;
-        } else if (storedTemperature < -3000 || storedTemperature >3000) {
-            alert("Temperature out of range, must be between -3000 & 3000 inclusive")
-        }
-
+        temperature = Math.max(-3000, Math.min(storedTemperature, 3000));
         if (current){
             current = document.getElementById("currentCheck").checked = true;
         } else {
@@ -1171,15 +961,15 @@
         } else {
             tempText = temperature.toString();
         }
-
-
+        updateCompound();
         document.getElementById("currentTemperature").innerHTML = "Current Temperature: " + tempText +"C";
         document.getElementById("tempTextBox").value = "";
 
+
     }
 
+    //    Updates list of compounds for the user to select from
     function updateCompound(){
-//        id.options[id.selectedIndex].value;
         option1 = document.getElementById("option1");
         option2 = document.getElementById("option2");
         option3 = document.getElementById("option3");
@@ -1203,20 +993,23 @@
         }
         var selectedCompounds = document.getElementById("selectedCompound");
         selectedCompound = selectedCompounds.options[selectedCompounds.selectedIndex].value;
-//        alert(selectedCompound);
         switch (possibleCompounds[selectedCompound] instanceof CovalentCompound){
             case true:
 
                 no = new compoundElectronConfig(possibleCompounds[selectedCompound].formula);
                 break;
             case false:
-                no = new IonicCompoundConfig(possibleCompounds[selectedCompound].ions[0],possibleCompounds[selectedCompound].ions[1]);
+                if (possibleCompounds[selectedCompound] !== undefined)
+                {
+                    no = new IonicCompoundConfig(possibleCompounds[selectedCompound].ions[0], possibleCompounds[selectedCompound].ions[1]);
+                }
                 break;
         }
 
 
     }
 
+    //    Turns value inside temperature box to negative
     function negativeUpdate(){
         var store = document.getElementById("tempTextBox").value;
         store *= -1;
@@ -1225,6 +1018,7 @@
 
     }
 
+    //    Event listener for when the user clicks or presses a key, removes cases of letters being inputed into text box
     c.addEventListener('click', onClickHandler, true);
     document.getElementById("tempTextBox").addEventListener("keydown", function (e)
     {
@@ -1245,10 +1039,15 @@
         }
     });
 
+    //    Clears currentCompounds list
     function clearCompound(){
-        currentCompounds = []
+        currentCompounds = [];
+
+        recentReactions = [];
+        updateCompound();
     }
 
+    //
     function onClickHandler(e)
     {
         let tableRect = c.getBoundingClientRect();
@@ -1281,17 +1080,13 @@
         {
             if (!possibleBondPartner.has(x.symbol) && !x.status)
             {
-
                 x.enabled = false;
-
             }
             else
             {
                 x.enabled = true;
-
             }
         });
-//        updateCompound();
 
 
 
@@ -1343,10 +1138,28 @@
             });
 
             updateCompound();
+            displayRecent();
 
+        }
+
+    }
+
+    //    Displays the most recent reactions
+    function displayRecent(){
+        let place0 = document.getElementById("recentReactionsText1");
+        let place1 = document.getElementById("recentReactionsText2");
+        for (let a=0;a<2;a++){
+            if (recentReactions[a] !== undefined){
+                eval("place" + a).innerHTML = recentReactions[a];
+            } else if (a === 0){
+                eval("place0").innerHTML = "None";
+            } else{
+                eval("place" + a).innerHTML = "";
+            }
         }
     }
 
+    //    Toggles atomic view of the atom
     function toggleAtomic(){
         microView = document.getElementById("check").checked;
 
@@ -1356,8 +1169,8 @@
                 view = "macroView";
             } else if (microView) {
                 view = "microView";
-//            alert(possibleCompounds[currentCompounds[0]].formula);
-//            alert(selectedCompound);
+    //            alert(possibleCompounds[currentCompounds[0]].formula);
+    //            alert(selectedCompound);
 
                 switch (possibleCompounds[selectedCompound] instanceof CovalentCompound) {
                     case true:
@@ -1379,44 +1192,18 @@
         }
     }
 
-    //     kek
-    //    function simulationManager()
-    //    {
-    //        for (let i =1; i <possibleReactions.length;i++)
-    //        {
-    //            currentCompounds = possibleReactions[i][0].checkForActivation(currentCompounds,eval(possibleReactions[i][1]));
-    //        }
-    //
-    //        for (let i = 0; i < currentCompounds.length; i++)
-    //        {
-    //            try
-    //            {
-    //                possibleCompounds[currentCompounds[i]].checkState(temperature, waterEnvironment);
-    //            }
-    //            catch (Exception)
-    //            {
-    //
-    //            }
-    //        }
-    //
-    //
-    //        requestAnimationFrame(simulationManager);
-    //    }
-    //    simulationManager();
 
     function draw()
     {
         if (view === "macroView")
         {
+    //            Clears the screen
             mainCtx.beginPath();
             mainCtx.clearRect(0, 0, 656, 658);
 
         } else if (view === "microView")
+    //
         {
-//            mainCtx.beginPath();
-//            mainCtx.rect(0, 0, 658, 656);
-//            mainCtx.fillStyle = ("rgba(0,0,0,1)");
-//            mainCtx.fill();
             mainCtx.clearRect(0, 0, 658, 656);
             mainCtx.rect(0, 0, 658, 656);
             mainCtx.fillStyle = ("rgba(0,0,0,0.8)");
@@ -1429,7 +1216,7 @@
 
             }
         }
-
+    //        Highlights & Outlines elements
         for (let i = 0; i < elementStatus.length; i++)
         {
             ctx.beginPath();
@@ -1451,10 +1238,12 @@
                 ctx.clearRect(elementStatus[i].x - 1, elementStatus[i].y - 1, 30, 30);
             }
         }
+    //        Check if a reaction is occuring
         for (let i = 0; i < possibleReactions.length; i++)
         {
             currentCompounds = possibleReactions[i][0].checkForActivation(currentCompounds, eval(possibleReactions[i][1]));
         }
+    //        Check is the state of a compound will change
         for (let i = 0; i < currentCompounds.length; i++)
         {
             try
@@ -1468,11 +1257,11 @@
             }
             catch (Exception)
             {
-//                alert("");
+    //                alert("");
                 console.log(currentCompounds[i]);
             }
         }
-
+    //          Check if a reaction occurs from existing in water
         waterEnvironment = new Set(currentCompounds).has("H2O");
 
         for (let i = 0; i < currentCompounds.length; i++)
@@ -1485,13 +1274,13 @@
 
                 beaker.style.zIndex = 3;
             }
-//
         }
 
+        displayRecent();
         requestAnimationFrame(draw);
     }
 
     draw();
-</script>
-</body>
-</html>
+
+}
+
